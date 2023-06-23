@@ -34,7 +34,8 @@
 *.dylib
 
 # Executables
-*.exe
+#我保留了.exe文件
+#*.exe
 *.out
 *.app
 *.i*86
