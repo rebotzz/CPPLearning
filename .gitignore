@@ -1,3 +1,8 @@
+# 忽略.vs文件夹
+.vs/
+
+# 以下是github 提供的 c 模板
+
 # Prerequisites
 *.d
 
