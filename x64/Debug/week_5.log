@@ -1,2 +1,4 @@
-﻿  day_1.c
+﻿  day_2.c
+D:\develop\code\git-repository\week_5\day_2.c(114,11): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+D:\develop\code\git-repository\week_5\day_2.c(140,2): warning C4013: “gets”未定义；假设外部返回 int
   week_5.vcxproj -> D:\develop\code\git-repository\week_5\x64\Debug\week_5.exe
