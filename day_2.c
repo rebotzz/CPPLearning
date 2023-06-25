@@ -83,65 +83,88 @@
 //未实现
 //void reverse(char* str)
 //{
-//	int sz = strlen(str) - 1;
-//	int i = sz;
-//	char* start = str;
-//	char* end = str + sz;
-//	char arr[20] = "  ";
-//	int count = 0;
-//	while (end >= start)
-//	{
-//		count++;
-//		if (*end == ' ')
-//		{
-//			for (int j = 0; j < count; j++)
-//			{
-//				arr[sz-i] = str[i];
-//				i--;
-//			}
-//		}
-//		end--;
-//	}
-//	arr[i] = str[i];// '\0'
-//	strcpy(str, arr);
+//
 //}
 
-//想了好久,一直调试,勉强达到
-void reverse(char* str)
-{
-	char tmp[110] = " ";
-	strcpy((tmp+1), str);//前面制造一个 空格
-	int sz = strlen(tmp);
-	char* p = tmp + sz;
-	char* p1 = tmp + sz;
-	char* p2 = tmp + sz;
-	char arr[110] = " ";
-	char* pa1 = arr;
-	char* pa2 = arr;
-	while (p >= p1 - sz)
-	{
-		if (*(p - 1) == ' ')
-		{
-			strcpy(pa1, p);
-			pa1 = pa1 + (p2 - p);
-			*pa1 = ' ';//最后一次多了一个 空格
-			pa1++;
-			p2 = p-1;
-			*(p-1) = '\0';
-		}
-		p--;
-	}
-	strcpy(str, pa2);
-}
-int main()
-{
-	char arr1[110] = "I like beijing.";
-	//scanf("%s", arr1);//scanf()遇到 空格 就停止读取,不行
-	gets(arr1);
-	//倒置
-	reverse(arr1);
-	printf("%s\n", arr1);
-	return 0;
-}
+////1.0  想了好久,一直调试,勉强达到
+//void reverse(char* str)
+//{
+//	char tmp[110] = " ";
+//	strcpy((tmp+1), str);//前面制造一个 空格
+//	int sz = strlen(tmp);
+//	char* p = tmp + sz;
+//	char* p1 = tmp + sz;
+//	char* p2 = tmp + sz;
+//	char arr[110] = " ";
+//	char* pa1 = arr;
+//	char* pa2 = arr;
+//	while (p >= p1 - sz)
+//	{
+//		if (*(p - 1) == ' ')
+//		{
+//			strcpy(pa1, p);
+//			pa1 = pa1 + (p2 - p);
+//			*pa1 = ' ';//最后一次多了一个 空格	影响似乎不大
+//			pa1++;
+//			p2 = p-1;
+//			*(p-1) = '\0';
+//		}
+//		p--;
+//	}
+//	strcpy(str, pa2);
+//}
+//int main()
+//{
+//	char arr1[110] = "I like beijing.";
+//	//scanf("%s", arr1);//scanf()遇到 空格 就停止读取,不行
+//	gets(arr1);
+//	//倒置
+//	reverse(arr1);
+//	printf("%s\n", arr1);
+//	return 0;
+//}
 
-//2.0	代码优化
+////2.0	代码优化
+//void reverse(char* start,char* end)//倒置 start 到 end之间的字母
+//{
+//	int left = 0;
+//	int right = end - start;
+//	char tmp = '0';
+//	while (left < right)
+//	{
+//		tmp = start[left];
+//		start[left] = start[right];
+//		start[right] = tmp;
+//		left++;
+//		right--;
+//	}
+//}
+//
+//int main()
+//{
+//	char arr1[110] = "I like beijing.";
+//	//scanf("%s", arr1);//scanf()遇到 空格 就停止读取,不行
+//	gets(arr1);//读取一行,存入字符串
+//	char* start = arr1;
+//	char* end = arr1 + strlen(arr1) - 1;
+//	//两次翻转法
+//	reverse(start,end);//整体倒置
+//	//局部倒置,倒置每个单词
+//	end = start;
+//	while (*end != '\0')
+//	{
+//		if (*(end+1) == ' ' || *(end + 1 ) == '\0') //每个单词间以空格隔断
+//		{
+//			reverse(start, end);//倒置单词
+//			start = end + 2;//空格的下一位,即单词的首字母位
+//		}
+//		end++;
+//	}
+//
+//	printf("%s\n", arr1);
+//	return 0;
+//}
+//总结:
+//写代码思路比写更重要,思路不清晰,写出的代码需要漫长的调试理清思路.
+//写之前先分析一下问题,指定大体框架,写就是填补完善框架.
+

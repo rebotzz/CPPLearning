@@ -293,37 +293,37 @@
 #include <stdio.h>
 
 //对奇偶部分 分别 按照大小排序
-void sort_part(int* arr, int left, int right)
-{
-	int i = 0;
-	int tmp = 0;
-	for (i = left - 1; i > 0; i--)//奇数部分排序
-	{
-		int j = 0;
-		for (j = 0; j < i; j++)
-		{
-			if (arr[j] > arr[j + 1])//两两排序
-			{
-				tmp = arr[j];
-				arr[j] = arr[j + 1];
-				arr[j + 1] = tmp;
-			}
-		}
-	}
-	for (i = right - 1; i > left; i--)//偶数部分排序
-	{
-		int j = left;
-		for (j = left; j < i; j++)
-		{
-			if (arr[j] > arr[j + 1])//两两排序
-			{
-				tmp = arr[j];
-				arr[j] = arr[j + 1];
-				arr[j + 1] = tmp;
-			}
-		}
-	}
-}
+//void sort_part(int* arr, int left, int right)
+//{
+//	int i = 0;
+//	int tmp = 0;
+//	for (i = left - 1; i > 0; i--)//奇数部分排序
+//	{
+//		int j = 0;
+//		for (j = 0; j < i; j++)
+//		{
+//			if (arr[j] > arr[j + 1])//两两排序
+//			{
+//				tmp = arr[j];
+//				arr[j] = arr[j + 1];
+//				arr[j + 1] = tmp;
+//			}
+//		}
+//	}
+//	for (i = right - 1; i > left; i--)//偶数部分排序
+//	{
+//		int j = left;
+//		for (j = left; j < i; j++)
+//		{
+//			if (arr[j] > arr[j + 1])//两两排序
+//			{
+//				tmp = arr[j];
+//				arr[j] = arr[j + 1];
+//				arr[j + 1] = tmp;
+//			}
+//		}
+//	}
+//}
 ////奇偶排序函数 1.0
 //int sort_parity(int arr[], int sz)
 //{
