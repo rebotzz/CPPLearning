@@ -1,4 +1,2 @@
-﻿  day_2.c
-D:\develop\code\git-repository\week_5\day_2.c(131,18): warning C4244: “初始化”: 从“__int64”转换到“int”，可能丢失数据
-D:\develop\code\git-repository\week_5\day_2.c(147,2): warning C4013: “gets”未定义；假设外部返回 int
+﻿  day_3.c
   week_5.vcxproj -> D:\develop\code\git-repository\week_5\x64\Debug\week_5.exe
