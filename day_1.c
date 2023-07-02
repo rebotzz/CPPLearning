@@ -288,42 +288,43 @@
 ////调整数组使奇数全部都位于偶数前面。
 ////题目：
 ////输入一个整数数组，实现一个函数，
-////来调整该数组中数字的顺序使得数组中所有的奇数 位于数组的前半部分，
-////所有偶数 位于数组的后半部分。
+////来调整该数组中数字的顺序使得数组中所有的奇数位于数组的前半部分，
+////所有偶数位于数组的后半部分。
 #include <stdio.h>
 
 //对奇偶部分 分别 按照大小排序
-//void sort_part(int* arr, int left, int right)
-//{
-//	int i = 0;
-//	int tmp = 0;
-//	for (i = left - 1; i > 0; i--)//奇数部分排序
-//	{
-//		int j = 0;
-//		for (j = 0; j < i; j++)
-//		{
-//			if (arr[j] > arr[j + 1])//两两排序
-//			{
-//				tmp = arr[j];
-//				arr[j] = arr[j + 1];
-//				arr[j + 1] = tmp;
-//			}
-//		}
-//	}
-//	for (i = right - 1; i > left; i--)//偶数部分排序
-//	{
-//		int j = left;
-//		for (j = left; j < i; j++)
-//		{
-//			if (arr[j] > arr[j + 1])//两两排序
-//			{
-//				tmp = arr[j];
-//				arr[j] = arr[j + 1];
-//				arr[j + 1] = tmp;
-//			}
-//		}
-//	}
-//}
+void sort_part(int* arr, int left, int right)
+{
+	int i = 0;
+	int tmp = 0;
+	for (i = left - 1; i > 0; i--)//奇数部分排序
+	{
+		int j = 0;
+		for (j = 0; j < i; j++)
+		{
+			if (arr[j] > arr[j + 1])//两两排序
+			{
+				tmp = arr[j];
+				arr[j] = arr[j + 1];
+				arr[j + 1] = tmp;
+			}
+		}
+	}
+	for (i = right - 1; i > left; i--)//偶数部分排序
+	{
+		int j = left;
+		for (j = left; j < i; j++)
+		{
+			if (arr[j] > arr[j + 1])//两两排序
+			{
+				tmp = arr[j];
+				arr[j] = arr[j + 1];
+				arr[j + 1] = tmp;
+			}
+		}
+	}
+}
+
 ////奇偶排序函数 1.0
 //int sort_parity(int arr[], int sz)
 //{
@@ -344,6 +345,27 @@
 //	return left;//返回最后一个奇数序号的下一位,即第一个偶数序号
 //}
 
+////奇偶排序函数 1.5
+//int sort_parity(int arr[], int sz)
+//{
+//	int i = 0;
+//	int left = 0;//端点
+//	int tmp = 0;
+//	for (i = 0; i < sz; i++)
+//	{
+//		
+//		if ((arr[i] % 2))//奇数 , && (left < sz)防止栈溢出可以不加,外层的i < sz限制了内层left < sz
+//		{
+//			//将奇数位向前交换,当奇数位都在前面,那么后面只有偶数位了
+//			tmp = arr[left];
+//			arr[left] = arr[i];
+//			arr[i] = tmp;
+//			left++;
+//		}
+//	}
+//	return left;//返回最后一个奇数序号的下一位,即第一个偶数序号
+//}
+//
 ////奇偶排序函数	2.0
 //int sort_parity(int arr[], int sz)
 //{
@@ -353,7 +375,7 @@
 //	//left 对应如果有偶数 与 right 如果对应的奇数交换
 //	while (left < right)
 //	{
-//		while (((arr[left] % 2) == 1) && (left < right))//遇到偶数停止
+//		while (((arr[left] % 2) == 1) && (left < right))//遇到偶数停止, (left < right)为了防止数组越界访问
 //		{
 //			left++;
 //		}
