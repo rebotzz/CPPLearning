@@ -1,6 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 
-//指针进阶学习
+//指针进阶学习 1
 
 ////指针:
 //char* p1;//一级指针,(存一块内存空间的首地址).访问1 byte,最低1 byte,所以强制类型转换为char* 很有用
@@ -254,15 +254,15 @@
 //函数指针
 
 #include <stdio.h>
-void test()
-{
-	printf("hehe\n");
-}
-int main()
-{
-	printf("%p\n", test);//函数名 <==> 函数指针(函数地址)
-	printf("%p\n", &test);
-	void (*pf)() = &test;
-	pf();
-	return 0;
-}
+//void test()
+//{
+//	printf("hehe\n");
+//}
+//int main()
+//{
+//	printf("%p\n", test);//函数名 <==> 函数指针(函数地址)
+//	printf("%p\n", &test);
+//	void (*pf)() = &test;
+//	pf();
+//	return 0;
+//}
