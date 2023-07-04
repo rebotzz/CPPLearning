@@ -1,2 +1,16 @@
 ﻿  day_5.c
+D:\develop\code\git-repository\week_5\day_5.c(372,16): warning C4018: “<”: 有符号/无符号不匹配
+D:\develop\code\git-repository\week_5\day_5.c(384,16): warning C4018: “<”: 有符号/无符号不匹配
+D:\develop\code\git-repository\week_5\day_5.c(387,17): warning C4018: “<”: 有符号/无符号不匹配
+D:\develop\code\git-repository\week_5\day_5.c(454,43): warning C4047: “函数”:“const char *”与“char (*)[15]”的间接级别不同
+D:\develop\code\git-repository\week_5\day_5.c(454,16): warning C4024: “strcmp”: 形参和实参 1 的类型不同
+D:\develop\code\git-repository\week_5\day_5.c(454,70): warning C4047: “函数”:“const char *”与“char (*)[15]”的间接级别不同
+D:\develop\code\git-repository\week_5\day_5.c(454,44): warning C4024: “strcmp”: 形参和实参 2 的类型不同
+D:\develop\code\git-repository\week_5\day_5.c(465,16): warning C4018: “<”: 有符号/无符号不匹配
+D:\develop\code\git-repository\week_5\day_5.c(480,16): warning C4018: “<”: 有符号/无符号不匹配
+D:\develop\code\git-repository\week_5\day_5.c(495,16): warning C4018: “<”: 有符号/无符号不匹配
+D:\develop\code\git-repository\week_5\day_5.c(490,18): warning C4305: “初始化”: 从“double”到“float”截断
+D:\develop\code\git-repository\week_5\day_5.c(510,16): warning C4018: “<”: 有符号/无符号不匹配
+D:\develop\code\git-repository\week_5\day_5.c(525,16): warning C4018: “<”: 有符号/无符号不匹配
+D:\develop\code\git-repository\week_5\day_5.c(540,16): warning C4018: “<”: 有符号/无符号不匹配
   week_5.vcxproj -> D:\develop\code\git-repository\week_5\Debug\week_5.exe

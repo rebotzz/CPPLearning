@@ -223,11 +223,11 @@ int div(int x,int y)
 //	return 0;
 //}
 
-//模拟实现 qsort()函数.
-//交换元素
-#include <stdio.h>
-#include <string.h>
-
+////模拟实现 qsort()函数.
+////交换元素
+//#include <stdio.h>
+//#include <string.h>
+//
 //void swap(void* e1,void* e2,size_t width)//不知道交换类型,所以就按最小单位byte依次交换到元素末尾字节
 //{
 //	int i = 0;
@@ -339,7 +339,222 @@ int div(int x,int y)
 //	//print(arr, sz);
 //	return 0;
 //}
+//
+////参考代码
+//void myqsort(void* base, size_t nitems, size_t size, int(*compar)(const void*, const void*))
+//{
+//	int i, j;
+//	char* st = (char*)base; //void *不方便加减，用char *加减轻松且字节跳转为1，方便控制。
+//	char tmp[16]; //考虑到long double类型，临时空间做成16字节比较保险
+//
+//	for (i = 0; i < nitems - 1; i++)
+//	{
+//		for (j = 0; j < nitems - 1 - i; j++) //冒泡常用循环头
+//		{
+//			if (compar(st + j * size, st + (j + 1) * size)) //比较的时候跳转注意乘size
+//			{
+//				memcpy(tmp, st + j * size, size); //交换操作用memcpy完成就不会出问题。
+//				memcpy(st + j * size, st + (j + 1) * size, size);
+//				memcpy(st + (j + 1) * size, tmp, size);
+//			}
+//		}
+//	}
+//}
 
+//模拟实现 qsort()函数.		整理
+//交换元素
+#include <stdio.h>
+#include <string.h>
+
+//void swap(void* e1,void* e2,size_t width)//不知道交换类型,所以就按最小单位byte依次交换到元素末尾字节
+//{
+//	int i = 0;
+//	for (i = 0; i < width; i++)
+//	{
+//		char tmp = *((char*)e1 + i);//* 优先级高于 (强制类型转换), (强制类型转换) 优先级高于 算数相加 +
+//		*((char*)e1 +i) = *((char*)e2 +i);//+i 访问下一个字节
+//		*((char*)e2 +i) = tmp;
+//	}
+//}
+//
+//void my_qsort(void* arr,unsigned int sz,size_t width,int (*cmp)(void* ,void*))
+//{
+//	//排序的核心思想还是起泡法排序 bubble_sort
+//	int i = 0;
+//	for (i = 0; i < sz - 1; i++)//前面的排序好了,最后一个元素就不用排序,位置归位
+//	{
+//		int j = 0;
+//		for (j = 0; j <sz -i -1; j++)//把一个较大者放在末端
+//		{
+//			if (cmp((char*)arr + j*width,(char*)arr + (j+1)*width)>0)//width元素大小,单位字节
+//			{
+//				//交换,不同类型交换方式不一样,所以传地址,用void* 接收,需要每个元素字节大小
+//				swap((char*)arr + j * width, (char*)arr + (j + 1) * width,width);
+//			}
+//		}
+//	}
+//
+//}
+//
+////比较两个元素 int
+//int cmp_int(void* e1, void* e2)
+//{
+//	return *((int*)e1) - *((int*)e2);
+//}
+//
+////比较两个元素 char
+//int cmp_char(void* e1, void* e2)
+//{
+//	//strcmp依次比较两个字符串对应字符的ASCII码值,大于 返回 >0,小于 返回 <0 ,等于 返回 0 (相同继续下一位,直到不同或者结束)
+//	return strcmp((char*) e1,(char*) e2);
+//}
+//
+////比较两个元素 float
+//int cmp_float(void* e1, void* e2)
+//{
+//	//不能直接返回*((float*)e1) - *((float*)e2),在内存中存储格式是 float,而返回类型是 int
+//	if (*((float*)e1) > *((float*)e2))
+//		return 1;
+//	else if (*((float*)e1) == *((float*)e2))
+//		return 0;
+//	else
+//		return -1;
+//}
+//
+////比较两个元素 double
+//int cmp_double(void* e1, void* e2)
+//{
+//	//关键 返回类型是 int ,不是 double
+//	if (*((double*)e1) > *((double*)e2))
+//		return 1;
+//	else if (*((double*)e1) == *((double*)e2))
+//		return 0;
+//	else
+//		return -1;
+//}
+//
+////声明
+////结构体类型
+//struct stu
+//{
+//	int age;
+//	char name[15];
+//};
+////比较两个元素 结构体 age
+//int cmp_struct_stu_age(void* e1, void* e2)
+//{
+//	//e1 , e2 结构体数组元素的首地址
+//	return ((struct stu*)e1)->age - ((struct stu*)e2)->age;//访问结构指针成员 -> 优先级高于 (强制类型转换).但结合方向不同
+//}
+//
+////比较两个元素 结构体 name
+//int cmp_struct_stu_name(void* e1, void* e2)
+//{
+//	//e1 , e2 结构体数组元素的首地址
+//	return strcmp(&(((struct stu*)e1)->name) ,&(((struct stu*)e2)->name));//strcmp传递参数是char*地址
+//}
+//
+//
+//void test_int()
+//{
+//	int arr[10] = { 2,8,4,6,7,1,3,5,9,0 };
+//	size_t sz = sizeof(arr) / sizeof(arr[0]);
+//	size_t width = sizeof(arr[0]);
+//	my_qsort(arr, sz, width, cmp_int);
+//	int i = 0;
+//	for (i = 0; i < sz; i++)
+//	{
+//		////打印int
+//		printf("%d ", arr[i]);
+//	}
+//	printf("\n");
+//}
+//
+//void test_char()
+//{
+//	char arr[20] = "hello bit.1234dcba";
+//	size_t sz = sizeof(arr) / sizeof(arr[0]);
+//	size_t width = sizeof(arr[0]);
+//	my_qsort(arr, sz, width, cmp_char);
+//	int i = 0;
+//	for (i = 0; i < sz; i++)
+//	{
+//		////打印char
+//		printf("%c", arr[i]);
+//	}
+//	printf("\n");
+//}
+//
+//void test_float()
+//{
+//	float arr[20] = {1.0,1.5,23.1,2.5,108,6.9,5.6,4.1,3.2,8.9,10};
+//	size_t sz = sizeof(arr) / sizeof(arr[0]);
+//	size_t width = sizeof(arr[0]);
+//	my_qsort(arr, sz, width, cmp_float);
+//	int i = 0;
+//	for (i = 0; i < sz; i++)
+//	{
+//		////打印float
+//		printf("%f ", arr[i]);
+//	}
+//	printf("\n");
+//}
+//
+//void test_double()
+//{
+//	double arr[20] = { 1.0,1.5,23.1,2.5,108,6.9,5.6,4.1,3.2,8.9,10 };
+//	size_t sz = sizeof(arr) / sizeof(arr[0]);
+//	size_t width = sizeof(arr[0]);
+//	my_qsort(arr, sz, width, cmp_double);
+//	int i = 0;
+//	for (i = 0; i < sz; i++)
+//	{
+//		////打印double
+//		printf("%lf ", arr[i]);
+//	}
+//	printf("\n");
+//}
+//
+//void test_struct_age()
+//{
+//	struct stu arr[3] = { {15,"wangping"},{21,"heweidao"},{19,"zhangwudi"} };//结构体数组
+//	size_t sz = sizeof(arr) / sizeof(arr[0]);
+//	size_t width = sizeof(arr[0]);
+//	my_qsort(arr, sz, width, cmp_struct_stu_age);
+//	int i = 0;
+//	for (i = 0; i < sz; i++)
+//	{
+//		////打印 arr.age
+//		printf("%d ", (arr+i)->age);
+//	}
+//	printf("\n");
+//}
+//
+//void test_struct_name()
+//{
+//	struct stu arr[3] = { {15,"wangping"},{21,"heweidao"},{19,"zhangwudi"} };//结构体数组
+//	size_t sz = sizeof(arr) / sizeof(arr[0]);
+//	size_t width = sizeof(arr[0]);
+//	my_qsort(arr, sz, width, cmp_struct_stu_name);
+//	int i = 0;
+//	for (i = 0; i < sz; i++)
+//	{
+//		////打印 arr.name
+//		printf("%s ", (arr+i)->name);
+//	}
+//	printf("\n");
+//}
+//
+//int main()
+//{
+//	test_int();
+//	test_char();
+//	test_float();
+//	test_double();
+//	test_struct_age();
+//	test_struct_name();
+//	return 0;
+//}
 
 //指针和数组笔试题解析
 //数组名的意义：
