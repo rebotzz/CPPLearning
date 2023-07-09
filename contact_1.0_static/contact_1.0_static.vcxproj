@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{deb32f80-734a-425b-b699-a9181d1f7c20}</ProjectGuid>
-    <RootNamespace>week6</RootNamespace>
+    <ProjectGuid>{e5b06a5f-bd22-416a-ab9a-b8564ef6ae5b}</ProjectGuid>
+    <RootNamespace>contact10static</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -127,9 +127,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="day_1.c" />
-    <ClCompile Include="day_2.c" />
-    <ClCompile Include="day_3.c" />
+    <ClCompile Include="contact.c" />
+    <ClCompile Include="test.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="contact.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
