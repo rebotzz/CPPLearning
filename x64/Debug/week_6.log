@@ -1,2 +1,6 @@
-﻿  day_1.c
+﻿  day_2.c
+D:\develop\code\git-repository\week_6\day_2.c(382,9): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 1 拥有了类型“size_t”
+D:\develop\code\git-repository\week_6\day_2.c(382,9): message : 请考虑在格式字符串中使用“%zd”
+D:\develop\code\git-repository\week_6\day_2.c(383,9): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 1 拥有了类型“size_t”
+D:\develop\code\git-repository\week_6\day_2.c(383,9): message : 请考虑在格式字符串中使用“%zd”
   week_6.vcxproj -> D:\develop\code\git-repository\week_6\x64\Debug\week_6.exe

@@ -36,6 +36,7 @@
 //针对每行输入，输出用“ * ”组成的X形图案。
 #include <stdio.h>
 
+//1.0
 //int main() {
 //    int a;
 //    while (scanf("%d", &a) != EOF)//多组数输入
@@ -115,7 +116,31 @@
 //    return 0;
 //}
 
-
+////2.0		代码优化
+//int main()
+//{
+//	int n = 0;
+//	while (scanf("%d", &n) != EOF)
+//	{
+//		//主对角,坐标(x,x);次对角线,坐标(x,n-1-x);每行有n个打印,总共有n行.
+//		int x = 0;
+//		for (x = 0; x < n; x++)
+//		{
+//			int y = 0;
+//			for (y = 0; y < n; y++)
+//			{
+//				if (x == y)//主对角,坐标(x,x)
+//					printf("*");
+//				else if (y == n - 1 - x)//次对角线,坐标(x,n-1-x)
+//					printf("*");
+//				else
+//					printf(" ");
+//			}
+//			printf("\n");
+//		}
+//	}
+//	return 0;
+//}
 
 
 
@@ -131,6 +156,7 @@
 //每一行，输出去掉最高分和最低分的平均成绩，小数点后保留2位，每行输出后换行。
 #include <stdio.h>
 
+//1.0	复杂度 O(N*N)
 //int main() {
 //    int s[7] = { 0 };
 //    while (scanf("%d %d %d %d %d %d %d", &s[0], &s[1], &s[2], &s[3], &s[4], &s[5],
@@ -163,6 +189,29 @@
 //    return 0;
 //}
 
+////2.0	代码优化	复杂度0(n)
+//int main()
+//{
+//	int score = 0;
+//	int sum = 0;
+//	int min = 100;
+//	int max = 0;
+//	//输入7个数
+//	int i = 0;
+//	for (i = 0; i < 7; i++)
+//	{
+//		scanf("%d", &score);//求和
+//		sum += score;
+//		if (score < min)//取最大值
+//			min = score;
+//		if (score > max)//取最小值
+//			max = score;
+//	}
+//	sum = sum - min - max;
+//	printf("%.2f\n", sum / 5.0);
+//
+//	return 0;
+//}
 
 
 
@@ -178,6 +227,7 @@
 //29
 #include <stdio.h>
 
+//1.0
 //int main()
 //{
 //    int y = 0, m = 0;
@@ -214,7 +264,24 @@
 //    return 0;
 //}
 
-
+////2.0
+//int main()
+//{
+//	//非润年,月份天数固定
+//	int days[13] = { 0,31,28,31,30,31,30,31,31,30,31,30,31 };
+//	//输入年,月
+//	int y = 0;
+//	int m = 0;
+//	while (scanf("%d %d", &y, &m) != EOF)
+//	{
+//		//判断瑞年,2月
+//		if (((y % 4 == 0) && (y % 100 != 0) || (y % 400 == 0)) && m == 2)
+//			days[2] = 29;
+//		printf("%d\n", days[m]);
+//		days[2] = 28;//初始化
+//	}
+//	return 0;
+//}
 
 
 
@@ -281,63 +348,99 @@
 //    return 0;
 //}
 
-//2.0
-#include <string.h>
-    int main()
-    {
-        int n = 0;
-        scanf("%d", &n);
-        //动态内存开辟
-        int* p = (int*)malloc((n + 2) * sizeof(int));
-        if (p == NULL)
-        {
-            perror("malloc");
-            return 1;
-        }
-        int i = 0;
-        //输入有序数组
-        for (i = 0; i < n; i++)
-        {
-            scanf("%d", (p + i));
-        }
-        //插入值
-        int a = 0;
-        scanf("%d", &a);
-        //排序
-        for (i = 0; i < n; i++)
-        {
-            if (a < p[0])//首位
-                break;
-            if ((a >= p[i]) && (a <= p[i + 1]))//中间
-                break;
-        }
-        //内存拷贝/移动
-        if (i == 0)
-        {
-            memmove(p + 1, p , (n - i) * sizeof(int));
-            p[0] = a;
-        }
-        else if (i < n)//避免向后移动 0 字节情况
-        {
-            memmove(p + i + 2, p + i + 1, (n - i) * sizeof(int));
-            p[i + 1] = a;
-        }
-        else
-        {
-            p[n] = a;//末尾
-        }
+////2.0
+//#include <string.h>
+//    int main()
+//    {
+//        int n = 0;
+//        scanf("%d", &n);
+//        //动态内存开辟
+//        int* p = (int*)malloc((n + 2) * sizeof(int));
+//        if (p == NULL)
+//        {
+//            perror("malloc");
+//            return 1;
+//        }
+//        int i = 0;
+//        //输入有序数组
+//        for (i = 0; i < n; i++)
+//        {
+//            scanf("%d", (p + i));
+//        }
+//        //插入值
+//        int a = 0;
+//        scanf("%d", &a);
+//        //排序
+//        for (i = 0; i < n; i++)
+//        {
+//            if (a < p[0])//首位
+//                break;
+//            if ((a >= p[i]) && (a <= p[i + 1]))//中间
+//                break;
+//        }
+//        //内存拷贝/移动
+//        if (i == 0)
+//        {
+//            memmove(p + 1, p , (n - i) * sizeof(int));
+//            p[0] = a;
+//        }
+//        else if (i < n)//避免向后移动 0 字节情况
+//        {
+//            memmove(p + i + 2, p + i + 1, (n - i) * sizeof(int));
+//            p[i + 1] = a;
+//        }
+//        else
+//        {
+//            p[n] = a;//末尾
+//        }
+//
+//
+//        //打印
+//        for (i = 0; i < n + 1; i++)
+//        {
+//            printf("%d ", p[i]);
+//        }
+//        printf("\n");
+//
+//        //free,NULL
+//        free(p);
+//        p = NULL;
+//        return 0;
+//    }
 
-
-        //打印
-        for (i = 0; i < n + 1; i++)
-        {
-            printf("%d ", p[i]);
-        }
-        printf("\n");
-
-        //free,NULL
-        free(p);
-        p = NULL;
-        return 0;
-    }
-
+////3.0
+//int main()
+//{
+//	//N+1个整数,N<= 50
+//	int arr[51] = { 0 };
+//	//输入n个升序数字
+//	int n = 0;
+//	scanf("%d", &n);
+//	int i = 0;
+//	for (i = 0; i < n; i++)
+//	{
+//		scanf("%d", &arr[i]);
+//	}
+//	//输入第n+1个数
+//	int a = 0;
+//	scanf("%d", &a);
+//	//排序,从后向前,arr[i]>a,则arr[i]向后挪动
+//	for (i = n - 1; i >= 0; i--)//i = 0,arr[0]也要比较
+//	{
+//		//n在中间,或者n在末尾
+//		if (arr[i] > a)
+//			arr[i + 1] = arr[i];
+//		else
+//			break;
+//
+//		//n在首位,i = -1, arr[i+1] ==> arr[0] ==>首位
+//	}
+//	arr[i + 1] = a;
+//	//打印
+//	for (i = 0; i < n + 1; i++)
+//	{
+//		printf("%d ", arr[i]);
+//	}
+//	printf("\n");
+//	return 0;
+//}
