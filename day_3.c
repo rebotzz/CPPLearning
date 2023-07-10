@@ -3,14 +3,328 @@
 //动态内存分配学习
 
 
+//malloc
+//calloc
+//realloc
+//free
+//NULL
+//柔性数组
+// 库 #include <stdlib.h>
+//1.可以解决在栈区开辟内存自动释放的问题
+//2.动态开辟,内存不固定,解决数字arr[不能是变量]的问题.
+//3.可存储空间大,栈区资源宝贵
+//4.柔性数组:可以创建结构体,最后一个成员是不指定大小的数组,大小由malloc分配,sizeof计算结构体大小不包括柔性数组.
+//5.柔性数组:数组前面至少有一个其他元素.开辟空间至少能容下其他元素
+
+//注意事项(常见错误):
+//1.内存开辟失败返回 NULL,对 NULL解引用. ==> 使用指针前先判空
+//2.使用开辟内存后忘记释放,导致内存泄露. ==> free(p); p = NULL;
+//3.越界访问,超出开辟大小.
+//4.对非开辟空间的指针进行释放,或者对开辟空间指针多次释放.
+//5.改变开辟空间指针,导致开辟空间找不到了.	==> *(p + i);别直接修改 p
+//6.malloc,calloc,realloc返回指针void*,需要强制类型转换. ==>	(强制类型转换)malloc();
+//7.调用函数结束,栈区开辟空间释放,所以返回指向这片空间指针没用.野指针
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+//int main()
+//{
+//	int num = 5;
+//	int* pnum = &num;
+//	//int arr[num] = { 0 };//error
+//	int* p = (int*)malloc(num * sizeof(int));//开辟内存不初始化
+//	if (p == NULL)		//判空
+//	{
+//		return 1;
+//	}
+//	int i = 0;
+//	for (i = 0; i < num; i++)//不能越界访问
+//	{
+//		*(p + i) = i + 1;
+//	}
+//	//打印
+//	for (i = 0; i < num; i++)
+//	{
+//		printf("%d ", p[i]);
+//	}
+//	printf("\n");
+//
+//	//别忘了释放内存,不然会导致内存泄露
+//	free(p);
+//	p = NULL;
+//
+//	return 0;
+//}
+
+//#include <string.h>
+//#include <errno.h>
+//int main()
+//{
+//	int num = 5;
+//	//开辟内存
+//	int* p = (int*)calloc(num, sizeof(int));//开辟内存初始化为 0 
+//	if (p == NULL)
+//	{
+//		perror("calloc");
+//		return 1;
+//	}
+//	int i = 0;
+//	for (i = 0; i < num; i++)
+//	{
+//		printf("%d ", *(p + i));
+//	}
+//	printf("\n");
+//
+//	//扩容
+//	num = 8;
+//	void* tmp = realloc(p, num * sizeof(int));
+//	if (tmp != NULL)
+//	{
+//		p = (int*)tmp;
+//		tmp = NULL;
+//	}
+//	else
+//	{
+//		return 1;
+//	}
+//
+//	for (i = 0; i < num; i++)
+//	{
+//		printf("%d ", *(p + i));
+//	}
+//	printf("\n");
+//
+//	//释放内存
+//	free(p);
+//	p = NULL;
+//
+//	return 0;
+//}
+
+
+//几个经典的笔试题
+//4.1 题目1：
+#include <stdio.h>
+#include <stdlib.h>
+
+//void GetMemory(char* p) //p = NULL
+//{
+//	p = (char*)malloc(100); //p 指向开辟空间.函数调用结束,局部变量 p 在栈区释放,所存储地址丢失
+//							//没有free();内存泄露
+//
+//}
+//void Test(void)
+//{
+//	char* str = NULL;
+//	GetMemory(str); //传递的是指针变量的值 NULL ,而不是指针变量str的地址,不会改变str
+//	strcpy(str, "hello world");//str = NULL ,非法访问
+//	printf(str);	// str 指向 "hello world"首元素地址. ==> printf("hello world");
+//}
+//
+//int main()
+//{
+//	Test();
+//	return 0;
+//}
 
 
 
+//题目 2
+#include <stdio.h>
+#include <stdlib.h>
+
+//char* GetMemory(void)
+//{
+//	char p[] = "hello world";//p 是局部变量,在栈区开辟,当函数调用结束,p所指向空间释放.
+//	return p;				 //p 返回没有意义.野指针
+//}
+//void Test(void)
+//{
+//	char* str = NULL;
+//	str = GetMemory();
+//	printf(str);	//野指针,随机
+//}
+//
+//int main()
+//{
+//	Test();
+//	return 0;
+//}
+
+
+//题目 3
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+//void GetMemory(char** p, int num)//二级指针
+//{
+//	*p = (char*)malloc(num);//将开辟空间地址赋值给str
+//}
+//void Test(void)
+//{
+//	char* str = NULL;
+//	GetMemory(&str, 100);//传递指针变量str的地址,能改变str的值.
+//	strcpy(str, "hello");
+//	printf(str);
+//						 //没有free(str);str = NULL; ==> 内存泄露
+//}
+//
+//int main()
+//{
+//	Test();
+//	return 0;
+//}
 
 
 
+//题目 4
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+//void Test(void)
+//{
+//	char* str = (char*)malloc(100);//没有判空处理
+//	strcpy(str, "hello");
+//	free(str);				//过早释放内存,且没有 str = NULL;
+//	if (str != NULL)
+//	{
+//		strcpy(str, "world");	//非法访问
+//		printf(str);
+//	}
+//
+//	////结合代码意图修改
+//	//if (str != NULL)
+//	//{
+//	//	strcat(str, "world");	//非法访问
+//	//	printf(str);
+//	//}
+//	//free(str);				//过早释放内存,且没有 str = NULL;
+//}
+//
+//int main()
+//{
+//	Test();
+//	return 0;
+//}
 
 
+
+//柔性数组
+#include <stdio.h>
+
+//typedef struct A	//结构体声明
+//{
+//	int a;
+//	int arr[];//柔性数组空间开辟在堆上,所以整个结构在堆上开辟    !  不不不,这里理解错了,在哪里开辟由使用者决定.是否 malloc
+//}a_arr;
+//
+//int main()
+//{
+//	int num = 5;
+//	printf("%u\n", sizeof(a_arr));
+//
+//	//错误
+//	//a_arr s = { 0 };//结构体变量创建  ==>  堆区  !  不不不,这里理解错了,在哪里开辟由使用者决定.是否 malloc
+//	//printf("%p\n", &s);
+//	////开辟空间
+//	//int* parr = (int*)malloc(sizeof(a_arr) + num * sizeof(int));//使用错误,parr 与 s 无关.
+//	//if (parr == NULL)
+//	//{
+//	//	return 1;
+//	//}
+//	//printf("%p\n", parr);
+//	//int i = 0;
+//	//for (i = 0; i < num; i++)
+//	//{
+//	//	s.arr[i] = i + 1;
+//	//}
+//
+//	////修改后
+//	//a_arr* parr = (a_arr*)malloc(sizeof(a_arr) + num * sizeof(int));
+//	//if (parr == NULL)
+//	//{
+//	//	return 1;
+//	//}
+//	//parr->a = 2;
+//	//int i = 0;
+//	//for (i = 0; i < num; i++)
+//	//{
+//	//	parr->arr[i] = i + 1;
+//	//}
+//
+//	//for (i = 0; i < num; i++)
+//	//{
+//	//	printf("%d ", parr->arr[i]);
+//	//}
+//
+//	//修改后 2.0
+//	a_arr* parr = (a_arr*)malloc(sizeof(a_arr) + num * sizeof(int));
+//	if (parr == NULL)
+//	{
+//		return 1;
+//	}
+//	parr->a = num;//这里的 a 可用来记录数组大小,这样更方便
+//	int i = 0;
+//	for (i = 0; i < num; i++)
+//	{
+//		parr->arr[i] = i + 1;
+//	}
+//
+//	for (i = 0; i < num; i++)
+//	{
+//		printf("%d ", parr->arr[i]);
+//	}
+//
+//
+//	//释放空间
+//	free(parr);
+//	parr = NULL;
+//
+//	return 0;
+//}
+
+
+//上述柔性数组可以等效为:
+//但是,缺点,需要多次开辟,释放内存,有先后顺序.容错低
+//不利于访问速度.连续的内存有益于提高访问速度，也有益于减少内存碎片。
+#include <stdio.h>
+#include <stdlib.h>
+
+//typedef struct B
+//{
+//	int i;
+//	int* parr;
+//}b_arr;
+//
+//int main()
+//{
+//	//内存开辟
+//	b_arr* pb = (b_arr*)malloc(sizeof(b_arr));//开辟结构体,成员:int i ;指向数组的指针 int* parr;
+//	if (pb == NULL)
+//	{
+//		return 1;
+//	}
+//	pb->i = 10;
+//	pb->parr = (int*)malloc(pb->i * sizeof(int));//开辟数组,空间由结构体成员 p->parr 指向 ;大小,pb->i个int
+//	int i = 0;
+//	for (i = 0; i < pb->i; i++)
+//	{
+//		pb->parr[i] = i + 1;
+//	}
+//
+//
+//	//内存释放,两次开辟,两次释放,类似链表,注意释放先后顺序
+//	free(pb->parr);//先释放结构体指向的数组
+//	pb->parr = NULL;
+//	free(pb);//再释放结构体所在空间
+//	pb = NULL;
+//
+//	return 0;
+//}
 
 
 
