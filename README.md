@@ -6,3 +6,5 @@
 4.通讯录功能实现	静态/动态空间开辟
 5.动态内存管理 malloc realloc free NULL 暂时没用到 calloc
 6.结构体,枚举,联合体;动态内存管理  作业
+7.柔性数组 结构体指针
+8.文件操作 FILE* pf = fopen("文件名","打开方式");	fclose(pf); pf = NULL;

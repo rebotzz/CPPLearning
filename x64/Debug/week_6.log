@@ -1,2 +1,5 @@
-﻿  day_3.c
+﻿  day_4.c
+D:\develop\code\git-repository\week_6\day_4.c(424,10): warning C4133: “函数”: 从“int [60]”到“char *const ”的类型不兼容
+D:\develop\code\git-repository\week_6\day_4.c(427,9): warning C4133: “函数”: 从“int [60]”到“const char *const ”的类型不兼容
+D:\develop\code\git-repository\week_6\day_4.c(430,9): warning C4133: “函数”: 从“int [60]”到“const char *const ”的类型不兼容
   week_6.vcxproj -> D:\develop\code\git-repository\week_6\x64\Debug\week_6.exe
