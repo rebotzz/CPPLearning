@@ -15,25 +15,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="day_1.c">
+    <ClCompile Include="joke.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="day_2.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="day_3.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="day_4.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="day_5.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="test.txt">
-      <Filter>源文件</Filter>
-    </Text>
   </ItemGroup>
 </Project>
