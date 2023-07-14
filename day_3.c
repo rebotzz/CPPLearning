@@ -342,6 +342,7 @@
 #include <string.h>
 #include <assert.h>
 #include <ctype.h>
+#include <limits.h>//INT_MAX INT_MIN
 
 //int main()
 //{
@@ -376,7 +377,14 @@
 //		return 0;
 //}
 
-////模拟实现2.0
+//模拟实现2.0	关键,完成代码核心后,对代码可能情况的处理,细节
+//判断返回的 0 是转化的0,还是其他原因导致的 0
+//enum judge
+//{
+//	VALID,	//0 输出结果有效
+//	INVALID	//1 输出结果无效
+//};
+//enum judge lable = INVALID;//初始无效
 //int my_atoi(const char* str)
 //{
 //	assert(str != NULL);
@@ -400,7 +408,7 @@
 //	str = p;//记录数字可能的起始位置
 //	while (isdigit(*p))//如果是数字
 //	{
-//		ret = ret * 10 + *p - '0';
+//		ret = ret * 10 + *p - '0';//或者 ret = 10*ret flag*(*p - '0');
 //		//判断是否超过最大存储范围
 //		if ((ret < INT_MIN) || (ret > INT_MAX))//算数类型转换
 //		{
@@ -409,8 +417,11 @@
 //		p++;
 //	}
 //	ret = flag * ret;
-//	if (p > str)
+//	if (p > str)//进行了数字的转化
+//	{
+//		lable = VALID;//结果有效
 //		return (int)ret;
+//	}
 //	else
 //		return 0;
 //}
@@ -418,10 +429,17 @@
 //int main()
 //{
 //	char str[50] = { 0 };
-//	strcpy(str, "\t\f\v\r+-12345678AAA");
+//	strcpy(str, "\t\f\r+-12345678AAA");
 //	//int a = atoi(str);
 //	int a = my_atoi(str);
-//
+//	if (lable == VALID) 
+//	{
+//		printf("转化结果有效.\n");
+//	}
+//	else
+//	{
+//		printf("转化结果0无效.\n");
+//	}
 //	printf("原字符串:%s\t对应整数值:%d\n", str, a);
 //
 //	return 0;

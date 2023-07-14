@@ -258,7 +258,8 @@
 //
 ////4.0	宏
 //#define offsetof(StructType,MenberName) (size_t)&(((StructType*) 0)->MenberName)
-//
+////#define offsetof(StructType,MenberName) (size_t)&(((StructType*) 0x500)->MenberName) - 0x500
+// //就是一个相对关系
 //
 //int main()
 //{

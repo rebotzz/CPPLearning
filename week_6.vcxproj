@@ -132,6 +132,7 @@
     <ClCompile Include="day_3.c" />
     <ClCompile Include="day_4.c" />
     <ClCompile Include="day_5.c" />
+    <ClCompile Include="day_6.c" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="test.txt" />

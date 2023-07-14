@@ -1,4 +1,2 @@
-﻿  day_5.c
-D:\develop\code\git-repository\week_6\day_5.c(153,2): warning C4474: printf: 格式字符串中传递的参数太多
-D:\develop\code\git-repository\week_6\day_5.c(153,2): message : 占位符和其参数预计 0 可变参数，但提供的却是 1 参数
+﻿  day_6.c
   week_6.vcxproj -> D:\develop\code\git-repository\week_6\x64\Debug\week_6.exe

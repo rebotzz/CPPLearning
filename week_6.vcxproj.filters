@@ -30,6 +30,9 @@
     <ClCompile Include="day_5.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="day_6.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="test.txt">
