@@ -37,13 +37,14 @@ enum meun_choice				//1.前插     2.前删
 	EXIT_SAVE,					//5.中间插   6.中间删  
 	PUSHFRONT,					//7.中间改   0.保存退出
 	POPFRONT,					//8.打印	 9.读取
-	PUSHBACK,
+	PUSHBACK,					//10.查找
 	POPBACK,
 	PUSHMIDDLE,
 	POPMIDDLE,
 	REVISEMIDDLE,
 	PRINT,
-	GETDATA
+	GETDATA,
+	FIND
 };
 
 //变量声明
@@ -53,19 +54,21 @@ SeqListInfo SLData;
 // 初始化
 void SeqListInit(SeqListInfo* ps);
 //后插
-void SeqListPushBack(SeqListInfo* ps,int x);
+void SeqListPushBack(SeqListInfo* ps, SLDataType x);
 //后删
 void SeqListPopBack(SeqListInfo* ps);
 //前插入
-void SeqListPushFront(SeqListInfo* ps, int x);
+void SeqListPushFront(SeqListInfo* ps, SLDataType x);
 //前删
 void SeqlistPopFront(SeqListInfo* ps);
 //中间插入
-void SeqListPushMiddle(SeqListInfo* ps,int pos, int x);
+void SeqListInsert(SeqListInfo* ps,int pos, SLDataType x);
 //中间修改
-void SeqListReviseMiddle(SeqListInfo* ps, int pos, int x);
+void SeqListReviseMiddle(SeqListInfo* ps, int pos, SLDataType x);
 //中间删除
-void SeqListPopMiddle(SeqListInfo* ps,int pos);
+void SeqListErase(SeqListInfo* ps,int pos);
+// 顺序表查找
+int SeqListFind(SeqListInfo* ps, SLDataType x);
 //菜单
 void menu();
 //打印数据

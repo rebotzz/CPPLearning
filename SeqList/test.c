@@ -86,9 +86,9 @@ void test3()
 	}
 	SeqListPrint(&SLData);
 	//中间插入
-	SeqListPushMiddle(&SLData, 5, 10);
-	SeqListPushMiddle(&SLData, -1, 11);
-	SeqListPushMiddle(&SLData, 19, 12);
+	SeqListInsert(&SLData, 5, 10);
+	SeqListInsert(&SLData, -1, 11);
+	SeqListInsert(&SLData, 19, 12);
 	SeqListPrint(&SLData);
 
 	//中间修改
@@ -96,25 +96,15 @@ void test3()
 	SeqListPrint(&SLData);
 
 	//中间删除
-	SeqListPopMiddle(&SLData,3);
-	SeqListPopMiddle(&SLData, 3);
+	SeqListErase(&SLData,3);
+	SeqListErase(&SLData, 3);
 	SeqListPrint(&SLData);
 
 
 }
 
-
-int main()
+void test_menu()
 {
-	//后插,后删测试
-	//test1();
-
-	//前插,前删测试
-	//test2();
-
-	//中间插入数据,中间删除测试
-	//test3();
-
 
 	int input = 1;
 	SLDataType x = { 0 };
@@ -150,12 +140,12 @@ int main()
 			printf("输入插入数据和插入位置:");
 			scanf(SCANFTYPE, &x);
 			scanf("%d", &pos);
-			SeqListPushMiddle(&SLData, pos - 1, x);
+			SeqListInsert(&SLData, pos - 1, x);
 			break;
 		case POPMIDDLE:
 			printf("输入删除位置:");
 			scanf("%d", &pos);
-			SeqListPopMiddle(&SLData, pos - 1);
+			SeqListErase(&SLData, pos - 1);
 			break;
 		case REVISEMIDDLE:
 			printf("输入修改后数据和修改位置:");
@@ -169,11 +159,79 @@ int main()
 		case GETDATA:
 			GetData(&SLData);
 			break;
+		case FIND:
+			printf("输入查找数据:");
+			scanf(SCANFTYPE, &x);
+			int ret = SeqListFind(&SLData, x);
+			if (ret != -1)
+			{
+				printf("找到了:"PRINTTYPE"\t数组下标为:%d\n", x, ret);
+			}
+			else
+			{
+				printf("查询无果.\n");
+			}
+			break;
 		default:
 			printf("输入错误,重新输入.\n");
 		}
 	} while (input);
 
+}
+
+void test4()
+{
+	//初始化
+	SeqListInit(&SLData);
+	//前插
+	int i = 0;
+	for (i = 0; i < 4; i++)
+	{
+		SeqListPushFront(&SLData, i);
+	}
+	i = 9;
+	SeqListPushFront(&SLData, i);
+	SeqListPushFront(&SLData, i);
+	SeqListPushFront(&SLData, i);
+	SeqListPushFront(&SLData, i);
+	for (i = 0; i < 4; i++)
+	{
+		SeqListPushFront(&SLData, i);
+	}
+	SeqListPrint(&SLData);
+
+	int pos = SeqListFind(&SLData, 9);
+	while (pos != -1)
+	{
+		SeqListErase(&SLData, pos);
+		pos = SeqListFind(&SLData, 9);
+	}
+	SeqListPrint(&SLData);
+	pos = SeqListFind(&SLData, 0);
+	while (pos != -1)
+	{
+		SeqListReviseMiddle(&SLData, pos, 10);
+		pos = SeqListFind(&SLData, 0);
+	}
+	SeqListPrint(&SLData);
+
+}
+
+int main()
+{
+	//后插,后删测试
+	//test1();
+
+	//前插,前删测试
+	//test2();
+
+	//中间插入数据,中间删除测试
+	//test3();
+
+	//test_menu();
+
+	//查找组合功能测试
+	test4();
 
 	return 0;
 }
