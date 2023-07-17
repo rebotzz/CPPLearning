@@ -63,7 +63,7 @@ void SeqListPushFront(SeqListInfo* ps, SLDataType x);
 void SeqlistPopFront(SeqListInfo* ps);
 //中间插入
 void SeqListInsert(SeqListInfo* ps,int pos, SLDataType x);
-//中间修改
+//中间修改	查找,删除,修改配合使用
 void SeqListReviseMiddle(SeqListInfo* ps, int pos, SLDataType x);
 //中间删除
 void SeqListErase(SeqListInfo* ps,int pos);
