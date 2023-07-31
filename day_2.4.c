@@ -63,9 +63,9 @@
 //	}
 //
 //
-//	InOrder(root->left);
-//	printf("%c ", root->val);
-//	InOrder(root->right);
+	//InOrder(root->left);
+	//printf("%c ", root->val);
+	//InOrder(root->right);
 //}
 //
 ////ЖўВцЪїВщев
