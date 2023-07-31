@@ -131,6 +131,15 @@
     <ClCompile Include="day_1.1.c" />
     <ClCompile Include="day_1.3.c" />
     <ClCompile Include="day_1.4.c" />
+    <ClCompile Include="day_2.1.c" />
+    <ClCompile Include="day_2.2.c" />
+    <ClCompile Include="day_2.3.c" />
+    <ClCompile Include="day_2.4.c" />
+    <ClCompile Include="day_2.5.c" />
+    <ClCompile Include="queue.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="queue.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
