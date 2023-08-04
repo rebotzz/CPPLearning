@@ -3,18 +3,40 @@
 #include "stack.h"
 
 //直接插入排序	时间复杂度O(N^2);空间复杂度O(1)
+//void InsertSort(int* arr, int n)
+//{
+//	assert(arr);
+//
+//	for (int i = 0; i < n - 1; i++)
+//	{
+//		int end = i;
+//		//似乎不行,虽然可以排序,但这不是插入排序了
+//		while (arr[end] > arr[end + 1] && end >= 0)
+//		{
+//			swap(&arr[end], &arr[end + 1]);
+//			end--;
+//		}
+//	}
+//}
+
+//2.0
+//直接插入排序	时间复杂度O(N^2);空间复杂度O(1)
 void InsertSort(int* arr, int n)
 {
-	assert(arr);
-
+	assert(arr);//空指针断言
 	for (int i = 0; i < n - 1; i++)
 	{
 		int end = i;
-		while (arr[end] > arr[end + 1] && end >= 0)
+		int key = arr[end + 1];
+		//找到比key小的位置
+		while (arr[end] > key && end >= 0)
 		{
-			swap(&arr[end], &arr[end + 1]);
+			//比key大,一次后移,为插入key留出位置
+			arr[end + 1] = arr[end];
 			end--;
 		}
+		//将key插入到end下一位
+		arr[end + 1] = key;
 	}
 }
 
@@ -317,11 +339,79 @@ int SortPart1(int* arr, int begin, int end)
 	return tmp;
 }
 
-////单次循环,左右指针法
-//int SortPart1(int* arr, int begin, int end)
-//{
-//
-//}
+
+//快速排序
+//单次循环,前后指针法
+int SortPart2(int* arr, int begin, int end)
+{
+	//三数取中,将相对中间大小的数放在最右边,让key取为基准
+	int mid = GetMidNumber(arr, begin, end);
+	swap(&arr[mid], &arr[end]);
+
+	int key = arr[end];
+	int cur = begin;
+	int prev = begin - 1;
+	while (cur <= end)
+	{
+		//cur指针找比key小,找到比key小,prev++,把小的这个值交换到prev
+		//就像两个火车头,cur是比key大的数的火车头;prev是小于等于key数字的火车头
+		//这里选右边为key,所以cur和prev从左边开始
+		while (arr[cur] > key && cur <= end)//想的是结束的条件,写的是继续的条件
+		{
+			cur++;
+		}
+		if (arr[cur] <= key && cur <= end)
+		{
+			swap(&arr[++prev], &arr[cur]);
+			cur++;//交换之后cur需要++
+		}
+	}
+
+	return prev;
+}
+
+//快速排序
+//单次循环,左右指针法
+int SortPart3(int* arr, int begin, int end)
+{
+	//基准定在右边
+	//左指针找到比key大的时候停下,右指针找比key小的时候停下
+	//然后交换左右指针指向数值
+	//左指针先走,这样最后指针相遇位置的数值比key大,正好可以与key交换
+
+	//三数取中,避免最坏情况,逆序
+	int mid =  GetMidNumber(arr, begin, end);
+	swap(&arr[mid], &arr[end]);
+	int key = arr[end];
+	int left = begin;
+	int right = end - 1;
+	// left ... right key
+
+	while (left < right)//left < right;别写错,不是left < end
+	{
+		//左指针找大
+		while (arr[left] <= key && left < right)//等于key的情况不用管,之后区间细分的时候等于的就变最大值,会升序
+		{
+			left++;
+		}
+		//右指针找小
+		while (arr[right] >= key && left < right)
+		{
+			right--;
+		}
+		//交换
+		if (arr[left] > key && arr[right] < key)
+		{
+			swap(&arr[left], &arr[right]);
+			//left++;
+			//right--;
+		}
+	}
+	//交换key到左右指针相遇处
+	swap(&arr[left], &arr[end]);
+
+	return left;
+}
 
 //快速排序
 //选定一个基准值key,比key小的放在左边,比key大的放在右边
@@ -338,15 +428,20 @@ void QuickSort(int* arr, int begin, int end)
 	}
 
 	//小区间优化,减少递归深度
+	//排序[arr + begin ,arr + end]区间的数字
 	if (end - begin + 1 < 10)
 	{
 		//直接插入排序
-		InsertSort(arr, end - begin + 1);
+		InsertSort(arr + begin, end - begin + 1);//注意:这里的排序是从arr + begin开始,不能是arr,arr一直不变
+		//arrayPrintf(arr + begin, end - begin + 1);
+		//printf("Insert\n");
 		return;
 	}
 
 	//递归,排序;排序左半边和右半边
-	int div = SortPart1(arr, begin, end);
+	int div = SortPart3(arr, begin, end);
+	//arrayPrintf(arr + begin, end - begin + 1);
+	//printf("%d\n", div);
 	QuickSort(arr, begin, div - 1);
 	QuickSort(arr, div + 1, end);
 }

@@ -55,8 +55,11 @@ void TestBubbleSort()
 void TestQuickSort()
 {
 	//int arr[] = { 9,5,4,8,7,3,4,6,4,2,1,5 };
-	int arr[] = { 20,19,18,17,9,8,7,6,5,4,3,2,1,0,16,15,14,13,12,11,10 };
-	//int arr[] = { 0,5,4,1,2,3 };
+	//int arr[] = { 20,19,18,17,9,8,7,6,5,4,3,2,1,0,16,15 };//,14,13,12,11,10
+	int arr[] = { 20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0 };
+
+	//int arr[] = { 0,5,4,1,2,3, };
+	//int arr[] = { 5,4,3,2,1 };
 	int n = sizeof(arr) / sizeof(int);
 	arrayPrintf(arr, n);
 	QuickSort(arr, 0, n - 1);
@@ -87,6 +90,92 @@ void TestMergeSort()
 	arrayPrintf(arr, n);
 }
 
+
+
+
+
+void insertsort1(int* arr, int n)
+{
+	assert(arr);
+
+	for (int i = 0; i < n - 1; i++)
+	{
+		int end = i;
+		int key = arr[end + 1];
+		//找到比key小的位置
+		while (arr[end] > key && end >= 0)
+		{
+			//比key大,一次后移,为插入key留出位置
+			arr[end + 1] = arr[end];
+			end--;
+		}
+		//将key插入到end下一位
+		arr[end + 1] = key;
+	}
+}
+
+void ShellSort1(int* arr, int n)
+{
+	assert(arr);
+	int gap = n;
+
+	while (gap > 1)
+	{
+		gap = gap / 3 + 1;
+		for (int i = 0; i < n - gap; i++)//是n - gap,不是n - 1 -gap
+		{
+			int end = i;
+			int key = arr[end + gap];
+			//找到比key小的位置
+			while (arr[end] > key && end >= 0)
+			{
+				//比key大,一次后移,为插入key留出位置
+				arr[end + gap] = arr[end];
+				end -= gap;
+			}
+			//将key插入到end下一位
+			arr[end + gap] = key;
+		}
+	}
+}
+
+void SelectSort1(int* arr, int n)
+{
+	assert(arr);
+	int end = n - 1;
+	while (end > 0)
+	{
+		int maxIndex = 0;//设初始最大原下标位0,即第一个元素
+		//遍历数组,找出最大元素的下标
+		for (int i = 0; i <= end; i++)
+		{
+			if (arr[i] > arr[maxIndex])
+			{
+				maxIndex = i;
+			}
+		}
+		swap(&arr[maxIndex], &arr[end--]);
+	}
+}
+
+void test()
+{
+	//int arr[] = { 1,9,8,3,4,6,7,2,0 };
+	int arr[] = { 20,19,18,17,9,8,7,6,5,4,3,2,1,0,16,15,14,13,12,11,10 };
+
+	int n = sizeof(arr) / sizeof(arr[0]);
+	arrayPrintf(arr, n);
+	SelectSort1(arr, n);
+	arrayPrintf(arr, n);
+
+}
+
+
+
+
+
+
+
 int main()
 {
 	//TestInsertSort();
@@ -96,8 +185,8 @@ int main()
 	//TestBubbleSort();
 	//TestQuickSort();
 	//TestQuickSortNonR();
-	TestMergeSort();
-
+	//TestMergeSort();
+	test();
 
 
 	return 0;
