@@ -158,6 +158,52 @@ void SelectSort1(int* arr, int n)
 	}
 }
 
+void adjustdown1(int* arr, int root, int n)
+{
+	int parents = root;//父节点
+	int chird = 2 * parents + 1;//左孩子
+	while (parents < n)
+	{
+		//找左右孩子中最大者
+		if (chird + 1 < n && arr[chird + 1] > arr[chird])
+		{
+			chird++;
+		}
+		//大的上浮,小的下沉
+		if (arr[chird] > arr[parents])
+		{
+			swap(&arr[chird], &arr[parents]);
+			parents = chird;
+			chird = 2 * parents + 1;
+		}
+		else
+		{
+			break;
+		}
+	}
+}
+
+void HeapSort1(int* arr,int n)
+{
+	assert(arr);
+	//建立堆,向下调整算法
+	int chird = n - 1;
+	int root = (chird - 1) / 2;
+	while (root >= 0)
+	{
+		adjustdown1(arr, root, n);
+	}
+
+	//堆顶与末尾交换调整
+	int size = n - 1;
+	while (size > 1)
+	{
+		swap(&arr[0], &arr[size--]);
+		adjustdown1(arr, 0, size + 1);
+	}
+
+}
+
 void test()
 {
 	//int arr[] = { 1,9,8,3,4,6,7,2,0 };
@@ -165,7 +211,7 @@ void test()
 
 	int n = sizeof(arr) / sizeof(arr[0]);
 	arrayPrintf(arr, n);
-	SelectSort1(arr, n);
+	HeapSort1(arr, n);
 	arrayPrintf(arr, n);
 
 }

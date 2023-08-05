@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{326fc882-b706-4e3c-8bd1-b0156049eaa3}</ProjectGuid>
-    <RootNamespace>learncpp</RootNamespace>
+    <ProjectGuid>{89c13fe2-f9a1-4035-83e3-2c012340d9d7}</ProjectGuid>
+    <RootNamespace>SortPractice</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -127,8 +127,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="day_1.cpp" />
-    <ClCompile Include="SeekMine.c" />
+    <ClCompile Include="sort.c" />
+    <ClCompile Include="test.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="sort.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

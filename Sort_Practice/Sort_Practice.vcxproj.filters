@@ -15,11 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="day_1.cpp">
+    <ClCompile Include="sort.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="SeekMine.c">
+    <ClCompile Include="test.c">
       <Filter>源文件</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="sort.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
