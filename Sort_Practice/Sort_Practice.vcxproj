@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="OutMergeSort.c" />
     <ClCompile Include="sort.c" />
     <ClCompile Include="test.c" />
   </ItemGroup>

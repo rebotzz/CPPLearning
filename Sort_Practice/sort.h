@@ -6,3 +6,6 @@
 void arrayPrintf(int* arr, int n);
 //½»»»
 void swap(int* p1, int* p2);
+
+//¿ìËÙÅÅĞò
+void QuickSort(int* arr, int begin, int end);
