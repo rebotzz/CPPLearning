@@ -22,3 +22,8 @@
 
 *************************
 5.开始linux和cpp的并行学习,服务器centos7
+linux基础指令学习:ls cd nano grep find tree cal echo | < >> cat tac adduser passwd 
+yum zip unzip tar more less head tail history touch mkdir rm rmdir xargs ./ dc date ssh su - gcc 
+
+cpp基础学习:命名空间,函数重载,引用学习
+内联函数inline auto 类struct class
