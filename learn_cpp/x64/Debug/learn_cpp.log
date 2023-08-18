@@ -1,4 +1,4 @@
-﻿  day_1.cpp
-D:\develop\code\git-repository\week_8\learn_cpp\day_1.cpp(48,11): warning C4244: “return”: 从“double”转换到“float”，可能丢失数据
-D:\develop\code\git-repository\week_8\learn_cpp\day_1.cpp(63,22): warning C4305: “参数”: 从“double”到“float”截断
+﻿  common.cpp
+  day_4.cpp
+  正在生成代码...
   learn_cpp.vcxproj -> D:\develop\code\git-repository\week_8\learn_cpp\x64\Debug\learn_cpp.exe

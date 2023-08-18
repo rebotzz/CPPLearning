@@ -37,43 +37,57 @@ using namespace std;
 //	return 0;
 //}
 
-//函数重载
-int add(int a, int b)
-{
-	return a + b;
-}
+////函数重载
+//int add(int a, int b)
+//{
+//	return a + b;
+//}
+//
+//float add(double a, float b)
+//{
+//	return a + b;
+//}
+//
+////引用返回
+//int& func2()
+//{
+//	int* n = (int*)malloc(sizeof(int));
+//	assert(n);
+//	*n = 5;
+//	return *n;
+//}
 
-float add(double a, float b)
-{
-	return a + b;
-}
-
-//引用返回
-int& func2()
-{
-	int* n = (int*)malloc(sizeof(int));
-	assert(n);
-	*n = 5;
-	return *n;
-}
-
-int main()
-{
-	cout << add(4, 8) << endl;
-	cout << add(2.2453, 5.6) << endl;
-
-	//引用
-	int b = 4;
-	int& bb = b;
-	cout << b++ << endl;
-	cout << bb << endl;
-
-	int& nn = func2();
-	cout << ++nn << endl;
-	free(&nn);
-	cout << nn << endl;
+//int main()
+//{
+//	cout << add(4, 8) << endl;
+//	cout << add(2.2453, 5.6) << endl;
+//
+//	//引用
+//	int b = 4;
+//	int& bb = b;
+//	cout << b++ << endl;
+//	cout << bb << endl;
+//
+//	int& nn = func2();
+//	cout << ++nn << endl;
+//	free(&nn);
+//	cout << nn << endl;
+//
+//
+//	return 0;
+//}
 
 
-	return 0;
-}
-
+//#include"head.h"
+////缺省函数
+//void func(int a, int b)
+//{
+//	cout << a << "	 " << b << endl;
+//}
+//
+//int main()
+//{
+//	func(3);
+//	func(3, 5);
+//	return 0;
+//}

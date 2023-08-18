@@ -27,3 +27,5 @@ yum zip unzip tar more less head tail history touch mkdir rm rmdir xargs ./ dc d
 
 cpp基础学习:命名空间,函数重载,引用学习
 内联函数inline auto 类struct class
+头文件:extern int a;//声明 static int a;//定义,链接属性仅当前文件,不同文件各自一个
+extern "C"配合条件编译==>CPP和C互相调用
