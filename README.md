@@ -26,6 +26,10 @@ linux基础指令学习:ls cd nano grep find tree cal echo | < >> cat tac adduse
 yum zip unzip tar more less head tail history touch mkdir rm rmdir xargs ./ dc date ssh su - gcc 
 
 cpp基础学习:命名空间,函数重载,引用学习
-内联函数inline auto 类struct class
+内联函数inline auto 类(对象)struct class 访问限定符:public private protected
 头文件:extern int a;//声明 static int a;//定义,链接属性仅当前文件,不同文件各自一个
 extern "C"配合条件编译==>CPP和C互相调用
+类(对象):
+构造函数->对象实例化时初始化成员变量(全缺省/无参数构造);
+析构函数->对象销毁时清除成员变量(比如释放malloc,fopen指针)
+拷贝构造函数->拷贝对象(传引用,防止无穷递归)
