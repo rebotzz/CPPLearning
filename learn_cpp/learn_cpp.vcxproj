@@ -141,6 +141,7 @@
     <ClCompile Include="day_2.cpp" />
     <ClCompile Include="day_3.cpp" />
     <ClCompile Include="day_4.cpp" />
+    <ClCompile Include="day_5.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="head.h" />

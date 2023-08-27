@@ -16,12 +16,12 @@ void func(int a, int b)
 //}
 
 
-int main()
-{
-	test1();
-	cout << "common:a:" << &a << " " << a << endl;
-
-
-	return 0;
-}
-
+//int main()
+//{
+//	test1();
+//	cout << "common:a:" << &a << " " << a << endl;
+//
+//
+//	return 0;
+//}
+//

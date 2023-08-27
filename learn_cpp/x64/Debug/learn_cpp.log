@@ -1,4 +1,7 @@
 ﻿  common.cpp
   day_4.cpp
+  day_5.cpp
+D:\develop\code\git-repository\week_8\learn_cpp\day_5.cpp(60,5): warning C4101: “a”: 未引用的局部变量
+D:\develop\code\git-repository\week_8\learn_cpp\day_5.cpp(61,5): warning C4101: “b”: 未引用的局部变量
   正在生成代码...
   learn_cpp.vcxproj -> D:\develop\code\git-repository\week_8\learn_cpp\x64\Debug\learn_cpp.exe
