@@ -1,2 +1,42 @@
 ﻿  OutMergeSort.c
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(92,17): warning C4047: “函数”:“char *const ”与“char *[20]”的间接级别不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(92,12): warning C4024: “sprintf”: 形参和实参 1 的类型不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(94,27): warning C4047: “函数”:“const char *”与“char *[20]”的间接级别不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(94,22): warning C4024: “fopen”: 形参和实参 1 的类型不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(110,15): warning C4047: “函数”:“char *const ”与“char *[20]”的间接级别不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(110,10): warning C4024: “sprintf”: 形参和实参 1 的类型不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(114,25): warning C4047: “函数”:“const char *”与“char *[20]”的间接级别不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(114,20): warning C4024: “fopen”: 形参和实参 1 的类型不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(127,15): warning C4047: “函数”:“char *const ”与“char *[20]”的间接级别不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(127,10): warning C4024: “sprintf”: 形参和实参 1 的类型不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(128,15): warning C4047: “函数”:“char *const ”与“char *[20]”的间接级别不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(128,10): warning C4024: “sprintf”: 形参和实参 1 的类型不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(129,13): warning C4047: “函数”:“char *const ”与“char *[20]”的间接级别不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(129,10): warning C4024: “sprintf”: 形参和实参 1 的类型不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(131,24): warning C4047: “函数”:“const char *”与“char *[20]”的间接级别不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(131,19): warning C4024: “fopen”: 形参和实参 1 的类型不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(132,24): warning C4047: “函数”:“const char *”与“char *[20]”的间接级别不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(132,19): warning C4024: “fopen”: 形参和实参 1 的类型不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(133,22): warning C4047: “函数”:“const char *”与“char *[20]”的间接级别不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(133,19): warning C4024: “fopen”: 形参和实参 1 的类型不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(134,21): warning C4047: “函数”:“char *”与“char *[20]”的间接级别不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(134,16): warning C4024: “_OutMergeSort”: 形参和实参 1 的类型不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(134,28): warning C4047: “函数”:“char *”与“char *[20]”的间接级别不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(134,23): warning C4024: “_OutMergeSort”: 形参和实参 2 的类型不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(134,33): warning C4047: “函数”:“char *”与“char *[20]”的间接级别不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(134,30): warning C4024: “_OutMergeSort”: 形参和实参 3 的类型不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(143,16): warning C4047: “函数”:“char *const ”与“char *[20]”的间接级别不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(143,11): warning C4024: “sprintf”: 形参和实参 1 的类型不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(143,21): warning C4047: “函数”:“const char *const ”与“char *[20]”的间接级别不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(143,18): warning C4024: “sprintf”: 形参和实参 2 的类型不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(144,16): warning C4047: “函数”:“char *const ”与“char *[20]”的间接级别不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(144,11): warning C4024: “sprintf”: 形参和实参 1 的类型不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(145,14): warning C4047: “函数”:“char *const ”与“char *[20]”的间接级别不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(145,11): warning C4024: “sprintf”: 形参和实参 1 的类型不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(146,22): warning C4047: “函数”:“char *”与“char *[20]”的间接级别不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(146,17): warning C4024: “_OutMergeSort”: 形参和实参 1 的类型不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(146,29): warning C4047: “函数”:“char *”与“char *[20]”的间接级别不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(146,24): warning C4024: “_OutMergeSort”: 形参和实参 2 的类型不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(146,34): warning C4047: “函数”:“char *”与“char *[20]”的间接级别不同
+D:\develop\code\git-repository\week_8\Sort_Practice\OutMergeSort.c(146,31): warning C4024: “_OutMergeSort”: 形参和实参 3 的类型不同
   Sort_Practice.vcxproj -> D:\develop\code\git-repository\week_8\Sort_Practice\x64\Debug\Sort_Practice.exe
