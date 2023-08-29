@@ -38,6 +38,21 @@ public:
 		_minute = 0;
 		_second = 0;
 	}
+
+	//赋值运算符=
+	Time& operator=(const Time& t)
+	{
+		if (this != &t)
+		{
+			_hour = t._hour;
+			_minute = t._minute;
+			_second = t._second;
+		}
+		//std::cout << "Time& operator=(Time& t)" << std::endl;
+
+		return *this;
+	}
+
 private:
 	//声明,缺省值(默认值)
 	//int _hour = 0;
@@ -59,6 +74,10 @@ public:
 		_month = month;
 		_day = day;
 	}
+
+	//Date()//不行,编译失败,与全缺省冲突 ==>都算是默认构造函数
+	//{
+	//}
 
 	//构造函数,对象实例化时自动调用,初始化成员
 	//可以构成重载
@@ -83,6 +102,7 @@ public:
 	//是构造函数的重载
 	//不能传值,只能传引用,不然会发生无穷递归
 	//Date(Date d)	//error
+	// 不用返回类型,对象创建时this指针解决
 	//日期类不用,未定义时编译器自动生成的就够用 ==> 浅拷贝
 	//自己实现 ==> 深拷贝 避免:1.指针指向同一地址 2.重复free
 	Date(const Date& d)
@@ -97,12 +117,130 @@ public:
 	void print()
 	{
 		std::cout << _year << "-" << _month << "-" << _day << std::endl;
+
 	}
 
+	//==运算符重载 ==>成员函数
+	//类作用域;这样类成员变量私有,也可以访问
+	//bool operator == (Date* const this, const Date& d)
+	bool operator == (const Date& d);
+
+	//赋值= 运算符重载
+	//赋值运算符如果不显式实现，编译器会生成一个默认的 ==>浅拷贝
+	Date& operator=(Date& d);
+
+	//运算符重载	前置++
+	//Date& const this指针
+	//不销毁,传递引用返回,提高效率
+	Date& operator++();
+
+	//运算符重载	后置++	用(int)区分前后++
+	//Date& const this指针
+	//tmp,栈上局部变量,函数结束销毁,所以传值返回
+	Date operator++(int);
+
+	//成员函数定义和声明分离
+	//
+	// 日期+=天数
+	Date& operator+=(int day);
+	// 日期+天数
+	Date operator+(int day);
+	// 日期-天数
+	Date operator-(int day);
+	// 日期-=天数
+	Date& operator-=(int day);
+
+	// 后置--
+	Date operator--(int);
+	// 前置--
+	Date& operator--();
+
+	// >运算符重载
+	bool operator>(const Date& d);
+
+	// >=运算符重载
+	bool operator >= (const Date& d);
+
+	// <运算符重载
+	bool operator < (const Date& d);
+	// <=运算符重载
+	bool operator <= (const Date& d);
+	// !=运算符重载
+	bool operator != (const Date& d);
+	// 日期-日期 返回天数
+	int operator-(const Date& d);
+
+
+//protected:
+	//获取某年某月的天数
+	int GetMonthDay(int year, int month)
+	{
+		//每月天数,常用,static
+		static int mday[] = { 0,31,28,31,30,31,30,31,31,30,31,30,31 };
+		//判断时候是闰年2月:闰年%4,!%100,%400
+		if (month == 2
+			&& (year % 4 == 0) && (year % 100 != 0) && (year % 400 == 0))
+		{
+			return 29;
+		}
+		else
+		{
+			return mday[month];
+		}
+	}
+
+	//判断天数是否合法,是否需要进位:如需要,则进位
+	//注意区分this-> 和 d.
+	void CheckValidDay(Date& d)
+	{
+		int day = GetMonthDay(d._year, d._month);
+		//合法
+		if (d._day <= day && d._day > 0)	//日期天数没有0
+		{
+			return;
+		}
+		else
+		{
+			//调整,直到日期合法
+			while (d._day > day)//想的是继续条件,写的是结束条件
+			{
+				//天
+				d._day -= day;
+				d._month++;
+				//月
+				if (d._month > 12)
+				{
+					d._month -= 12;
+					d._year++;
+				}
+				day = GetMonthDay(d._year, d._month);
+			}
+
+			while (d._day <= 0)
+			{
+				//月
+				d._month--;
+				if (d._month <= 0)	//没有0月,这里之所以少"="能编译成功,
+				{					//是因为每月天数的数组中0月对应0天,所以对天数没影响
+					d._year--;
+					d._month = 12;
+				}
+				//日
+				day = GetMonthDay(d._year, d._month);
+				d._day += day;	// (-15) + 30 = 15
+			}
+		}
+	}
+
+	//获取当前时间相对0/0/0公元0年的天数
+	int GetSumDay(const Date& d);
+
 private:
+	//内置类型
 	int _year;
 	int _month;
 	int _day;
+	//自定义类型
 	Time _t;	//自定义类型作为类成员时:编译器生成的默认构造函数调用它的默认构造函数
 };
 
@@ -131,10 +269,28 @@ public:
 		_top = 0;
 	}
 
+	//拷贝构造函数	==> 深拷贝
+	Stack(const Stack& s)
+	{
+		StData* tmp = (StData*)realloc(this->_a, sizeof(StData) * s._capacity);//realloc会销毁原空间
+		if (nullptr == tmp)
+		{
+			perror("Stack(const Stack& s):malloc error");
+			exit(-1);
+		}
+		else
+		{
+			_a = tmp;
+			memcpy(_a, s._a, sizeof(StData) * s._top);
+			_capacity = s._capacity;
+			_top = s._top;
+		}
+	}
+
 	//析构函数销毁栈
 	~Stack()
 	{
-		std::cout << "~Stack" << std::endl;
+		std::cout << "~Stack:" << this << std::endl;
 		assert(_a);
 		free(_a);
 		//下面随对象销毁而销毁,可以不用清理
@@ -143,7 +299,7 @@ public:
 	}
 
 	//入栈
-	void Push(StData x)
+	void Push(const StData& x)	//优化:StData x ==> const StData& x
 	{
 		//虽然我觉的似乎不用assert也行,实例化对象就会创建_a,除非没有实例化
 		assert(_a);
@@ -179,6 +335,26 @@ public:
 		assert(_a);
 		assert(_top > 0);
 		return _a[_top - 1];
+	}
+
+	//有资源管理(申请资源malloc),需要自定义赋值运算符重载
+	Stack& operator=(const Stack& s)
+	{
+		StData* tmp = (StData*)realloc(_a, sizeof(StData) * s._capacity);//realloc会销毁原空间
+		if (nullptr == tmp)
+		{
+			perror("Stack& operator=(const Stack& s):malloc error");
+			exit(-1);
+		}
+		else
+		{
+			//std::cout << "_a:" << _a << std::endl;
+			//free(_a);//realloc会销毁原空间
+			_a = tmp;
+			memcpy(_a, s._a, sizeof(StData) * s._top);
+			_capacity = s._capacity;
+			_top = s._top;
+		}
 	}
 
 protected:
@@ -221,3 +397,7 @@ private:
 	Stack s1;
 	Stack s2;
 };
+
+
+//全局
+//bool operator == (const Date& d1, const Date& d2);

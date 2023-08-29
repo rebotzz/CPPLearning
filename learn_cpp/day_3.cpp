@@ -2,10 +2,10 @@
 #include<iostream>
 using namespace std;
 
-extern "C"
-{
-#include"D:/develop/code/git-repository/week_7/Heap/Heap.h"
-}
+//extern "C"
+//{
+//#include"D:/develop/code/git-repository/week_7/Heap/Heap.h"
+//}
 
 
 //int main()
@@ -29,72 +29,72 @@ extern "C"
 //	return 0;
 //}
 
-
-//内联函数 展开
-inline void func()
-{
-	cout << 1 << endl;
-
-}
-
-//struct升级为类,默认public
-struct n1
-{
-	int add(int x = 0, int y = 1)
-	{
-		return x + y;
-	}
-
-	double add(double x, double y = 3.1)
-	{
-		return x + y;
-	}
-
-	void func1()
-	{
-		cout << "a b da db " << endl << a << " " << b << " " << da << " " << db << " " << endl;
-	}
-
-private:
-	int a = 1;
-	int b = 2;
-	double da = 2.5;
-	double db = 3.7;
-
-};
-
-//类,默认private
-class n2
-{
-protected:
-	struct stack
-	{
-		int* _a;
-		int _size;
-		int _capacity;
-	};
-
-
-
-public:
-	void stackInit(stack& s)
-	{
-		s._a = nullptr;
-		s._capacity = s._size = 0;
-	}
-
-	void stackPush(stack& s, int x)
-	{
-		//...
-	}
-
-	void stackPop(stack& s)
-	{
-		//...
-	}
-
-	stack n;
-};
+//
+////内联函数 展开
+//inline void func()
+//{
+//	cout << 1 << endl;
+//
+//}
+//
+////struct升级为类,默认public
+//struct n1
+//{
+//	int add(int x = 0, int y = 1)
+//	{
+//		return x + y;
+//	}
+//
+//	double add(double x, double y = 3.1)
+//	{
+//		return x + y;
+//	}
+//
+//	void func1()
+//	{
+//		cout << "a b da db " << endl << a << " " << b << " " << da << " " << db << " " << endl;
+//	}
+//
+//private:
+//	int a = 1;
+//	int b = 2;
+//	double da = 2.5;
+//	double db = 3.7;
+//
+//};
+//
+////类,默认private
+//class n2
+//{
+//protected:
+//	struct stack
+//	{
+//		int* _a;
+//		int _size;
+//		int _capacity;
+//	};
+//
+//
+//
+//public:
+//	void stackInit(stack& s)
+//	{
+//		s._a = nullptr;
+//		s._capacity = s._size = 0;
+//	}
+//
+//	void stackPush(stack& s, int x)
+//	{
+//		//...
+//	}
+//
+//	void stackPop(stack& s)
+//	{
+//		//...
+//	}
+//
+//	stack n;
+//};
 
 //int main()
 //{

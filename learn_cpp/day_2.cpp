@@ -6,13 +6,13 @@ using namespace std;
 //auto 自动识别类型,范围for
 //struct class public private protected 类/封装 成员函数,成员变量
 
-#define ADD(x,y) ((x)+(y))
-
-
-inline int add(int x, int y)
-{
-	return x + y;
-}
+//#define ADD(x,y) ((x)+(y))
+//
+//
+//inline int add(int x, int y)
+//{
+//	return x + y;
+//}
 
 
 
