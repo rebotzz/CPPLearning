@@ -1,16 +1,17 @@
 #pragma once
 #include <iostream>
 #include <assert.h>
+using namespace std;
 
 extern int size;	//声明
 static int a = 2;	//定义,仅当前文件可见,不会放入符号表,不同文件下调用地址不同,各自有一个
 
 
-//缺省参数在声明处缺省
-void func(int a, int b = 3);
-
-
-void test1();
+////缺省参数在声明处缺省
+//void func(int a, int b = 3);
+//
+//
+//void test1();
 
 //作用域:局部优先,如果局部没有,再到全局寻找
 //类的作用域,声明和定义分离
@@ -83,6 +84,7 @@ public:
 	//可以构成重载
 	//默认构造函数:1.不定义,编译器自动生成;2.自定义无参构造函数;3.自定义全缺省构造函数;
 	//自定义全缺省构造函数 -> 更加方便
+	//频繁调用,放在类里定义:inline内联
 	Date(int year = 0, int month = 0, int day = 0)
 	{
 		this->_year = year;
@@ -107,6 +109,7 @@ public:
 	//自己实现 ==> 深拷贝 避免:1.指针指向同一地址 2.重复free
 	Date(const Date& d)
 	{
+		cout << "Date(const Date& d)" << endl;
 		this->_year = d._year;
 		_month = d._month;
 		_day = d._day;
@@ -120,6 +123,10 @@ public:
 
 	}
 
+	
+
+	//成员函数定义和声明分离
+	// 
 	//==运算符重载 ==>成员函数
 	//类作用域;这样类成员变量私有,也可以访问
 	//bool operator == (Date* const this, const Date& d)
@@ -127,7 +134,7 @@ public:
 
 	//赋值= 运算符重载
 	//赋值运算符如果不显式实现，编译器会生成一个默认的 ==>浅拷贝
-	Date& operator=(Date& d);
+	Date& operator=(const Date& d);
 
 	//运算符重载	前置++
 	//Date& const this指针
@@ -139,8 +146,6 @@ public:
 	//tmp,栈上局部变量,函数结束销毁,所以传值返回
 	Date operator++(int);
 
-	//成员函数定义和声明分离
-	//
 	// 日期+=天数
 	Date& operator+=(int day);
 	// 日期+天数
@@ -171,66 +176,30 @@ public:
 	int operator-(const Date& d);
 
 
-//protected:
+protected:
 	//获取某年某月的天数
+	//频繁调用,inline
 	int GetMonthDay(int year, int month)
 	{
 		//每月天数,常用,static
 		static int mday[] = { 0,31,28,31,30,31,30,31,31,30,31,30,31 };
-		//判断时候是闰年2月:闰年%4,!%100,%400
+		//判断时候是闰年2月:闰年%4,!%100,或 %400
 		if (month == 2
-			&& (year % 4 == 0) && (year % 100 != 0) && (year % 400 == 0))
+			&& ((year % 4 == 0) && (year % 100 != 0) || (year % 400 == 0)))	//注意条件
 		{
+			//std::cout << "闰年二月:" << std::endl;
 			return 29;
 		}
 		else
 		{
+
 			return mday[month];
 		}
 	}
 
 	//判断天数是否合法,是否需要进位:如需要,则进位
 	//注意区分this-> 和 d.
-	void CheckValidDay(Date& d)
-	{
-		int day = GetMonthDay(d._year, d._month);
-		//合法
-		if (d._day <= day && d._day > 0)	//日期天数没有0
-		{
-			return;
-		}
-		else
-		{
-			//调整,直到日期合法
-			while (d._day > day)//想的是继续条件,写的是结束条件
-			{
-				//天
-				d._day -= day;
-				d._month++;
-				//月
-				if (d._month > 12)
-				{
-					d._month -= 12;
-					d._year++;
-				}
-				day = GetMonthDay(d._year, d._month);
-			}
-
-			while (d._day <= 0)
-			{
-				//月
-				d._month--;
-				if (d._month <= 0)	//没有0月,这里之所以少"="能编译成功,
-				{					//是因为每月天数的数组中0月对应0天,所以对天数没影响
-					d._year--;
-					d._month = 12;
-				}
-				//日
-				day = GetMonthDay(d._year, d._month);
-				d._day += day;	// (-15) + 30 = 15
-			}
-		}
-	}
+	void CheckValidDay(Date& d);
 
 	//获取当前时间相对0/0/0公元0年的天数
 	int GetSumDay(const Date& d);
