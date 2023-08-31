@@ -128,7 +128,7 @@ public:
 	//成员函数定义和声明分离
 	// 
 	//==运算符重载 ==>成员函数
-	//类作用域;这样类成员变量私有,也可以访问
+	//类作用域:这里类成员变量私有也可以访问
 	//bool operator == (Date* const this, const Date& d)
 	bool operator == (const Date& d);
 
