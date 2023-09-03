@@ -15,3 +15,5 @@ C++:
 Linux:
 1.shell外壳程序,权限:chmod,chown,chgrp,文件类型,umask,粘滞位 +t
 2.vim使用
+3.gcc g++ 动态/静态库 .so/.a .dll/.lib -static
+4.make Makefile 依赖关系/方法
