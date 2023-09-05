@@ -9,11 +9,18 @@ class Date
 public:
 
 	//构造函数,对象实例化时自动调用,初始化成员
-	Date(int year = 0, int month = 0, int day = 0)
+	Date(int year = 1, int month = 1, int day = 1)
 	{
 		this->_year = year;
 		this->_month = month;
 		this->_day = day;
+
+		//检查日期合法性
+		if (!CheckDate())
+		{
+			cout << "所构造日期非法" << endl;
+		}
+		assert(CheckDate());
 	}
 
 	//拷贝构造函数		默认浅拷贝够用
@@ -98,6 +105,21 @@ protected:
 		{
 
 			return mday[month];
+		}
+	}
+
+	//检查日期合法性
+	bool CheckDate()
+	{
+		if(_year > 0 
+			&& (_month > 0 && _month < 13)
+			&& (_day > 0 && _day <= GetMonthDay(_year, _month)))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
 
