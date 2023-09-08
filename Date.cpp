@@ -2,7 +2,7 @@
 #include "Date.h"
 
 //日期==日期		
-bool Date::operator == (const Date& d)
+bool Date::operator == (const Date& d) const
 {
 	return _year == d._year
 		&& _month == d._month
@@ -80,14 +80,14 @@ Date& Date::operator+=(int day)		//d.operator+=(day);
 	return *this;
 }
 // 日期+天数
-Date Date::operator+(int day)
+Date Date::operator+(int day) const
 {
 	Date tmp(*this);
 	tmp += day;		//复用 +=
 	return tmp;
 }
 // 日期-天数
-Date Date::operator-(int day)
+Date Date::operator-(int day) const
 {
 	Date tmp(*this);
 	tmp -= day;		//复用 -=
@@ -137,7 +137,7 @@ Date& Date::operator--()
 }
 
 // 日期>日期
-bool Date::operator>(const Date& d)
+bool Date::operator>(const Date& d) const
 {
 	if (_year > d._year)	//年大
 	{
@@ -158,23 +158,23 @@ bool Date::operator>(const Date& d)
 }
 
 // 日期>=日期
-bool Date::operator >= (const Date& d)
+bool Date::operator >= (const Date& d) const
 {
 	return (*this == d) || (*this > d);	//复用 == >
 }
 
 // 日期<日期
-bool Date::operator < (const Date& d)
+bool Date::operator < (const Date& d)const
 {
 	return !(*this >= d);	//复用 >=
 }
 // 日期<=日期
-bool Date::operator <= (const Date& d)
+bool Date::operator <= (const Date& d)const
 {
 	return !(*this > d);	//复用 >
 }
 // 日期!=日期
-bool Date::operator != (const Date& d)
+bool Date::operator != (const Date& d)const
 {
 	return !(*this == d);	//复用 ==
 }
@@ -249,7 +249,7 @@ bool Date::operator != (const Date& d)
 //}
 
 // 日期-日期 返回天数	代码优化2.0
-int Date::operator-(const Date& d)
+int Date::operator-(const Date& d)const
 {
 	Date max = *this;	//大日期
 	Date min = d;		//小日期
@@ -267,5 +267,7 @@ int Date::operator-(const Date& d)
 		min += 1;
 		day += 1;
 	}
-	return day;
+	return symbol*day;
 }
+
+
