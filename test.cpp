@@ -138,14 +138,14 @@ void test5()
 
 int main()
 {
-	//test5();
+	test5();
 
-	Date d(2023, 9, 7);
-	Date d0(1, 1, 1);
-	d.operator<<(cout) << endl;
-	cout << (d - d0) << endl;
-	d += 1;
-	cout << (d - d0) << endl;
+	//Date d(2023, 9, 7);
+	//Date d0(1, 1, 1);
+	//d.operator<<(cout) << endl;
+	//cout << (d - d0) << endl;
+	//d += 1;
+	//cout << (d - d0) << endl;
 
 
 	return 0;

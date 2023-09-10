@@ -104,14 +104,14 @@ public:
 	// 日期-日期 返回天数
 	int operator-(const Date& d)const;
 
-	////operator<<(Date* const this, ostream& out)
-	////d.operator<<(cout);
-	// 这种写法很奇怪,所以不采用,使用全局函数 + 友元函数
-	//ostream& operator<<(ostream& out)
-	//{
-	//	out << _year << "-" << _month << "-" << _day;
-	//	return out;
-	//}
+	//operator<<(Date* const this, ostream& out)
+	//d.operator<<(cout);
+	//这种写法很奇怪,所以不采用,使用全局函数 + 友元函数
+	ostream& operator<<(ostream& out)
+	{
+		out << _year << "-" << _month << "-" << _day;
+		return out;
+	}
 
 
 protected:

@@ -128,7 +128,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="List.cpp" />
+    <ClCompile Include="practice_3.cpp" />
     <ClCompile Include="practice_2.cpp" />
+    <ClCompile Include="practice_4.cpp" />
+    <ClCompile Include="practice_5.cpp" />
+    <ClCompile Include="Test.cpp" />
     <ClCompile Include="test_1.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
