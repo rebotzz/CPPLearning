@@ -46,7 +46,7 @@ public:
 		{
 			ListNode* next = cur->_next;
 			free(cur);
-			cur = cur->_next;
+			cur = next;		//Ö¸Ïònext
 		}
 		free(_phead);
 	}

@@ -20,14 +20,14 @@ static AA bb;
 //}
 
 
-int main()
-{
-	int a;
-	int b;
-	int c;
-	printf("a:%p\n", &a);
-	printf("b:%p\n", &b);
-	printf("c:%p\n", &c);
-
-	return 0;
-}
+//int main()
+//{
+//	int a;
+//	int b;
+//	int c;
+//	printf("a:%p\n", &a);
+//	printf("b:%p\n", &b);
+//	printf("c:%p\n", &c);
+//
+//	return 0;
+//}
