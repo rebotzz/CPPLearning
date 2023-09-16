@@ -264,66 +264,67 @@ public:
     ListNode* _phead;
     int _size;
 };
-int main() {
-    int n, m;
-    ListNode* plist = new ListNode[1000000 + 1];
-    List s(plist);
 
-    while (cin >> n >> m) { // 注意 while 处理多个 case
-        //初始化
-        //优化,一次开辟大空间,内存池
-        s._size = 0;
-        for (int i = 0; i < n; i++) {
-            s.PushBack(i + 1);
-        }
-        //s.Print();
-
-
-        //循环判断
-        ListNode* cur = s._phead->_next;
-        int count = 1;
-        while (1) {
-            //找到第m个序号的人
-            while (count < m) {
-                cur = cur->_next;
-                count++;
-
-                //跳过头节点
-                if (cur == s._phead) {
-                    if (!s.Empty()) {
-                        cur = cur->_next;
-                    }
-                    else {
-                        break;
-                    }
-                }
-            }
-
-            //杀掉序号第m个
-            if (s.Size() > 1 && cur != s._phead) {
-                //s.Print();
-                ListNode* next = cur->_next;
-                s.PopInsert(cur);
-                cur = next;
-                //跳过头节点
-                if (cur == s._phead && !s.Empty()) {
-                    cur = cur->_next;
-                }
-            }
-            count = 1;
-
-            //判断是否只剩一个人
-            if (s.Size() == 1) {
-                break;
-            }
-        }
-
-        //输出结果
-        s.Print();
-        //cout << s._phead->_next->_val;
-
-    }
-
-    delete[] s._phead;
-}
-//优化,内存池
+//int main() {
+//    int n, m;
+//    ListNode* plist = new ListNode[1000000 + 1];
+//    List s(plist);
+//
+//    while (cin >> n >> m) { // 注意 while 处理多个 case
+//        //初始化
+//        //优化,一次开辟大空间,内存池
+//        s._size = 0;
+//        for (int i = 0; i < n; i++) {
+//            s.PushBack(i + 1);
+//        }
+//        //s.Print();
+//
+//
+//        //循环判断
+//        ListNode* cur = s._phead->_next;
+//        int count = 1;
+//        while (1) {
+//            //找到第m个序号的人
+//            while (count < m) {
+//                cur = cur->_next;
+//                count++;
+//
+//                //跳过头节点
+//                if (cur == s._phead) {
+//                    if (!s.Empty()) {
+//                        cur = cur->_next;
+//                    }
+//                    else {
+//                        break;
+//                    }
+//                }
+//            }
+//
+//            //杀掉序号第m个
+//            if (s.Size() > 1 && cur != s._phead) {
+//                //s.Print();
+//                ListNode* next = cur->_next;
+//                s.PopInsert(cur);
+//                cur = next;
+//                //跳过头节点
+//                if (cur == s._phead && !s.Empty()) {
+//                    cur = cur->_next;
+//                }
+//            }
+//            count = 1;
+//
+//            //判断是否只剩一个人
+//            if (s.Size() == 1) {
+//                break;
+//            }
+//        }
+//
+//        //输出结果
+//        s.Print();
+//        //cout << s._phead->_next->_val;
+//
+//    }
+//
+//    delete[] s._phead;
+//}
+////优化,内存池
