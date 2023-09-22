@@ -354,7 +354,7 @@ namespace kozen
 			}
 		}
 
-		//1.0
+		////1.0
 		//void resize(size_t n, char ch = '\0')
 		//{
 		//	if (n >= _size)
@@ -402,6 +402,13 @@ namespace kozen
 			}
 		}
 
+		void swap(string& s)
+		{
+			std::swap(_str, s._str);
+			std::swap(_size, s._size);
+			std::swap(_capacity, s._capacity);
+		}
+
 		size_t size() const
 		{
 			return _size;
@@ -446,22 +453,22 @@ namespace kozen
 		return out;
 	}
 
-	////1.0
-	//istream& operator>>(istream& in, string& s)
-	//{
-	//	//清空之前的
-	//	s.clear();
-	//	char ch = in.get();
-	//	//in >> ch;
-	//	while (ch != ' ' && ch != '\n')
-	//	{
-	//		s += ch;
-	//		//in >> ch;		//' '和'\n'会存入缓冲区,但是它作为>>流提取的分割符,不能被流提取
-	//		ch = in.get();	//.get()可以从缓冲区读取' '和'\n'
+	//1.0
+	istream& operator>>(istream& in, string& s)
+	{
+		//清空之前的
+		s.clear();
+		char ch = in.get();
+		//in >> ch;
+		while (ch != ' ' && ch != '\n')
+		{
+			s += ch;
+			//in >> ch;		//' '和'\n'会存入缓冲区,但是它作为>>流提取的分割符,不能被流提取
+			ch = in.get();	//.get()可以从缓冲区读取' '和'\n'
 
-	//	}
-	//	return in;
-	//}
+		}
+		return in;
+	}
 
 	//2.0	空间换时间
 	istream& operator>>(istream& in, string& s)
@@ -686,6 +693,20 @@ namespace kozen
 		cout << s1.find("el",14) << endl;
 
 	}
+
+	void string_test8()
+	{
+		string s1 = "12345`";
+		string s2 = "hello world";
+		cout << s1 << endl;
+		cout << s2 << endl;
+		s1.swap(s2);
+		cout << s1 << endl;
+		cout << s2 << endl;
+		
+
+	}
+
 }
 
 

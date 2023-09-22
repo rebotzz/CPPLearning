@@ -1,35 +1,35 @@
-#include <iostream>
-
-using namespace std;
-
-//Ä£°åÁ·Ï°
-
-inline void Swap(int& x, int& y)
-{
-	int tmp = x;
-	x = y;
-	y = tmp;
-}
-
-template<typename T>
-inline void Swap(T& x, T& y)
-{
-	T tmp = x;
-	x = y;
-	y = tmp;
-}
-
-template<class T>
-inline T Add(const T& x, const T& y)
-{
-	return x + y;
-}
-
-template<class T,class K>
-inline T Add(const T& x, const K& y)
-{
-	return x + y;
-}
+//#include <iostream>
+//
+//using namespace std;
+//
+////Ä£°åÁ·Ï°
+//
+//inline void Swap(int& x, int& y)
+//{
+//	int tmp = x;
+//	x = y;
+//	y = tmp;
+//}
+//
+//template<typename T>
+//inline void Swap(T& x, T& y)
+//{
+//	T tmp = x;
+//	x = y;
+//	y = tmp;
+//}
+//
+//template<class T>
+//inline T Add(const T& x, const T& y)
+//{
+//	return x + y;
+//}
+//
+//template<class T,class K>
+//inline T Add(const T& x, const K& y)
+//{
+//	return x + y;
+//}
 
 
 //int main()

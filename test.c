@@ -3,11 +3,11 @@
 #include <string.h>
 
 
-//int main()
-//{
-//	char s[50];
-//	gets(s);
-//	printf("%s\n", s);
-//
-//	return 0;
-//}
+int main()
+{
+	char s[50];
+	gets(s);
+	printf("%s\n", s);
+
+	return 0;
+}

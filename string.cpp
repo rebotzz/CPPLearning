@@ -1,8 +1,8 @@
-#define _CRT_SECURE_NO_WARNINGS
-// string::begin/end
-#include <iostream>
-//#include <string>
-using namespace std;
+//#define _CRT_SECURE_NO_WARNINGS
+//// string::begin/end
+//#include <iostream>
+////#include <string>
+//using namespace std;
 
 //int main()
 //{

@@ -5,7 +5,7 @@ int main()
 {
 	try
 	{
-		kozen::string_test7();
+		kozen::string_test8();
 	}
 	catch (const std::exception& e)
 	{
