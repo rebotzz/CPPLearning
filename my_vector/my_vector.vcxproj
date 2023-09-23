@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="file_png.c" />
     <ClCompile Include="practice.cpp" />
     <ClCompile Include="test.cpp" />
   </ItemGroup>
