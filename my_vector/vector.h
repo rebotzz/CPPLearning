@@ -14,6 +14,9 @@ namespace kozen
 		//这里的迭代器是原生指针,不用重载++,--,*; 原生指针 ==> 天然迭代器
 		typedef T* iterator;
 		typedef const T* const_iterator;
+		//typedef const iterator const_iterator;	不能这样
+		//const iterator ==> iterator不能修改,即T* const
+
 
 		//构造
 		vector()
@@ -195,6 +198,16 @@ namespace kozen
 		}
 
 		iterator end()
+		{
+			return _finish;
+		}
+
+		const_iterator begin() const
+		{
+			return _start;
+		}
+
+		const_iterator end() const
 		{
 			return _finish;
 		}
