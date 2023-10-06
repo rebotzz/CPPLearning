@@ -5,6 +5,10 @@
 #include <algorithm>
 using namespace std;
 
+//头文件在展开的地方编译,在.h不编译;
+//eg:"vector.h",所以在自定义头文件展开前,需要using namespace std(如果使用了std);包含别的头文件
+//
+
 namespace kozen
 {
 	template<class T>
@@ -39,6 +43,16 @@ namespace kozen
 			}
 		}
 
+		//避免定位到vector(InputIterator first, InputIterator last)构造
+		vector(int n, const T& val = T())
+		{
+			reserve(n);
+			for (size_t i = 0; i < n; ++i)
+			{
+				_start[i] = val;
+			}
+		}
+
 		template<class InputIterator>
 		vector(InputIterator first, InputIterator last)		//[first,last)
 		{
@@ -47,39 +61,54 @@ namespace kozen
 			InputIterator it = first;
 			while (it != last)
 			{
-				*_finish = *it;
-				++_finish;
-				++it;
+				*_finish++ = *it++;
+				//++_finish;
+				//++it;
 			}
 		}
 
 		//拷贝构造
+		//vector(const vector<T>& v)
+		//{
+		//	//reserve(v.capacity());
+		//	_start = new T[v.capacity()];
+		//	for (size_t i = 0; i < v.size(); ++i)
+		//	{
+		//		_start[i] = v._start[i];
+		//	}
+		//	_finish = _start + v.size();
+		//	_end_of_storage = _start + v.capacity();
+		//	cout << "vector(const vector<T>& v)" << endl;
+		//}
+
+		//拷贝构造 2.0
 		vector(const vector<T>& v)
 		{
-			//reserve(v.capacity());
-			_start = new T[v.capacity()];
-			for (size_t i = 0; i < v.size(); ++i)
-			{
-				_start[i] = v._start[i];
-			}
-			_finish = _start + v.size();
-			_end_of_storage = _start + v.capacity();
-			cout << "vector(const vector<T>& v)" << endl;
+			vector<T> tmp(v.begin(), v.end());
+
+			swap(tmp);
 		}
 
-		//赋值重载
-		vector<T>& operator=(const vector<T>& v)
+		////赋值重载
+		//vector<T>& operator=(const vector<T>& v)
+		//{
+		//	if (this != &v)
+		//	{
+		//		delete[] _start;
+		//		reserve(v.capacity());
+		//		for (size_t i = 0; i < v.size(); ++i)
+		//		{
+		//			_start[i] = v[i];
+		//		}
+		//		_finish = _start + v.size();
+		//	}
+		//}
+
+		//赋值重载 2.0
+		vector<T>& operator=(vector<T> v)
 		{
-			if (this != &v)
-			{
-				delete[] _start;
-				reserve(v.capacity());
-				for (size_t i = 0; i < v.size(); ++i)
-				{
-					_start[i] = v[i];
-				}
-				_finish = _start + v.size();
-			}
+			swap(v);
+			return *this;
 		}
 
 		//析构
@@ -298,6 +327,24 @@ namespace kozen
 		vector<int> v2(v1);
 		cout << "v2: " << endl;
 		for (auto e : v2)
+		{
+			cout << e << " ";
+		}
+		cout << endl;
+
+		vector<int> v3;
+		v3.push_back(3);
+		v3 = v2;
+
+		cout << "v2: " << endl;
+		for (auto e : v2)
+		{
+			cout << e << " ";
+		}
+		cout << endl;
+
+		cout << "v3: " << endl;
+		for (auto e : v3)
 		{
 			cout << e << " ";
 		}
