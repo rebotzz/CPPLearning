@@ -11,6 +11,73 @@ using namespace std;
 
 namespace kozen
 {
+	//反向迭代器	对正向迭代器进行分装 => 迭代器适配器
+	template<class Iterator, class Ref, class Ptr>
+	struct reverse_iterator
+	{
+		typedef reverse_iterator<Iterator, Ref, Ptr> Self;
+
+		//成员
+		Iterator _cur;
+
+		//成员函数
+		reverse_iterator(const Iterator& it)
+			:_cur(it)
+		{}
+
+		Self operator++()
+		{
+			--_cur;
+			return reverse_iterator(_cur);	//用_cur正向迭代器构造反向迭代器的匿名对象
+		}
+
+		Self operator++(int)
+		{
+			Iterator tmp = _cur;
+			--_cur;
+			return reverse_iterator(tmp);
+		}
+
+		Self operator--()
+		{
+			++_cur;
+			return reverse_iterator(_cur);
+		}
+
+		Self operator--(int)
+		{
+			Iterator tmp = _cur;
+			++_cur;
+			return reverse_iterator(tmp);
+		}
+
+		Ref operator*() const
+		{
+			Iterator tmp = _cur;
+			--tmp;
+			return *tmp;
+		}
+
+		Ptr operator->() const
+		{
+			Iterator tmp = _cur;
+			--tmp;
+			return &(*tmp);
+		}
+
+		bool operator!=(const Self& it) //const
+		{
+			return _cur != it._cur;
+		}
+
+		bool operator==(const Self& it) //const
+		{
+			return _cur == it._cur;
+		}
+
+	};
+
+
 	template<class T>
 	class vector
 	{
@@ -21,6 +88,8 @@ namespace kozen
 		//typedef const iterator const_iterator;	不能这样
 		//const iterator ==> iterator不能修改,即T* const
 
+		//反向迭代器
+		typedef reverse_iterator<iterator, T&, T*> reverse_iterator;
 
 		//构造
 		vector()
@@ -119,6 +188,45 @@ namespace kozen
 			cout << "~vector()" << endl;
 		}
 
+		iterator begin()
+		{
+			return _start;
+		}
+
+		iterator end()
+		{
+			return _finish;
+		}
+
+		reverse_iterator rbegin()
+		{
+			return reverse_iterator(end());
+		}
+
+		reverse_iterator rend()
+		{
+			return reverse_iterator(begin());
+		}
+
+		const_iterator begin() const
+		{
+			return _start;
+		}
+
+		const_iterator end() const
+		{
+			return _finish;
+		}
+
+		const_iterator cbegin() const
+		{
+			return _start;
+		}
+
+		const_iterator cend() const
+		{
+			return _finish;
+		}
 
 		//change capacity
 		void reserve(size_t n)
@@ -219,36 +327,6 @@ namespace kozen
 		{
 			assert(pos < size());
 			return *(_start + pos);
-		}
-
-		iterator begin()
-		{
-			return _start;
-		}
-
-		iterator end()
-		{
-			return _finish;
-		}
-
-		const_iterator begin() const
-		{
-			return _start;
-		}
-
-		const_iterator end() const
-		{
-			return _finish;
-		}
-
-		const_iterator cbegin() const
-		{
-			return _start;
-		}
-
-		const_iterator cend() const
-		{
-			return _finish;
 		}
 
 		void clear()
@@ -666,6 +744,14 @@ namespace kozen
 		for (auto e : v1)
 		{
 			cout << e << ' ';
+		}
+		cout << endl;
+
+		vector<int>::reverse_iterator rit = v1.rbegin();
+		while (rit != v1.rend())
+		{
+			cout << *rit << " ";
+			++rit;
 		}
 		cout << endl;
 

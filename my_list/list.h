@@ -66,17 +66,14 @@ namespace kozen
 			return tmp;
 		}
 
+		
+		//Ref operator*() const	//const相当于const __list_iterator* this;
+		//即const _pn => node* const _pn;但是_pn->_data可改动;感觉没啥作用;迭代器本身就可以改动,并不是const的
 		//T&  const T&
-		Ref operator*() const
+		Ref operator*() 
 		{
 			return _pn->_data;
 		}
-
-		//node*  const node*
-		//Ptr operator->()
-		//{
-		//	return _pn;
-		//}
 
 		//迭代器模仿存储变量的指针行为,
 		//当变量是对象时,使用->访问成员
@@ -98,6 +95,136 @@ namespace kozen
 
 	};
 
+	//反向迭代器1.0		缺点,可复用性低
+	//template<class T, class Ref, class Ptr>
+	//struct __list_reverse_iterator
+	//{
+	//	typedef __list_node<T> node;
+	//	typedef __list_reverse_iterator<T, Ref, Ptr> reverse_iterator;
+	//	node* _pn;
+
+	//	__list_reverse_iterator(node* p)
+	//		:_pn(p)
+	//	{}
+
+	//	reverse_iterator operator++()
+	//	{
+	//		_pn = _pn->_prev;
+	//		return *this;
+	//	}
+
+	//	reverse_iterator operator++(int)
+	//	{
+	//		iterator tmp(*this);
+	//		_pn = _pn->_prev;
+	//		return tmp;
+	//	}
+
+	//	reverse_iterator operator--()
+	//	{
+	//		_pn = _pn->_next;
+	//		return *this;
+	//	}
+
+	//	reverse_iterator operator--(int)
+	//	{
+	//		iterator tmp(*this);
+	//		_pn = _pn->_next;
+	//		return tmp;
+	//	}
+
+	//	//T&  const T&
+	//	Ref operator*() const
+	//	{
+	//		return _pn->_data;
+	//	}
+
+	//	//Ptr T*  const T*
+	//	Ptr operator->()
+	//	{
+	//		return &_pn->_data;
+	//	}
+
+	//	bool operator!=(reverse_iterator it) const
+	//	{
+	//		return _pn != it._pn;
+	//	}
+
+	//	bool operator==(reverse_iterator it) const
+	//	{
+	//		return _pn == it._pn;
+	//	}
+
+	//};
+
+	//反向迭代器2.0	对正向迭代器进行分装 => 迭代器适配器
+	//只要正向迭代器支持双向访问,就可以适配得出反向迭代器
+	template<class Iterator, class Ref, class Ptr>
+	struct reverse_iterator
+	{
+		typedef reverse_iterator<Iterator, Ref, Ptr> Self;
+
+		//成员
+		Iterator _cur;
+
+		//成员函数
+		reverse_iterator(const Iterator& it)
+			:_cur(it)
+		{}
+
+		Self operator++()
+		{
+			--_cur;
+			return reverse_iterator(_cur);	//用_cur正向迭代器构造反向迭代器的匿名对象
+		}
+
+		Self operator++(int)
+		{
+			Iterator tmp = _cur;
+			--_cur;
+			return reverse_iterator(tmp);
+		}
+
+		Self operator--()
+		{
+			++_cur;
+			return reverse_iterator(_cur);
+		}
+
+		Self operator--(int)
+		{
+			Iterator tmp = _cur;
+			++_cur;
+			return reverse_iterator(tmp);
+		}
+
+		Ref operator*() const
+		{
+			Iterator tmp = _cur;
+			--tmp;
+			return *tmp;
+		}
+
+		Ptr operator->() const 
+		{
+			Iterator tmp = _cur;
+			--tmp;
+			return &(*tmp);
+		}
+
+		bool operator!=(const Self& it) //const
+		{
+			return _cur != it._cur;
+		}
+
+		bool operator==(const Self& it) //const
+		{
+			return _cur == it._cur;
+		}
+
+	};
+
+
 	//链表
 	template<class T>
 	class list
@@ -107,6 +234,15 @@ namespace kozen
 		typedef __list_iterator<T, T&, T*> iterator;
 		typedef __list_iterator<T, const T&, const T*> const_iterator;
 
+		//反向迭代器1.0
+		//typedef __list_reverse_iterator<T, T&, T*> reverse_iterator;
+		//typedef __list_reverse_iterator<T, const T&, const T*> const_reverse_iterator;
+
+		//反向迭代器2.0	对正向迭代器的封装
+		typedef reverse_iterator<iterator, T&, T*> reverse_iterator;
+
+		//这里为什么出错??? const_reverse_iterator
+		//typedef reverse_iterator<iterator,const T&,const T*> const_reverse_iterator;
 
 		//const对象在初始化的时候没有const属性,初始化之后才有
 		list()
@@ -164,6 +300,49 @@ namespace kozen
 			clear();
 			delete _head;
 			_head = nullptr;
+		}
+
+		//反向迭代器1.0
+		//reverse_iterator rbegin()
+		//{
+		//	return reverse_iterator(_head->_prev);
+		//}
+
+		//reverse_iterator rend()
+		//{
+		//	return reverse_iterator(_head);
+		//}
+
+		//反向迭代器2.0
+		reverse_iterator rbegin()
+		{
+			return reverse_iterator(end());
+		}
+
+		reverse_iterator rend()
+		{
+			return reverse_iterator(begin());
+		}
+
+		iterator begin()
+		{
+			//匿名对象
+			return iterator(_head->_next);
+		}
+
+		iterator end()
+		{
+			return iterator(_head);
+		}
+
+		const_iterator begin() const
+		{
+			return const_iterator(_head->_next);
+		}
+
+		const_iterator end() const
+		{
+			return const_iterator(_head);
 		}
 
 		void swap(list<T>& lt)
@@ -290,27 +469,6 @@ namespace kozen
 			_head->_prev = _head;
 		}
 
-		iterator begin()
-		{
-			//匿名对象
-			return iterator(_head->_next);
-		}
-
-		const_iterator begin() const
-		{
-			return const_iterator(_head->_next);
-		}
-
-		iterator end()
-		{
-			return iterator(_head);
-		}
-
-		const_iterator end() const
-		{
-			return const_iterator(_head);
-		}
-
 		size_t size() const
 		{
 			node* cur = _head->_next;
@@ -348,7 +506,10 @@ namespace kozen
 
 }
 
+#define DEBUG
+#ifdef DEBUG
 
+//测试代码//////////////////////////////////////////////////////////////////////////
 namespace kozen
 {
 	void test_list1()
@@ -603,6 +764,128 @@ namespace kozen
 		for (auto e : lt2)
 		{
 			cout << e << " ";
+		}
+		cout << endl;
+
+	}
+
+	void test_list6()
+	{
+		list<int> lt;
+		lt.push_back(1);
+		lt.push_back(2);
+		lt.push_back(3);
+		lt.push_back(4);
+		lt.push_back(5);
+
+		for (auto e : lt)
+		{
+			cout << e << " ";
+		}
+		cout << endl;
+
+		//反向迭代器1.0
+		//list<int>::reverse_iterator rit = lt.rbegin();
+		//while (rit != lt.rend())
+		//{
+		//	cout << *rit << " ";
+		//	++rit;
+		//}
+		//cout << endl;
+
+	}
+}
+
+#endif
+
+
+
+namespace kozen
+{
+	void test_list7()
+	{
+		list<int> lt;
+		lt.push_back(1);
+		lt.push_back(2);
+		lt.push_back(3);
+		lt.push_back(4);
+
+		auto it = lt.begin();
+		while (it != lt.end())
+		{
+			*it *= 2;
+			++it;
+		}
+		for (auto e : lt)
+		{
+			cout << e << " ";
+		}
+		cout << endl;
+
+		const list<int> clt(lt);
+		auto cit = clt.begin();
+		while (cit != clt.end())
+		{
+			cout << *cit << " ";
+			++cit;
+		}
+		cout << endl;
+
+
+		struct AA
+		{
+			AA(int a = 0)
+				:_a(a)
+			{}
+			int _a = 1;
+		};
+
+		list<AA> lt2;
+		lt2.push_back(AA(1));
+		lt2.push_back(AA(2));
+		lt2.push_back(AA(3));
+		lt2.push_back(AA(4));
+
+		auto c_it = lt2.begin();
+		while (c_it != lt2.end())
+		{
+			c_it->_a *= 2;
+			cout << c_it->_a << " ";
+			++c_it;
+		}
+		cout << endl;
+
+
+		const list<AA> clt2(lt2);
+		auto cit2 = clt2.begin();
+		while (cit2 != clt2.end())
+		{
+			cout << cit2->_a << " ";
+			++cit2;
+		}
+		cout << endl;
+	}
+
+
+	void test_list8()
+	{
+		list<int> lt;
+		lt.push_back(1);
+		lt.push_back(2);
+		lt.push_back(3);
+		lt.push_back(4);
+
+		for (auto e : lt)
+		{
+			cout << e << " ";
+		}
+		cout << endl;
+
+		list<int> ::reverse_iterator rit = lt.rbegin();
+		while (rit != lt.rend())
+		{
+			cout << *rit << " ";
+			++rit;
 		}
 		cout << endl;
 

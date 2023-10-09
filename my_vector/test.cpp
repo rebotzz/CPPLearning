@@ -26,31 +26,31 @@
 //}
 
 
-//#define TEST
-//int main()
-//{
-//#ifdef TEST
-//	try
-//	{
-//		kozen::test_vector5();
-//	}
-//	catch (const std::exception& e)
-//	{
-//		cout << e.what() << endl;
-//	}
-//#endif
-//
-//	//nullptr不处理
-//	int* p = nullptr;
-//	delete p;
-//
-//	//第一次先判断,再执行
-//	//for (int i = 0; i < 0; ++i)
-//	//{
-//	//	cout << "hello" << endl;
-//	//}
-//
-//
-//
-//	return 0;
-//}
+#define TEST
+int main()
+{
+#ifdef TEST
+	try
+	{
+		kozen::test_vector6();
+	}
+	catch (const std::exception& e)
+	{
+		cout << e.what() << endl;
+	}
+#endif
+
+	//nullptr不处理
+	int* p = nullptr;
+	delete p;
+
+	//第一次先判断,再执行
+	//for (int i = 0; i < 0; ++i)
+	//{
+	//	cout << "hello" << endl;
+	//}
+
+
+
+	return 0;
+}

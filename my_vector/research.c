@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define RES
+//#define RES
 #ifdef RES
 int main()
 {

@@ -1,6 +1,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <list>
+#include "list.h"
+
 using namespace std;
 
 //#define TEST1
@@ -157,13 +159,14 @@ void test1()
 
 }
 
-#include "list.h"
+
+
 
 int main()
 {
 	//test1();
 
-	kozen::test_list5();
+	kozen::test_list8();
 
 	return 0;
 }
