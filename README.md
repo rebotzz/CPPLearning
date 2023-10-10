@@ -17,7 +17,13 @@ list学习1
 list学习1/2 模拟实现	迭代器实现,对原生指针的封装,实现想要的运算符重载功能
 stack/queue学习1  适配器
 
+**********************************
 vector,list增加了反向迭代器适配器实现,但是有bug:const_reverse_iterator有问题,原因未知
+debug:	//原因:reverse_iterator类型已经被重定义了,现在是reverse_iterator<iterator, T&, T*>,所以使用模板报错
+	//修改:将reverse_iterator类名改为Reverse_iterator
+	//const对象返回const_iterator,所以需要用const_iterator接受
+	//总结:模板类名和tepedef后的类型名最好不同,否则分不清容易弄错
+	typedef Reverse_iterator<const_iterator,const T&,const T*> const_reverse_iterator;
 
 
 ********************************

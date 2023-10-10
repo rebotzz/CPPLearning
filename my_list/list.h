@@ -160,42 +160,42 @@ namespace kozen
 	//反向迭代器2.0	对正向迭代器进行分装 => 迭代器适配器
 	//只要正向迭代器支持双向访问,就可以适配得出反向迭代器
 	template<class Iterator, class Ref, class Ptr>
-	struct reverse_iterator
+	struct Reverse_iterator
 	{
-		typedef reverse_iterator<Iterator, Ref, Ptr> Self;
+		typedef Reverse_iterator<Iterator, Ref, Ptr> Self;
 
 		//成员
 		Iterator _cur;
 
 		//成员函数
-		reverse_iterator(const Iterator& it)
+		Reverse_iterator(const Iterator& it)
 			:_cur(it)
 		{}
 
 		Self operator++()
 		{
 			--_cur;
-			return reverse_iterator(_cur);	//用_cur正向迭代器构造反向迭代器的匿名对象
+			return Reverse_iterator(_cur);	//用_cur正向迭代器构造反向迭代器的匿名对象
 		}
 
 		Self operator++(int)
 		{
 			Iterator tmp = _cur;
 			--_cur;
-			return reverse_iterator(tmp);
+			return Reverse_iterator(tmp);
 		}
 
 		Self operator--()
 		{
 			++_cur;
-			return reverse_iterator(_cur);
+			return Reverse_iterator(_cur);
 		}
 
 		Self operator--(int)
 		{
 			Iterator tmp = _cur;
 			++_cur;
-			return reverse_iterator(tmp);
+			return Reverse_iterator(tmp);
 		}
 
 		Ref operator*() const
@@ -239,10 +239,14 @@ namespace kozen
 		//typedef __list_reverse_iterator<T, const T&, const T*> const_reverse_iterator;
 
 		//反向迭代器2.0	对正向迭代器的封装
-		typedef reverse_iterator<iterator, T&, T*> reverse_iterator;
+		typedef Reverse_iterator<iterator, T&, T*> reverse_iterator;
 
 		//这里为什么出错??? const_reverse_iterator
-		//typedef reverse_iterator<iterator,const T&,const T*> const_reverse_iterator;
+		//原因:reverse_iterator类型已经被重定义了,现在是reverse_iterator<iterator, T&, T*>,所以使用模板报错
+		//修改:将reverse_iterator类名改为Reverse_iterator
+		//const对象返回const_iterator,所以需要用const_iterator接受
+		//总结:模板类名和tepedef后的类型名最好不同,否则分不清容易弄错
+		typedef Reverse_iterator<const_iterator,const T&,const T*> const_reverse_iterator;
 
 		//const对象在初始化的时候没有const属性,初始化之后才有
 		list()
@@ -322,6 +326,16 @@ namespace kozen
 		reverse_iterator rend()
 		{
 			return reverse_iterator(begin());
+		}
+
+		const_reverse_iterator rbegin() const
+		{
+			return const_reverse_iterator(end());
+		}
+
+		const_reverse_iterator rend() const
+		{
+			return const_reverse_iterator(begin());
 		}
 
 		iterator begin()
@@ -886,6 +900,15 @@ namespace kozen
 		{
 			cout << *rit << " ";
 			++rit;
+		}
+		cout << endl;
+
+		const list<int> lt2(lt);
+		list<int>::const_reverse_iterator c_rit = lt2.rbegin();
+		while (c_rit != lt2.rend())
+		{
+			cout << *c_rit << " ";
+			++c_rit;
 		}
 		cout << endl;
 

@@ -13,42 +13,42 @@ namespace kozen
 {
 	//反向迭代器	对正向迭代器进行分装 => 迭代器适配器
 	template<class Iterator, class Ref, class Ptr>
-	struct reverse_iterator
+	struct Reverse_iterator
 	{
-		typedef reverse_iterator<Iterator, Ref, Ptr> Self;
+		typedef Reverse_iterator<Iterator, Ref, Ptr> Self;
 
 		//成员
 		Iterator _cur;
 
 		//成员函数
-		reverse_iterator(const Iterator& it)
+		Reverse_iterator(const Iterator& it)
 			:_cur(it)
 		{}
 
 		Self operator++()
 		{
 			--_cur;
-			return reverse_iterator(_cur);	//用_cur正向迭代器构造反向迭代器的匿名对象
+			return Reverse_iterator(_cur);	//用_cur正向迭代器构造反向迭代器的匿名对象
 		}
 
 		Self operator++(int)
 		{
 			Iterator tmp = _cur;
 			--_cur;
-			return reverse_iterator(tmp);
+			return Reverse_iterator(tmp);
 		}
 
 		Self operator--()
 		{
 			++_cur;
-			return reverse_iterator(_cur);
+			return Reverse_iterator(_cur);
 		}
 
 		Self operator--(int)
 		{
 			Iterator tmp = _cur;
 			++_cur;
-			return reverse_iterator(tmp);
+			return Reverse_iterator(tmp);
 		}
 
 		Ref operator*() const
@@ -89,7 +89,9 @@ namespace kozen
 		//const iterator ==> iterator不能修改,即T* const
 
 		//反向迭代器
-		typedef reverse_iterator<iterator, T&, T*> reverse_iterator;
+		typedef Reverse_iterator<iterator, T&, T*> reverse_iterator;
+		typedef Reverse_iterator<const_iterator, const T&, const T*> const_reverse_iterator;
+
 
 		//构造
 		vector()
@@ -206,6 +208,16 @@ namespace kozen
 		reverse_iterator rend()
 		{
 			return reverse_iterator(begin());
+		}
+
+		const_reverse_iterator rbegin() const
+		{
+			return const_reverse_iterator(end());
+		}
+
+		const_reverse_iterator rend() const
+		{
+			return const_reverse_iterator(begin());
 		}
 
 		const_iterator begin() const
@@ -752,6 +764,16 @@ namespace kozen
 		{
 			cout << *rit << " ";
 			++rit;
+		}
+		cout << endl;
+		cout << endl;
+
+		const vector<int> v2 = v1;
+		vector<int>::const_reverse_iterator c_rit = v2.rbegin();
+		while (c_rit != v2.rend())
+		{
+			cout << *c_rit << " ";
+			++c_rit;
 		}
 		cout << endl;
 
