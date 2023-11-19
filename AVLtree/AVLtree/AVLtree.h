@@ -4,6 +4,7 @@
 using namespace std;
 
 // AVL树学习: 高度平衡搜索二叉树
+// 
 // 左右子树高度差不超过1
 
 // 节点
@@ -24,6 +25,14 @@ struct AVLTreeNode
 		, _kv(kv)
 	{}
 
+	AVLTreeNode(const AVLTreeNode<K, V>& node)
+		:_left(nullptr)
+		, _right(nullptr)
+		, _parent(nullptr)
+		, _bf(node._bf)
+		, _kv(node._kv)
+	{}
+
 };
 
 // AVL树
@@ -33,6 +42,18 @@ class AVLTree
 	typedef AVLTreeNode<K, V> Node;
 public:
 	AVLTree() = default;
+
+	AVLTree(const AVLTree<K, V>& tree)
+	{
+		_root = copyTree(tree._root, nullptr);
+	}
+
+	~AVLTree()
+	{
+		cout << "~AVLTree(): " << _root << endl;
+		destory(_root);
+		cout << endl;
+	}
 
 	bool Insert(const pair<K, V> kv)
 	{
@@ -48,12 +69,12 @@ public:
 			// 找到插入位置
 			while (cur)
 			{
-				if (cur->_kv > kv)
+				if (cur->_kv.first > kv.first)
 				{
 					parent = cur;
 					cur = cur->_left;
 				}
-				else if (cur->_kv < kv)
+				else if (cur->_kv.first < kv.first)
 				{
 					parent = cur;
 					cur = cur->_right;
@@ -65,7 +86,7 @@ public:
 			}
 
 			cur = new Node(kv);
-			if (parent->_kv > kv)
+			if (parent->_kv.first > kv.first)
 			{
 				parent->_left = cur;
 			}
@@ -135,12 +156,28 @@ public:
 
 	bool Find(const K key)
 	{
-
+		Node* cur = _root;
+		while (cur)
+		{
+			if (cur->_kv.first > key)
+			{
+				cur = cur->_left;
+			}
+			else if (cur->_kv.first < key)
+			{
+				cur = cur->_right;
+			}
+			else
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	bool Erase(const K key)
 	{
-
+		//待续...
 	}
 
 	void InOrder()
@@ -268,6 +305,7 @@ private:
 		// 改平衡因子
 		parent->_bf = childL->_bf = 0;
 	}
+
 	// RL双旋
 	void RotateRL(Node* parent)
 	{
@@ -337,6 +375,28 @@ private:
 		}
 	}
 
+	void destory(Node* root)
+	{
+		if (nullptr == root)
+			return;
+
+		destory(root->_left);
+		destory(root->_right);
+		//cout << root->_parent << " " << root->_kv.first << endl;
+		delete root;
+	}
+
+	Node* copyTree(Node* root, Node* parent)
+	{
+		if (nullptr == root)
+			return nullptr;
+
+		Node* cur = new Node(*root);
+		cur->_left = copyTree(root->_left, cur);
+		cur->_right = copyTree(root->_right, cur);
+		cur->_parent = parent;
+		return cur;
+	}
 
 	void _InOrder(Node* cur)
 	{
