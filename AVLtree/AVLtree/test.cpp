@@ -121,6 +121,10 @@ void test_RBTree3()
 
 	//RBTree<int, int> t2(t);
 	//t2.InOrder();
+
+	cout << t.Find(3) << endl;
+	cout << t.Find(26) << endl;
+	cout << t.Find(27) << endl;
 }
 
 int main()

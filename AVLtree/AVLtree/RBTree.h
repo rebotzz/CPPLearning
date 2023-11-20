@@ -58,17 +58,6 @@ public:
 		Destory(_root);
 	}
 
-	void Destory(Node* root)
-	{
-		if (nullptr == root)
-			return;
-
-		Destory(root->_left);
-		Destory(root->_right);
-		//cout << root << " " << root->_kv.first << endl;
-		delete root;
-	}
-
 	//Node* CopyTree(Node* root, Node* parent)
 	//{
 	//	if (root == nullptr)
@@ -254,6 +243,32 @@ public:
 		}
 	}
 
+	bool Find(const K& key) const
+	{
+		Node* cur = _root;
+		while (cur)
+		{
+			if (cur->_kv.first > key)
+			{
+				cur = cur->_left;
+			}
+			else if (cur->_kv.first < key)
+			{
+				cur = cur->_right;
+			}
+			else
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	bool Erase(const K& key)
+	{
+		//...
+	}
+
 	void InOrder()
 	{
 		_InOrder(_root);
@@ -340,6 +355,17 @@ private:
 			deep++;
 
 		return Check(root->_left, deep, base) && Check(root->_right, deep, base);
+	}
+
+	void Destory(Node* root)
+	{
+		if (nullptr == root)
+			return;
+
+		Destory(root->_left);
+		Destory(root->_right);
+		//cout << root << " " << root->_kv.first << endl;
+		delete root;
 	}
 
 	void _InOrder(Node* root)
