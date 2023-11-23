@@ -9,7 +9,7 @@ namespace kozen
 		// 仿函数
 		struct GetKofV
 		{
-			const K& operator()(const pair<K, V>& data) const
+			const K& operator()(const pair<const K, V>& data) const
 			{	
 				return data.first;
 			}
@@ -17,8 +17,9 @@ namespace kozen
 	public:
 		// 迭代器
 		// 封装红黑树的迭代器
-		typedef typename RBTree<K, pair<K, V>, GetKofV>::iterator iterator;
-		typedef typename RBTree<K, pair<K, V>, GetKofV>::reverse_iterator reverse_iterator;
+		// const K不能修改,但是普通迭代器V可以修改
+		typedef typename RBTree<K, pair<const K, V>, GetKofV>::iterator iterator;
+		typedef typename RBTree<K, pair<const K, V>, GetKofV>::reverse_iterator reverse_iterator;
 
 		iterator begin()
 		{
@@ -66,6 +67,6 @@ namespace kozen
 		}
 
 	private:
-		RBTree<K, pair<K, V>, GetKofV> _tree;
+		RBTree<K, pair<const K, V>, GetKofV> _tree;
 	};
 }
