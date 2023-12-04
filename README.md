@@ -13,3 +13,9 @@
 模板运用; STL源码剖析学习
 
 6. 哈希表学习2; 哈希表封装map/set实现
+
+7. 位图bitset;布隆过滤器;哈希切割;C++11部分语法:{}; initializer_list; decltype; {}初始化一切;
+
+8. 左值引用&,右值引用&& (转移资源),move(),完美转发forward<T>(), 
+关键字 = defalut; = delete; 新增类的2个默认构造,移动构造,移动赋值;
+可变模板参数; template<class ...Args> func(Args... args); 解析参数的方法; emplace插入接口,

@@ -245,18 +245,18 @@ void test_map_set1()
 
 }
 
-int main()
-{
-	//OpenAdress::test_hashtable2();
-	//HashBuket::test_hashB1();
-	//test_unmap();
-	//test_unset();
-
-	//test_unset1();
-	//test_unset2();
-
-	//test_map1();
-	test_map_set1();
-
-	return 0;
-}
+//int main()
+//{
+//	//OpenAdress::test_hashtable2();
+//	//HashBuket::test_hashB1();
+//	//test_unmap();
+//	//test_unset();
+//
+//	//test_unset1();
+//	//test_unset2();
+//
+//	//test_map1();
+//	test_map_set1();
+//
+//	return 0;
+//}
