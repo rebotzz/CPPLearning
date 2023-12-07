@@ -245,18 +245,72 @@ void test_map_set1()
 
 }
 
-//int main()
-//{
-//	//OpenAdress::test_hashtable2();
-//	//HashBuket::test_hashB1();
-//	//test_unmap();
-//	//test_unset();
-//
-//	//test_unset1();
-//	//test_unset2();
-//
-//	//test_map1();
-//	test_map_set1();
-//
-//	return 0;
-//}
+void test_map_set2()
+{
+	kozen::unordered_map<int, int> m1;
+	int a[] = { 1,2,3,4,5,6,7,8,9,10,11,5 };
+	for (auto e : a)
+	{
+		m1.insert(make_pair(e, e));
+	}
+
+	for (auto e : m1)
+	{
+		cout << e.first << " ";
+	}
+	cout << endl;
+
+	kozen::unordered_map<int, int> m2;
+	m2.insert(make_pair(1, 1));
+	m2.insert(make_pair(2, 2));
+	m2.insert(make_pair(3, 3));
+
+	for (auto e : m2)
+	{
+		cout << e.first << " ";
+	}
+	cout << endl;
+
+	cout << m1.count(1)<< endl;
+	cout << m1.count(11)<< endl;
+	cout << m1.count(32)<< endl;
+
+	m2.swap(m1);
+
+	for (auto e : m1)
+	{
+		cout << e.first << " ";
+	}
+	cout << endl;	
+	for (auto e : m2)
+	{
+		cout << e.first << " ";
+	}
+	cout << endl;
+	m1.clear();
+
+	kozen::unordered_set<int> s1;
+	for (auto e : a)
+	{
+		s1.insert(e);
+	}
+	cout << s1.count(1)<< endl;
+	cout << s1.count(11)<< endl;
+	cout << s1.count(32)<< endl;
+}
+
+int main()
+{
+	//OpenAdress::test_hashtable2();
+	//HashBuket::test_hashB1();
+	//test_unmap();
+	//test_unset();
+
+	//test_unset1();
+	//test_unset2();
+
+	//test_map1();
+	test_map_set2();
+
+	return 0;
+}

@@ -63,12 +63,37 @@ void test_bitset3()
 	}
 
 	cout << bs1 << endl;
-	
+
+}
+
+void test_bloomFilter1()
+{
+	kozen::BloomFilter<20> bf;
+	vector<string> v = { "tecent", "baidu", "ali","mihoyo" };
+	for (auto& e : v)
+	{
+		bf.insert(e);
+	}
+
+	v.push_back("opencv");
+
+	for (auto& e : v)
+	{
+		cout << bf.test(e) << " ";
+	}
+	cout << endl;
+
+	for (auto& e : v)
+	{
+		cout << bf.non_test(e) << " ";
+	}
+	cout << endl;
 }
 
 int main()
 {
-	test_bitset3();
+	//test_bitset3();
+	test_bloomFilter1();
 
 	return 0;
 }

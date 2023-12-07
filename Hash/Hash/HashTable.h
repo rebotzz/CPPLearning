@@ -4,7 +4,7 @@
 using std::pair;
 using std::make_pair;
 
-// 完善哈希表,为分装map/set做准备
+// 完善哈希表,为封装map/set做准备
 
 // 声明
 template<class T>
@@ -107,11 +107,18 @@ struct HashFunc<string>
 	int operator()(const string& str)
 	{
 		int hashi = 0;
-		int i = 1;
+
+		//int i = 1;
+		//for (auto ch : str)
+		//{
+		//	hashi += ch * i;
+		//	++i;
+		//}
+
+		// BKDRHash
 		for (auto ch : str)
 		{
-			hashi += ch * i;
-			++i;
+			hashi += ch * 31; // 也可以乘以31、131、1313、13131、131313..  
 		}
 
 		return hashi;
@@ -142,21 +149,12 @@ public:
 	HashTable()
 		:_n(0)
 	{
-		_table.resize(10, nullptr);
+		_table.resize(7, nullptr);	//  除留余数法，最好模一个素数
 	}
 
 	~HashTable()
 	{
-		for (auto e : _table)
-		{
-			Node* cur = e;
-			while (cur)
-			{
-				Node* next = cur->_next;
-				delete cur;
-				cur = next;
-			}
-		}
+		Clear();
 		//std::cout << "~HashTable()" << "\n";
 	}
 
@@ -215,7 +213,8 @@ public:
 		// 负载因子,扩容
 		if (_n / _table.size() >= 1)
 		{
-			int newsize = 2 * _table.size();
+			//size_t newsize = 2 * _table.size();
+			size_t newsize = GetNextPrime(_table.size()); // 除留余数法，最好模一个素数
 			vector<Node*> newTale(newsize, nullptr);
 
 			for (auto e : _table)
@@ -300,6 +299,71 @@ public:
 		return _n;
 	}
 
+	void Clear()
+	{
+		for (auto& e : _table)
+		{
+			Node* cur = e;
+			while (cur)
+			{
+				Node* next = cur->_next;
+				delete cur;
+				cur = next;
+			}
+			e = nullptr;	// _table[] 每个元素置空,防止重复delete
+		}
+		_n = 0;
+	}
+
+	void Swap(HashTable< Key, T, GetKeyofT, Hash>& hs)
+	{
+		_table.swap(hs._table);
+		std::swap(_n, hs._n);
+	}
+
+	// 返回为关键值为key的元素个数
+	size_t Count(const Key& key)
+	{
+		size_t count = 0;
+		// 仿函数
+		Hash hashf;
+		GetKeyofT getK;
+		int hashi = hashf(key) % _table.size();
+		Node* cur = _table[hashi];
+		while (cur)
+		{
+			if (getK(cur->_data) == key)
+			{
+				++count;
+			}
+			cur = cur->_next;
+		}
+		return count;
+	}
+
+private:
+	size_t GetNextPrime(size_t val)
+	{
+		// 素数表
+		static const size_t primeList[] =
+		{
+		17ul, 53ul, 97ul, 193ul, 389ul, 769ul,
+		1543ul, 3079ul, 6151ul, 12289ul, 24593ul,
+		49157ul, 98317ul, 196613ul, 393241ul, 786433ul,
+		1572869ul, 3145739ul, 6291469ul, 12582917ul,25165843ul,
+		50331653ul, 100663319ul, 201326611ul, 402653189ul,805306457ul,
+		1610612741ul, 3221225473ul, 4294967291ul
+		};
+
+		for (auto num : primeList)
+		{
+			if (num > val)
+				return num;
+		}
+		size_t sz = sizeof(primeList) / sizeof(primeList[0]);
+		return primeList[sz - 1];
+	}
+	 
 private:
 	vector<Node*> _table;
 	int _n;

@@ -271,7 +271,7 @@ namespace HashBuket
 			// ¸ºÔØÒò×Ó,À©ÈÝ
 			if (_n / _table.size() >= 1)
 			{
-				int newsize = 2 * _table.size();
+				size_t newsize = 2 * _table.size();
 				vector<Node*> newTale(newsize, nullptr);
 
 				for (auto e : _table)

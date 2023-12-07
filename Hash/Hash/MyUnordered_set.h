@@ -49,6 +49,21 @@ namespace kozen
 			return _table.size();
 		}
 
+		size_t count(const T& key)
+		{
+			return _table.Count(key);
+		}
+
+		void clear()
+		{
+			_table.Clear();
+		}
+
+		void swap(unordered_set<T, Hash>& set)
+		{
+			_table.Swap(set._table);
+		}
+
 	private:
 		HashTable<T, T, GetKeyofV<T>, Hash> _table;
 	};
