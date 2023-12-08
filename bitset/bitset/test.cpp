@@ -162,11 +162,11 @@ void test_bloomFilter1()
 //
 //}
 
-int main()
-{
-	//test_bitset3();
-	//test_bloomFilter1();
-	//test_CountBloomFilter2();
-
-	return 0;
-}
+//int main()
+//{
+//	//test_bitset3();
+//	//test_bloomFilter1();
+//	//test_CountBloomFilter2();
+//
+//	return 0;
+//}
