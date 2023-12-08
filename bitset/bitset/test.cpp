@@ -68,11 +68,13 @@ void test_bitset3()
 
 void test_bloomFilter1()
 {
-	kozen::BloomFilter<20> bf;
+	kozen::BloomFilter<4> bf;
+
 	vector<string> v = { "tecent", "baidu", "ali","mihoyo" };
 	for (auto& e : v)
 	{
 		bf.insert(e);
+		//cout << bf._bs << endl;
 	}
 
 	v.push_back("opencv");
@@ -83,17 +85,88 @@ void test_bloomFilter1()
 	}
 	cout << endl;
 
-	for (auto& e : v)
-	{
-		cout << bf.non_test(e) << " ";
-	}
 	cout << endl;
 }
+
+//void test_CountBloomFilter1()
+//{
+//	kozen::CountBloomFilter<3> cbf;
+//	vector<string> v = { "tecent", "baidu", "ali","mihoyo" };
+//
+//	for (auto e : v)
+//	{
+//		cbf.insert(e);
+//		cout << cbf._bs1;
+//		cout << cbf._bs2;
+//		cout << cbf._bs3 << endl;
+//	}
+//
+//	v.push_back("opencv");
+//
+//	for (auto& e : v)
+//	{
+//		cout << cbf.test(e) << " ";
+//	}
+//	cout << endl;
+//
+//	for (auto e : v)
+//	{
+//		cbf.erase(e);
+//		cout << cbf._bs1;
+//		cout << cbf._bs2;
+//		cout << cbf._bs3 << endl;
+//	}
+//
+//}
+//
+//void test_CountBloomFilter2()
+//{
+//	kozen::CountBloomFilter<2> bf;
+//	int N = 7;
+//	for (int i = 0; i < N; ++i)
+//	{
+//		bf.insert("a");
+//		cout << bf._bs1;
+//		cout << bf._bs2;
+//		cout << bf._bs3 << endl;
+//	}
+//
+//	for (int i = 0; i < N; ++i)
+//	{
+//		bf.erase("a");
+//		cout << bf._bs1;
+//		cout << bf._bs2;
+//		cout << bf._bs3 << endl;
+//	}
+//
+//	cout << "---------------" << endl << endl;
+//
+//	kozen::CountBloomFilter<1> bf2;
+//	for (int i = 0; i < N; ++i)
+//	{
+//		bf2.addone(3);
+//		cout << bf2.count(3) << endl;
+//		cout << bf2._bs1;
+//		cout << bf2._bs2;
+//		cout << bf2._bs3 << endl;
+//	}
+//
+//	for (int i = 0; i < N; ++i)
+//	{
+//		bf2.subone(3);
+//		cout << bf2.count(3) << endl;
+//		cout << bf2._bs1;
+//		cout << bf2._bs2;
+//		cout << bf2._bs3 << endl;
+//	}
+//
+//}
 
 int main()
 {
 	//test_bitset3();
-	test_bloomFilter1();
+	//test_bloomFilter1();
+	//test_CountBloomFilter2();
 
 	return 0;
 }
