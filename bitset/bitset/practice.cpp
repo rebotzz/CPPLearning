@@ -3,6 +3,10 @@
 #include <algorithm>
 #include "mybitset.h"
 #include <time.h>
+#include <unordered_map>
+#include <map>
+#include <queue>
+#include <functional>
 using namespace std;
 
 // 位图应用
@@ -79,20 +83,26 @@ private:
 };
 
 // 2. 给两个文件，分别有100亿个整数，我们只有1G内存，如何找到两个文件交集？
-// 10^10 / (10^9) = 10G的int, 每个int用bit标记,则: 10G / 8 = 1.25G, 内存可以容纳
-// 此时不用切分文件
+// 1G = 2^10 * 2^10 * 2^10 * 8 = 8 * 2^30 = 8,589,934,592 bit 约等于 8*10^9
+// 100亿个数 = 100 * 10^8; 对应比特位标记: 10,000,000,000 bit 约等于 10*10^9
+// 每个int用bit标记,则: 10 / 8 = 1.25G, 内存可以容纳
+// 此时不用切分文件		数据范围 < 数据个数 -- 选用数据范围
+// 数据类型为int, 数据范围 -2^31 ~ 2^31 - 1; 总个数2^32, 2^32 / (8 * 2^30(即2^33))  约0.5G
+// 每个int用bit标记: 约0.5G 需要开辟bit位个数: 0.5*2^33 = 4,294,967,296
 class question2
 {
-	void sulotion()
+public:
+	void solution()
 	{
 		srand((unsigned int)time(NULL));
-		int N = 10000;		// 数据个数
-		int modu = 500000;	// 取模数
+		int N = 30000;		// 数据个数
+		int modu = 1000000;	// 取模数
 		vector<int> v1;		//提前resize会导致默认值0的问题
 		vector<int> v2;
 		v1.reserve(N);		//reserve提前开辟容积,但不初始化
 		v2.reserve(N);
-		// 两个文件
+
+		// 两个文件,假设这是从文件读取
 		for (int i = 0; i < N; ++i)
 		{
 			int num = (rand() + i) % modu;
@@ -108,24 +118,46 @@ class question2
 		}
 		cout << endl;
 
-		// 测试: 去重,找交集
-		unordered_set<int> sv1(v1.begin(), v1.end());
-		unordered_set<int> sv2(v2.begin(), v2.end());
+		// 找交集: 假设这是输出到文件
 		vector<int> out;
+		for (auto e : v1)
+		{
+			// 将int --> size_t 一一映射,且不会哈希冲突
+			_bs.set((size_t)e);
+		}
+		for (auto e : v2)
+		{
+			if (_bs.test((size_t)e))
+			{
+				out.push_back(e);
+				//cout << e << " ";
+			}
+		}
+		cout << endl;
+		cout << "-----------" << endl;
 
+		cout << "交集数据个数:" << endl;
+		cout << out.size() << endl;
+
+		//for (auto e : out)
+		//{
+		//	cout << e << " ";
+		//}
+		//cout << endl << endl;
+
+		//system("pause");
 
 	}
 
 
 
 private:
-	// 开辟1.1G的空间
-	kozen::bitset<1100000000> _bs1;
-	kozen::bitset<1100000000> _bs2;
+	// 约0.5G 需要开辟bit位个数: 0.5*2^33 = 4294967296
+	kozen::bitset<4400000000> _bs;
 };
 
-// 2.5 (题目变形)给两个文件，分别有100000亿个整数，我们只有1G内存，如何找到两个文件交集？
-// 这时10^13 /  (10^9) = 10000G的int, 每个int用bit标记,则: 10000G / 8 = 1250G, 内存不可以容纳
+// 2.5 (题目变形)给两个文件，分别有100000亿个数据(任意类型)，我们只有1G内存，如何找到两个文件交集？
+// 内存不可以容纳,单个数据所占空间也可能比较大
 // 此时必须切分文件
 class question2_2
 {
@@ -238,12 +270,12 @@ public:
 		for (auto& v1 : minfile1)
 		{
 			// 注意提出空文件的情况;注意默认初始化是0的情况 -- 不提前开辟空间初始化,使用reserve
-			if(!v1.empty())
+			if (!v1.empty())
 			{
 				auto& v2 = minfile2[i++];
 				unordered_set<int> st1(v1.begin(), v1.end());
 				unordered_set<int> st2(v2.begin(), v2.end());
-				if(!v2.empty())
+				if (!v2.empty())
 				{
 					for (auto num : st2)
 					{
@@ -343,11 +375,344 @@ private:
 };
 
 
+// 哈希切割
+// 给一个超过100G大小的log file, log中存着IP地址, 设计算法找到出现次数最多的IP地址？
+// 与上题条件相同，如何找到top K的IP？如何直接用Linux系统命令实现？
+class question4
+{
+	// 文件过大,需要哈希切割,数据类型:string
+	// 切分后用map统计次数
+public:
+	void solution()
+	{
+		srand((unsigned int)time(0));
+		int N = 5000000;
+		vector<string> v;
+		v.reserve(N);
+		// 生成ip地址
+		for (int i = 0; i < N; ++i)
+		{
+			string s = "218.26.";
+			for (int j = 0; j < 3; ++j)
+			{
+				int num = rand() % 10;
+				s += ('0' + num);
+			}
+			s += '.';
+			for (int j = 0; j < 3; ++j)
+			{
+				int num = rand() % 10;
+				s += ('0' + num);
+			}
+
+			v.push_back(s);
+		}
+
+		// 测试用
+		string ip = "218.26.541.167";
+		for(int i = 0; i < 20; ++i)
+			v.push_back(ip);
+
+
+		//// 打印ip
+		//for (auto& e : v)
+		//{
+		//	cout << e << endl;
+		//}
+		//cout << endl << "---------------" << endl;
+
+		// 切割文件
+		int div = 29;	// 切割份数
+		auto hash = [](const string& str)->size_t {
+			size_t index = 0;
+			for (char ch : str)
+			{
+				index += ch * 31;
+			}
+			return index;
+			};
+
+		vector<vector<string>> file(div);	// div个小文件
+		for (string& s : v)
+		{
+			size_t fileid = hash(s) % div;
+			file[fileid].push_back(s);
+		}
+
+		// 查看每个文件ip个数
+		cout << "ip count/file:" << endl;
+		for (auto& e : file)
+		{
+			cout << e.size() << " ";
+		}
+		cout << endl << "-----------------" << endl;
+
+
+		// 仿函数,小堆比较
+		struct Greater
+		{
+			bool operator()(const pair<string, int>& x, const pair<string, int>& y)
+			{
+				return x.second > y.second;
+			}
+		};
+
+		// 找到出现次数最多的ip; 
+		string maxip;
+		int max = 0;
+		int K = 10;
+		unordered_map<string, int> m;
+		// 找topK 的ip: 小堆,优先级队列: 最小值再堆顶,是看门狗,比它大的才能进门
+		priority_queue<pair<string, int>, vector<pair<string, int>>, Greater> topK;
+
+		for (auto& vstr : file)
+		{
+			for (string& s : vstr)
+			{
+				// 初始化小堆
+				if (topK.size() < K)
+				{
+					topK.push(make_pair(s, 1));
+				}
+
+				int cnt = ++m[s];
+
+				// 出现次数最多的ip
+				if (cnt > max)
+				{
+					max = cnt;
+					maxip = s;
+				}
+
+			}
+
+			// 如果比看门狗大,进门,换看门狗
+			// 这里不能按照pair<>键值对的默认规则比较		
+			auto it = m.begin();
+			while (it != m.end())
+			{	// debug: 重复字符串占用位置 -- 解决:一个哈希切割文件统计结束再topK
+				if ((it->second) > topK.top().second)	
+				{
+					topK.pop();
+					string tmp(it->first);
+					topK.push(make_pair(tmp, it->second));
+				}
+				++it;
+			}
+			
+			m.clear();
+		}
+
+		// 出现次数最多的ip:
+		cout << "maxip" << endl;
+		cout << maxip << ": " << max << endl << "-------------" << endl;;
+
+		// topK的ip:
+		cout << "ip topK:" << endl;
+		while (!topK.empty())
+		{
+			auto& e = topK.top();
+			cout << e.first << ": " << e.second << endl;
+			topK.pop();
+		}
+		cout << endl;
+		
+
+	}
+
+};
+
+
+void test_queue()
+{
+	priority_queue<int, vector<int>, greater<int>> que;
+	int a[] = { 1,2,3,4,5 };
+	for (auto e : a)
+	{
+		que.push(e);
+	}
+
+	while (!que.empty())
+	{
+		cout << que.top() << " ";
+		que.pop();
+	}
+	cout << endl;
+
+
+	struct Greater
+	{
+		bool operator()(const pair<string, int>& x, const pair<string, int>& y)
+		{
+			return x.second > y.second;
+		}
+	}; 
+	priority_queue<pair<string, int>, vector<pair<string, int>>, Greater> topK;
+
+	topK.push(make_pair("baiduyun", 1));
+	topK.push(make_pair("aliyun", 1));
+	topK.push(make_pair("tecentyun", 1));
+	topK.push(make_pair("mihoyo", 1));
+
+	// topK的ip:
+	cout << "ip topK:" << endl;
+	while (!topK.empty())
+	{
+		auto& e = topK.top();
+		cout << e.first << ": " << e.second << endl;
+		topK.pop();
+	}
+	cout << endl;
+
+}
+
+
+// 布隆过滤器
+// 1. 给两个文件，分别有100亿个query，我们只有1G内存，如何找到两个文件交集？分别给出
+// 精确算法和近似算法
+class question5
+{
+	// 类似question2_2, 近似算法:使用布隆过滤器
+public:
+	void solution()
+	{
+		srand((unsigned int)time(0));
+		int N = 1000000;
+		int word_size = 4;
+		// 两个文件,生成string
+		vector<vector<string>> tmp(2);
+		vector<string>& v1 = tmp[0];
+		vector<string>& v2 = tmp[1];
+		v1.reserve(N);		//reserve提前开辟容积,但不初始化
+		v2.reserve(N);
+		for (int vid = 0; vid < 2; ++vid)
+		{
+			vector<string>& v = tmp[vid];
+			for (int i = 0; i < N; ++i)
+			{
+				string s = "what is your ";
+				for (int j = 0; j < word_size; ++j)
+				{
+					char ch = rand() % 256;
+					s += ch;
+				}
+				s += '?';
+				v.push_back(s);
+			}
+		}
+
+
+		//// 测试用
+		string ip = "what is your id?";
+		for (int i = 0; i < 20; ++i)
+			v1.push_back(ip), v2.push_back(ip);
+
+
+		//// 打印
+		//for (auto& e : v1)
+		//{
+		//	cout << e << endl;
+		//}
+		//cout << endl << "---------------" << endl;
+		//for (auto& e : v2)
+		//{
+		//	cout << e << endl;
+		//}
+		//cout << endl << "---------------" << endl;
+
+		// 切割文件
+		int div = 53;	// 切割份数
+		auto hash = [](const string& str)->size_t {
+			size_t index = 0;
+			for (char ch : str)
+			{
+				index += ch * 31;
+			}
+			return index;
+			};
+
+		vector<vector<string>> file1(div);	// div个小文件
+		vector<vector<string>> file2(div);	
+		for (string& s : v1)
+		{
+			size_t fileid = hash(s) % div;
+			file1[fileid].push_back(s);
+		}
+		for (string& s : v2)
+		{
+			size_t fileid = hash(s) % div;
+			file2[fileid].push_back(s);
+		}
+
+		// 查看每个文件个数
+		cout << "count/file:" << endl;
+		for (auto& e : file1)
+		{
+			cout << e.size() << " ";
+		}
+		for (auto& e : file2)
+		{
+			cout << e.size() << " ";
+		}
+		cout << endl << "-----------------" << endl;
+
+
+		// 找交集
+		unordered_set<string> ret;
+		int i = 0;
+		for (auto& v1 : file1)
+		{
+			if (!v1.empty())
+			{
+				// v1插入布隆过滤器
+				// 1G = 2^10 * 2^10 * 2^10 * 8 = 8 * 2^30 = 8,589,934,592 bit
+				// 100亿个数 = 100 * 10^8; 对应比特位标记: 10,000,000,000 bit
+				// 切割了53分,平均每份0.01G                   188,679,245 bit		
+				// 1<<28 = 2^28								  268,435,456
+				kozen::BloomFilter<1<<28> bf;
+				for (string& s : v1)
+				{
+					bf.insert(s);
+				}
+
+				auto& v2 = file2[i++];
+				for (string& s : v2)
+				{
+					if(bf.test(s))
+					{
+						ret.insert(s);
+					}
+				}
+			}
+			else
+			{
+				++i;
+			}
+		}
+
+		cout << "intersection count:" << endl;
+		cout << ret.size() << endl << "--------------" << endl;
+
+		// 打印交集
+		//for (auto e : ret)
+		//{
+		//	cout << e << endl;
+		//}
+		//cout << endl;
+
+	}
+};
+
+
 int main()
 {
 	//question1().solution();
 	//question2().solution();
-	question3().solution();
+	//question2_2().solution();
+	//question3().solution();
+	//question4().solution();
+	//test_queue();
+	//question5().solution();
 
 	return 0;
 }
