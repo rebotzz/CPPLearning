@@ -16,7 +16,7 @@ void func1()
 
 //template<class ...Args>
 //void func1(Args ... args)
-template<class T, class ...Args>
+template<class T, class ...Args>		// 解析参数,方法一
 void func1(T x, Args ... args)
 {
 	cout << (sizeof...(Args) + 1) << endl;	// 打印参数个数
@@ -28,13 +28,32 @@ void func1(T x, Args ... args)
 
 }
 
+template<class T>
+int _func2(T&& x)
+{
+	cout << "int _func2(T&& x): " << x << endl;
+	return 0;
+}
+
+// 解析参数,方法二: {} 数组
+template<class ...Args>
+void func2(Args... args)
+{
+	//int a[] = { (func1(args), 0)... };
+
+	int b[] = { _func2(args)... };
+}
+
 
 int main()
 {
-	func1();
-	func1(1);
-	func1(1, 'c', "string size");
-	func1(1, 15, "string size", "zhang");
+	//func1();
+	//func1(1);
+	//func1(1, 'c', "string size");
+	//func1(1, 15, "string size", "zhang");
+
+	func2(1, "cha", 987, 'c', 45.15);
+
 
 	return 0;
 }
