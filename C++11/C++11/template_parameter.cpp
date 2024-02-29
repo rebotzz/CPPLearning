@@ -45,15 +45,15 @@ void func2(Args... args)
 }
 
 
-int main()
-{
-	//func1();
-	//func1(1);
-	//func1(1, 'c', "string size");
-	//func1(1, 15, "string size", "zhang");
-
-	func2(1, "cha", 987, 'c', 45.15);
-
-
-	return 0;
-}
+//int main()
+//{
+//	//func1();
+//	//func1(1);
+//	//func1(1, 'c', "string size");
+//	//func1(1, 15, "string size", "zhang");
+//
+//	func2(1, "cha", 987, 'c', 45.15);
+//
+//
+//	return 0;
+//}
