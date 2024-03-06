@@ -150,40 +150,74 @@ public:
 //	return 0;
 //}
 
+//
+//int main()
+//{
+//	thread t;
+//	t = thread([]() {cout << "test\n" << endl; });
+//
+//	class A
+//	{
+//	public:
+//		static void af_static()
+//		{
+//			cout << "void af_static()" << endl;
+//		}
+//
+//		void af()
+//		{
+//			cout << "void af()" << endl;
+//		}
+//	};
+//
+//	thread t2(A::af_static);
+//	//function<void(void)> f1(A::af_static);
+//	function<void()> f1 = A::af_static;
+//	function<void(A)> f2 = &A::af;
+//	thread t3(f1);
+//	A aa;
+//	thread t4(f2, aa);
+//
+//
+//	t.join();
+//	t2.join();
+//	t3.join();
+//	t4.join();
+//
+//
+//	return 0;
+//}
 
+#include <cstdio>
 int main()
 {
-	thread t;
-	t = thread([]() {cout << "test\n" << endl; });
-
-	class A
+	cout << "test" << endl;
+	int a = 1;
+	char* pa = (char*) &a;
+	int b = 1 << 31;
+	char* pb = reinterpret_cast<char*>(&b);
+	//cout <<"ret: " << (*pa) << endl;	//打印失败
+	//cout << "pb: " << (*pb) << endl;
+	printf("pa: %d\n", *pa);
+	printf("pb: %d\n", *pb);
+	if (*pa == 1)
 	{
-	public:
-		static void af_static()
-		{
-			cout << "void af_static()" << endl;
-		}
+		cout << "小端: 底权值位在低地址" << endl;
+	}
+	else
+	{
+		cout << "大端: 底权值位在高地址" << endl;
+	}
 
-		void af()
-		{
-			cout << "void af()" << endl;
-		}
-	};
+	//cout << reinterpret_cast<char>(a) << endl;
 
-	thread t2(A::af_static);
-	//function<void(void)> f1(A::af_static);
-	function<void()> f1 = A::af_static;
-	function<void(A)> f2 = &A::af;
-	thread t3(f1);
-	A aa;
-	thread t4(f2, aa);
-
-
-	t.join();
-	t2.join();
-	t3.join();
-	t4.join();
-
+	//cout << "--------------------" << endl;
+	//string tmp;
+	//while (true)
+	//{
+	//	getline(cin, tmp);
+	//	cout << tmp << endl;
+	//}
 
 	return 0;
 }

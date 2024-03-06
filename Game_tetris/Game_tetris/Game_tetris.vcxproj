@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{d33a3c1d-89fa-4c2d-9b9d-7807a7fc08fc}</ProjectGuid>
-    <RootNamespace>C11</RootNamespace>
+    <ProjectGuid>{e6c3fd75-e683-48ae-b49f-a9cca573e561}</ProjectGuid>
+    <RootNamespace>Gametetris</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -127,17 +127,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="exception.cpp" />
-    <ClCompile Include="functional.cpp" />
-    <ClCompile Include="right_ref.cpp" />
-    <ClCompile Include="smartPtr.cpp" />
-    <ClCompile Include="template_parameter.cpp" />
-    <ClCompile Include="test.cpp" />
-    <ClCompile Include="thread.cc" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="list.h" />
-    <ClInclude Include="vector.h" />
+    <ClInclude Include="game.hpp" />
+    <ClInclude Include="move_cursor.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
