@@ -1,5 +1,5 @@
 #include "UnionFindSet.h"
-
+#include "Graph.h"
 using namespace std;
 
 
@@ -107,14 +107,70 @@ void testGraphTable()
 	g.print();
 }
 
+void testClass()
+{
+	class A
+	{
+	public:
+		void print()
+		{
+			cout << "hello" << endl;
+		}
+
+		void printA()	// 运行时报错
+		{
+			cout << _a << endl;
+		}
+		int _a;
+	};
+
+	// I think：this指针作为形参传递，而参数压栈传递，所以this指针在栈上，实际传递过程中需要用到寄存器，也在寄存器上
+	A* p = nullptr;		
+	p->print();
+	//p->printA();
+}
+
+void testGraphMintree()
+{
+	const char* str = "abcdefghi";
+	matrix::Graph<char, int> g(str, strlen(str));
+	g.addEdge('a', 'b', 4);
+	g.addEdge('a', 'h', 8);
+	//g.addEdge('a', 'h', 9);
+	g.addEdge('b', 'c', 8);
+	g.addEdge('b', 'h', 11);
+
+	g.addEdge('c', 'i', 2);
+	g.addEdge('c', 'f', 4);
+	g.addEdge('c', 'd', 7);
+	g.addEdge('d', 'f', 14);
+	g.addEdge('d', 'e', 9);
+	g.addEdge('e', 'f', 10);
+	g.addEdge('f', 'g', 2);
+	g.addEdge('g', 'h', 1);
+	g.addEdge('g', 'i', 6);
+	g.addEdge('h', 'i', 7);
+
+	g.print();
+
+	//matrix::Graph<char, int> mintree(str, strlen(str));
+	matrix::Graph<char, int> mintree;
+	//g.bruskal(mintree);
+
+	g.prim(mintree, 'a');
+	mintree.print();
+
+}
 
 int main()
 {
 	try
 	{
 		//testUnionFindSet();
-		testGraphMatrix();
+		//testGraphMatrix();
 		//testGraphTable();
+		//testClass();
+		testGraphMintree();
 	}
 	catch (const exception& e)
 	{
