@@ -1,5 +1,6 @@
 #include "UnionFindSet.h"
 #include "Graph.h"
+#include "BTree.h"
 #include <string>
 using namespace std;
 
@@ -333,34 +334,61 @@ void testFloydWarshall()
 
 }
 
-int main()
+
+//int main()
+//{
+//	try
+//	{
+//		//testUnionFindSet();
+//		//testGraphMatrix();
+//		//testGraphTable();
+//		//testClass();
+//		//testGraphMintree();
+//
+//		//testDijkstra();
+//		//testBellmanFord();
+//		//testFloydWarshall();
+//
+//	}
+//	catch (const exception& e)
+//	{
+//		cout << e.what() << endl;
+//	}
+//	catch (const string& str)
+//	{
+//		cout << str << endl;
+//	}
+//	catch (...)
+//	{
+//		cout << "未知异常" << endl;
+//	}
+//
+//	return 0;
+//}
+
+
+
+void testBTree()
 {
-	try
-	{
-		//testUnionFindSet();
-		//testGraphMatrix();
-		//testGraphTable();
-		//testClass();
-		//testGraphMintree();
+	//BTree<int, int, 3> bt;
+	//for (int i = 1; i < 10; ++i)
+	//{
+	//	bt.Insert(i, i);
+	//}
 
-		//testDijkstra();
-		//testBellmanFord();
-		testFloydWarshall();
+	//bt.PrintLevel();
 
-	}
-	catch (const exception& e)
+	int arr[] = { 53, 139,75,49,145,36,50,47,101 };
+	BTree<int, int, 3> bt;
+	for (auto e : arr)
 	{
-		cout << e.what() << endl;
+		bt.Insert(e, e);
 	}
-	catch (const string& str)
-	{
-		cout << str << endl;
-	}
-	catch (...)
-	{
-		cout << "未知异常" << endl;
-	}
-
-	return 0;
+	bt.PrintLevel();
 }
 
+int main()
+{
+	testBTree();
+
+}
