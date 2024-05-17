@@ -1,5 +1,6 @@
 #include "UnionFindSet.h"
 #include "Graph.h"
+#include <string>
 using namespace std;
 
 
@@ -362,3 +363,4 @@ int main()
 
 	return 0;
 }
+
