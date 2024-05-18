@@ -1,6 +1,7 @@
 #include "UnionFindSet.h"
 #include "Graph.h"
 #include "BTree.h"
+#include "SkipList.h"
 #include <string>
 using namespace std;
 
@@ -370,25 +371,94 @@ void testFloydWarshall()
 
 void testBTree()
 {
-	//BTree<int, int, 3> bt;
-	//for (int i = 1; i < 10; ++i)
-	//{
-	//	bt.Insert(i, i);
-	//}
+	BTree<int, 3> bt;
+	for (int i = 1; i < 10; ++i)
+	{
+		bt.Insert(i);
+	}
 
+	bt.PrintLevel();
+
+	//int arr[] = { 53, 139,75,49,145,36,50,47,101 };
+	//BTree<int, 3> bt;
+	//for (auto e : arr)
+	//{
+	//	bt.Insert(e);
+	//}
 	//bt.PrintLevel();
 
-	int arr[] = { 53, 139,75,49,145,36,50,47,101 };
-	BTree<int, int, 3> bt;
+	bt.PrintInOrder();
+}
+
+void testSkipLists()
+{
+	//Skiplist<int, 32> sl;
+	//for (int i = 1; i < 10; ++i)
+	//{
+	//	cout << i << " ";
+	//	sl.Insert(i);
+	//}
+	//cout << endl;
+	//sl.Print();
+
+	//Skiplist<int, 32> sl;
+	//int max = 1;
+	//for (int i = 0; i < 90; ++i)
+	//{
+	//	int tmp = sl.RandomLevel();
+	//	cout << tmp << " ";
+	//	if (tmp > max)
+	//		max = tmp;
+	//}
+	//cout << "max: " << max << endl;
+	//cout << endl;
+
+	Skiplist<int, 32> sl;
+	int arr[] = { 3,6,7,9,12,17,19,21,25,26 };
 	for (auto e : arr)
 	{
-		bt.Insert(e, e);
+		cout << "insert: " << e << endl;
+		sl.Insert(e);
+		sl.Print();
+		cout << "--------------------------------" << endl;
 	}
-	bt.PrintLevel();
+	cout << endl;
+	cout << endl;
+
+	int arr2[] = { 17,7,21 };
+	for (auto e : arr2)
+	{
+		cout << "erase: " << e << endl;
+		sl.Erase(e);
+		sl.Print();
+		cout << "--------------------------------" << endl;
+	}
+
+
+	//OJ::Skiplist sl;
+	//int arr[] = { 3,6,7,9,12,17,19,21,25,26 };
+	//for (auto e : arr)
+	//{
+	//	cout << "insert: " << e << endl;
+	//	sl.add(e);
+	//	sl.Print();
+	//	cout << "--------------------------------" << endl;
+	//}
+	//cout << endl;
+	//cout << endl;
+
+	//int arr2[] = { 17,7,21 };
+	//for (auto e : arr2)
+	//{
+	//	cout << "erase: " << e << endl;
+	//	sl.erase(e);
+	//	sl.Print();
+	//	cout << "--------------------------------" << endl;
+	//}
 }
 
 int main()
 {
-	testBTree();
-
+	//testBTree();
+	testSkipLists();
 }
