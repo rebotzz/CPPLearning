@@ -457,8 +457,8 @@ void testSkipLists()
 	//}
 }
 
-int main()
-{
-	//testBTree();
-	testSkipLists();
-}
+//int main()
+//{
+//	//testBTree();
+//	testSkipLists();
+//}
