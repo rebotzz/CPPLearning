@@ -83,18 +83,84 @@ using namespace std;
 //	return 0;
 //}
 
+//int main()
+//{
+//	//const char *pchar = "123456aavb";
+//	//char str[] = "123456aavb";
+//	//cout << sizeof(pchar) << endl;	// 指针大小
+//	//cout << sizeof(str) << endl;	// 数组大小
+//
+//	vector<int> arr = { 1,2,3,4,5 };
+//	//reverse(arr.begin(), arr.begin() + 3);
+//	reverse(arr.begin(), arr.begin() + 2);
+//	for (auto e : arr) cout << e << " ";
+//	cout << endl;
+//
+//	return 0;
+//}
+
+
+vector<vector<int>> changeMat(vector<vector<int>> mat, int x, int y)
+{
+    int n = mat.size();
+    mat[x][y] = 1;
+    // 横竖, 斜边
+    for (int i = 0; i < n; ++i)
+    {
+        for (int j = 0; j < n; ++j)
+        {
+            if (i == x) mat[i][j] = 1;
+            if (j == y) mat[i][j] = 1;
+        }
+    }
+
+    // 左斜下起始点
+    int left_x = x, left_y = y;
+    while (left_x > 0 && left_y > 0)
+    {
+        left_x--;
+        left_y--;
+    }
+    while (left_x < n && left_y < n)
+    {
+        printf("left_x: %d, left_y: %d\n", left_x, left_y);
+        mat[left_x++][left_y++] = 1;
+    }
+
+    // 右斜下起始点
+    int right_x = x, right_y = y;
+    while (right_x > 0 && right_y < n - 1)
+    {
+        right_x--;
+        right_y++;
+    }
+    while (right_x < n && right_y >= 0)
+    {
+        printf("right_x: %d, right_y: %d\n", right_x, right_y);
+        mat[right_x++][right_y--] = 1;
+    }
+
+    return mat;
+}
+
+void printMat(const vector<vector<int>> mat)
+{
+    for (auto& v : mat)
+    {
+        for (auto e : v) cout << e << " ";
+        cout << endl;
+    }
+    cout << endl;
+}
+
 int main()
 {
-	//const char *pchar = "123456aavb";
-	//char str[] = "123456aavb";
-	//cout << sizeof(pchar) << endl;	// 指针大小
-	//cout << sizeof(str) << endl;	// 数组大小
+    vector<vector<int>> _mat;
+    int n = 4;
+    _mat.resize(n, vector<int>(n, 0));
+    printMat(_mat);
 
-	vector<int> arr = { 1,2,3,4,5 };
-	//reverse(arr.begin(), arr.begin() + 3);
-	reverse(arr.begin(), arr.begin() + 2);
-	for (auto e : arr) cout << e << " ";
-	cout << endl;
+    printMat(changeMat(_mat, 2, 2));
 
 	return 0;
 }
