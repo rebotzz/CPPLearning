@@ -31,4 +31,11 @@ tips: 我code慢,很大程度上因为没有在纸上缕清楚细节,得改
 ### MySQL学习
 - 1.mysql安装,数据库和表的创建/修改/查询/删除,数据库变量类型;
 - 2.主键, 唯一键, 外键; (关系 + 约束) 保证尽量不出错; not null, default, and, where, delete from;
+- 3.表的增删查改(CRUD):
+```
+条件判断 where,  
+排序 order by [asc/desc], 
+分组 group by, 分组->分表: 可以看作一切皆表
+聚合 max(),min(),avg(), having, 语句执行的先后顺序 
+```
 
