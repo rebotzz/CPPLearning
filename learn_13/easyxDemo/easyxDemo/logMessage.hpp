@@ -1,4 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
 #pragma once 
 #include <cstdio>
 #include <cstring>
@@ -40,7 +39,7 @@ void logMessage(enum LogLevel level, const char* format, ...) // 可变参数
     char userBuffer[1024] = { 0 };
     va_list args;
     va_start(args, format); // 初始化
-    _vsnprintf(userBuffer, sizeof userBuffer, format, args); // 格式化输入
+    _vsnprintf_s(userBuffer, sizeof userBuffer, format, args); // 格式化输入
     va_end(args);
     // todo: 加入错误码和错误码描述
 

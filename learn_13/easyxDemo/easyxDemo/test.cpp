@@ -1,5 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
-
 #include <iostream>
 #include <vector>
 #include <ctime>
@@ -35,11 +33,12 @@ void test1()
 	logMessage(ERROR, "code_file: %s, line: %d\n", __FILEW__, __LINE__);
 }
 
-int main()
-{
-	test1();
+//int main()
+//{
+//	test1();
+//
+//	func(4, 1, 2, 3, 4);
+//
+//	return 0;
+//}
 
-	func(4, 1, 2, 3, 4);
-
-	return 0;
-}

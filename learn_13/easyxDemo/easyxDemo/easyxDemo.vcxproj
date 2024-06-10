@@ -127,8 +127,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="test1.cpp" />
     <ClCompile Include="test.cpp" />
+    <ClCompile Include="tic_tac_toe .cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="logMessage.hpp" />
