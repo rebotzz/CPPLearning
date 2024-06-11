@@ -59,6 +59,13 @@ c.MyISM索引和具体的数据是分离的,叶子节点存储磁盘位置
 Innodb主键索引和具体数据不分离,叶子节点存储具体数据; 普通索引叶子节点存储主键值
 ```
 - 7.事物:原子性, 一致性, 隔离性, 持久性
+```
+隔离级别
+read uncommited, read commited, repeated read, serializable;
+多版本控制MVCC, 事物ID, read view, 快照读, 当前读
+undo log, 版本链
+```
+
 
 
 
