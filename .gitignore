@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 # documents
 /x64
 
@@ -11,6 +12,13 @@ myapp_window/
 /myapp_window
 
 >>>>>>> w11/main
+=======
+#忽略.vs文件夹
+.vs/
+/openai_cpp_test1
+/PythonApplication1
+
+>>>>>>> w12/main
 # Prerequisites
 *.d
 
