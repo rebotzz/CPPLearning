@@ -1,9 +1,16 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # documents
 /x64
 
 =======
 >>>>>>> w10/main
+=======
+#忽略.vs文件夹
+myapp_window/
+/myapp_window
+
+>>>>>>> w11/main
 # Prerequisites
 *.d
 
