@@ -30,3 +30,69 @@
 *.exe
 *.out
 *.app
+
+
+# 忽略.vs文件夹 x64文件夹
+.vs/
+x64/
+/x64
+# 忽略vs的一些文件
+*.vcxproj.user
+*.vcxproj.filters
+
+
+# 以下是github 提供的 c 模板
+
+# Prerequisites
+*.d
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Linker output
+*.ilk
+*.map
+*.exp
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+#我保留了.exe文件
+#*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
