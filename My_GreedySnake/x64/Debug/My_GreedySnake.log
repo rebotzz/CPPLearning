@@ -1,0 +1,4 @@
+﻿  snake.c
+D:\develop\code\git-repository\week_6\My_GreedySnake\snake.c(268,37): warning C4090: “函数”: 不同的“const”限定符
+D:\develop\code\git-repository\week_6\My_GreedySnake\snake.c(268,30): warning C4113: “int (__cdecl *)(void *,void *)”和“_CoreCrtNonSecureSearchSortCompareFunction”的参数列表不同
+  My_GreedySnake.vcxproj -> D:\develop\code\git-repository\week_6\My_GreedySnake\x64\Debug\My_GreedySnake.exe

@@ -3,6 +3,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 # documents
 /x64
 
@@ -37,6 +38,8 @@ myapp_window/
 
 # 以下是github 提供的 c 模板
 
+=======
+>>>>>>> w6/main
 # Prerequisites
 *.d
 
@@ -50,12 +53,16 @@ myapp_window/
 *.ilk
 *.map
 *.exp
+<<<<<<< HEAD
 >>>>>>> w5/main
+=======
+>>>>>>> w6/main
 
 # Precompiled Headers
 *.gch
 *.pch
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 # Compiled Dynamic libraries
 *.so
@@ -77,6 +84,8 @@ myapp_window/
 *.out
 *.app
 =======
+=======
+>>>>>>> w6/main
 # Libraries
 *.lib
 *.a
@@ -90,8 +99,12 @@ myapp_window/
 *.dylib
 
 # Executables
+<<<<<<< HEAD
 #我保留了.exe文件
 #*.exe
+=======
+*.exe
+>>>>>>> w6/main
 *.out
 *.app
 *.i*86
@@ -112,4 +125,7 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+<<<<<<< HEAD
 >>>>>>> w5/main
+=======
+>>>>>>> w6/main
