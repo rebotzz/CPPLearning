@@ -4,6 +4,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 # documents
 /x64
 
@@ -40,6 +41,8 @@ myapp_window/
 
 =======
 >>>>>>> w6/main
+=======
+>>>>>>> w8/main
 # Prerequisites
 *.d
 
@@ -54,14 +57,18 @@ myapp_window/
 *.map
 *.exp
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> w5/main
 =======
 >>>>>>> w6/main
+=======
+>>>>>>> w8/main
 
 # Precompiled Headers
 *.gch
 *.pch
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 # Compiled Dynamic libraries
@@ -86,6 +93,8 @@ myapp_window/
 =======
 =======
 >>>>>>> w6/main
+=======
+>>>>>>> w8/main
 # Libraries
 *.lib
 *.a
@@ -100,11 +109,15 @@ myapp_window/
 
 # Executables
 <<<<<<< HEAD
+<<<<<<< HEAD
 #我保留了.exe文件
 #*.exe
 =======
 *.exe
 >>>>>>> w6/main
+=======
+*.exe
+>>>>>>> w8/main
 *.out
 *.app
 *.i*86
@@ -126,6 +139,9 @@ Module.symvers
 Mkfile.old
 dkms.conf
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> w5/main
 =======
 >>>>>>> w6/main
+=======
+>>>>>>> w8/main
