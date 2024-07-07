@@ -1,3 +1,0 @@
-﻿  day_1.c
-MSVCRT.lib(exe_main.obj) : error LNK2001: 无法解析的外部符号 main
-D:\develop\code\git-repository\week_5\x64\Release\week_5.exe : fatal error LNK1120: 1 个无法解析的外部命令

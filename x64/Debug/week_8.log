@@ -1,6 +1,0 @@
-﻿  day_2.5.c
-D:\develop\code\git-repository\week_8\queue.h(17,23): warning C4091: “extern ”: 没有声明变量时忽略“TreeNode”的左侧
-D:\develop\code\git-repository\week_8\day_2.5.c(21,9): warning C4033: “isCompleteTree”必须返回值
-D:\develop\code\git-repository\week_8\day_2.5.c(57): warning C4715: “isCompleteTree”: 不是所有的控件路径都返回值
-D:\develop\code\git-repository\week_8\day_2.5.c(108): warning C4715: “TreeNodeCountK”: 不是所有的控件路径都返回值
-  week_8.vcxproj -> D:\develop\code\git-repository\week_8\x64\Debug\week_8.exe
