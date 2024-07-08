@@ -1,9 +1,0 @@
-﻿  snake.c
-D:\develop\code\git-repository\week_6\My_GreedySnake\snake.c(268,37): warning C4090: “函数”: 不同的“const”限定符
-D:\develop\code\git-repository\week_6\My_GreedySnake\snake.c(268,30): warning C4113: “int (__cdecl *)(void *,void *)”和“_CoreCrtNonSecureSearchSortCompareFunction”的参数列表不同
-  正在生成代码
-  0 of 25 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
-  已完成代码的生成
-  My_GreedySnake.vcxproj -> D:\develop\code\git-repository\week_6\My_GreedySnake\x64\Release\My_GreedySnake.exe
