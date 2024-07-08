@@ -1,0 +1,2 @@
+D:\develop\code\git-repository\week_8\learn_cpp\cpp_using_c\C\C\x64\Debug\C.lib
+D:\develop\code\git-repository\week_8\learn_cpp\cpp_using_c\C\x64\Debug\C.lib
