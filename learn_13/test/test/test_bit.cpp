@@ -38,9 +38,9 @@ void printBit(int x) {
 //}
 
 
-int main()
-{
-	printf("test: %d", string("aaa") > string("a"));
-
-	return 0;
-}
+//int main()
+//{
+//	printf("test: %d", string("aaa") > string("a"));
+//
+//	return 0;
+//}
