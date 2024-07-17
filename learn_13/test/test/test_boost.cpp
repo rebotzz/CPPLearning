@@ -39,16 +39,23 @@ void cal()
 	setorigin(length / 2, length / 2);
 
 	// 初始化变量
-	double b1 = 0.1e-3;		   // 直线L5与水平方向的距离    喷孔直径?
+	double b1 = 0.1e-3;		   // 直线L5与y轴截距    喷孔直径?
 	double lw = 108e-3;		   // 碗口径
 	double h = 23.9e-3;		   // 凹坑深度
 	double r2 = 19e-3;		   // 凹坑半径
 	double volume_set = 4.3747866256303e-4;   // 给定体积
 
-	// 迭代步长, 初值, 要求精度
+	// 迭代步长, 迭代初值, 要求精度
 	double step = 1e-3;
 	double begin_val = 15e-3;
 	double precision = 0.01;
+
+	printf("输入(国际单位):\n直线L5与y轴截距, 碗口径, 凹坑深度, 凹坑半径, 给定体积: ");
+	cin >> b1 >> lw >> h >> r2 >> volume_set;
+	printf("以R2圆心坐标x作为迭代变量\n输入(国际单位):\n迭代步长, 迭代初值, 要求精度(误差百分比):");
+	cin >> step >> begin_val >> precision;
+
+	
 
 	// 圆R2方程f2 = Eq((x - r2x) * *2 + (y - r2y) * *2 - r2 * *2, 0) -> 未知:r2x
 	double r2x = 0, r2y = h - r2;	  // 凹坑圆心纵坐标
@@ -79,7 +86,7 @@ void cal()
 			double discriminant = B * B - 4 * A * C;
 
 			if (discriminant < 0) {
-				std::cout << "没有实数解" << std::endl;
+				printf("没有实数解\n");
 				return { 0, 0 };
 			}
 			else {
@@ -146,7 +153,7 @@ void cal()
 		auto result2 = integrator.integrate(fff2, inter12, inter23);
 		auto result3 = integrator.integrate(fff3, inter23, r1x);
 		if (result1 < 0 || result2 < 0 || result3 < 0) { // 如果积分有负数
-			cout << "error, 积分有负数" << endl;
+			printf("error, 积分有负数\n");
 			continue;
 		}
 		volume_cal = result1 + result2 + result3;
@@ -154,7 +161,7 @@ void cal()
 
 
 		// 查看三条曲线
-		cout << "\n\nr2x: " << r2x << endl;
+		printf("\n\nr2x: %lf\n", r2x);
 		printf("beta: %lf°斜率: %lf\n", (beta * 180 / M_PI), k);
 		printf("[直线L4] f1: y = %lf * x + %lf\n", k, b1);
 		printf("[圆R2] f2: (y - %lf)^2 + (x - %lf)^2 = (%lf)^2\n", r2y, r2x, r2);
@@ -202,8 +209,8 @@ void cal()
 		}
 
 
-		if (relerr < 10 * precision)
-			arr_relerr.push_back({ beta * 180 / M_PI, relerr });
+		if (relerr < 100 * precision)
+			arr_relerr.push_back({ r2x, relerr });
 
 		if (relerr < precision)
 		{
@@ -222,11 +229,12 @@ void graphErr()
 	outtextxy(0, length / 2 - 20, _T("Y"));
 	outtextxy(length / 2 - 20, 0, _T("X"));
 
-
 	printf("\n误差曲线采样数据个数: %d\n", arr_relerr.size());
-	double scale_x = 0.1, scale_y = 5;
+	double scale_x = 2e3, scale_y = 5e2;
 	double prex = 0, prey = 0;
 	double minx = INT_MAX, miny = INT_MAX;
+	setlinecolor(RGB(0, 150, 150));
+	outtextxy(0, length / 4, _T("相对误差曲线"));
 	for (auto kv : arr_relerr)
 	{
 		if (kv.second < miny) {
@@ -234,10 +242,16 @@ void graphErr()
 		}
 		printf("[%lf, %lf] ", kv.first, kv.second);
 		double x = kv.first * scale_x, y = kv.second * scale_y;
-		solidcircle(x, y, 1);
+		solidcircle(x, y, 2);
+		if (prex == 0 && 0 == prey)
+		{
+			prex = x, prey = y;
+			continue;
+		}
 		line(prex, prey, x, y);
 		prex = x, prey = y;
 	}
+	setlinecolor(RGB(255, 255, 255));
 
 	printf("\n误差最小值点: [r2x: %lf, error: %lf]\n", minx, miny);
 	system("pause");
@@ -257,7 +271,6 @@ int main()
 
 	cal();
 	graphErr();
-	//test();
 
 	system("pause");
 	closegraph();
