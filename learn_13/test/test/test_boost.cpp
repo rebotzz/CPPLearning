@@ -258,22 +258,24 @@ void graphErr()
 }
 
 
-int main()
-{
-	initgraph(length, length);
-	setorigin(length / 2, length / 2);
 
-	// 绘制坐标轴
-	line(-length / 2, 0, length / 2, 0);
-	line(0, -length / 2, 0, length / 2);
-	outtextxy(0, length / 2 - 20, _T("Y"));
-	outtextxy(length / 2 - 20, 0, _T("X"));
 
-	cal();
-	graphErr();
-
-	system("pause");
-	closegraph();
-
-	return 0;
-}
+//int main()
+//{
+//	initgraph(length, length);
+//	setorigin(length / 2, length / 2);
+//
+//	// 绘制坐标轴
+//	line(-length / 2, 0, length / 2, 0);
+//	line(0, -length / 2, 0, length / 2);
+//	outtextxy(0, length / 2 - 20, _T("Y"));
+//	outtextxy(length / 2 - 20, 0, _T("X"));
+//
+//	cal();
+//	graphErr();
+//
+//	system("pause");
+//	closegraph();
+//
+//	return 0;
+//}

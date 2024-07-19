@@ -30,5 +30,11 @@
     <ClCompile Include="test_boost.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="test_assert.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="test_interplote.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
