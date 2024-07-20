@@ -279,3 +279,34 @@ void graphErr()
 //
 //	return 0;
 //}
+
+
+#include <boost/math/tools/roots.hpp>
+
+double f(double x) {
+	return x * x - 2;
+}
+
+double df(double x) {
+	return 2 * x;
+}
+
+//int main() {
+//	double guess = 1.0; // 初始猜测
+//	//double root = boost::math::tools::halley_iterate(f, guess, 1.0, 10.0, 15);
+//	//double root = boost::math::tools::bisect(f, 0.0, 10.0, 15);
+//	//std::cout << "Root found: " << root << std::endl;
+//
+//	double a = 1;
+//	double b = 3;
+//	double tolerance = 1e-6;
+//	auto tol = [](double min, double max) { return abs(min - max) < 1e-4; };
+//
+//	// 调用bisect函数
+//	auto root = boost::math::tools::bisect(f, a, b, tol);
+//	printf("root: %lf %lf\n", root.first, root.second);
+//
+//	//double root1 = boost::math::tools::newton_raphson_iterate(df, guess, 1.0, 10.0, 15);
+//	//std::cout << "Root1 found: " << root1 << std::endl;
+//	return 0;
+//}

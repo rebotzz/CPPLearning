@@ -15,16 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="oj1.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="oj_math.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="oj2.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="oj_dp.cpp">
+    <ClInclude Include="extraplotion.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="graph.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

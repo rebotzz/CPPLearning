@@ -140,6 +140,7 @@
     <ClCompile Include="test_boost.cpp" />
     <ClCompile Include="test_dfs.cpp" />
     <ClCompile Include="test_interplote.cpp" />
+    <ClCompile Include="test_xlnt.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

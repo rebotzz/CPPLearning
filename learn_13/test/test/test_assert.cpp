@@ -17,7 +17,7 @@ void f(int x) {
 
 
 //#include <xlnt/xlnt.hpp>
-//
+//#include <ctime>
 //int main()
 //{
 //    xlnt::workbook wb;
@@ -27,6 +27,22 @@ void f(int x) {
 //    ws.cell("C3").formula("=RAND()");
 //    ws.merge_cells("C3:C4");
 //    ws.freeze_panes("B2");
-//    wb.save("example.xlsx");
+//
+//    srand(time(nullptr));
+//    vector<int> arr1(20);
+//    vector<double> arr2(24);
+//    for (auto& e : arr1) e = rand() % 1000;
+//    for (auto& e : arr2) e = rand() % 1000 + 0.001 * (rand() % 1000);
+//
+//    for (int i = 1; i < arr1.size(); ++i) {
+//        ws.cell(i, 5).value(arr1[i]);   // 第i列,第5行
+//    }
+//
+//    for (int i = 1; i < arr2.size(); ++i) {
+//        ws.cell(i, 6).value(arr2[i]);   // 第i列,第5行
+//
+//    }
+//
+//    wb.save("test.xlsx");
 //	return 0;
 //}

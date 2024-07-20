@@ -1,5 +1,6 @@
 #pragma once
 
+//#include <xlnt/xlnt.hpp>
 #include <iostream>
 #include <vector>
 #include <string>
@@ -7,7 +8,6 @@
 #include <sstream>
 #include <easyx.h>
 #include <boost/math/interpolators/barycentric_rational.hpp>
-//#include <xlnt/xlnt.hpp>
 
 #undef max
 #undef min
@@ -259,16 +259,18 @@ public:
 
 };
 
-int main()
-{
-	MultiTurbineCharLine mtl(8000);
-	mtl.readData("data.txt");
-	mtl.getgetSurgeLine();
-	mtl.drawGraph();
-
-
-	system("pause");
-	mtl.closeGraph();
-
-	return 0;
-}
+//int main()
+//{
+//	//MultiTurbineCharLine mtl(8000);
+//	//mtl.readData("data.txt");
+//	//mtl.getgetSurgeLine();
+//	//mtl.drawGraph();
+//
+//
+//	//system("pause");
+//	//mtl.closeGraph();
+//
+//
+//
+//	return 0;
+//}
