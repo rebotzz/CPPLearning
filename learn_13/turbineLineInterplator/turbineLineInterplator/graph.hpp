@@ -103,23 +103,24 @@ public:
 			double actualX = x / _scaleX + _minX;
 			line(x, 0, x, -10);
 			TCHAR s[16] = { 0 };
-			_stprintf_s(s, _T("%.0f"), actualX);
+			_stprintf_s(s, _T("%.2f"), actualX);
 			outtextxy(x, 10, s);
 
 			double y = xyLength * i / scaleNum;
 			double actualY = y / _scaleY + _minY;
 			line(0, -y, 10, -y);
-			_stprintf_s(s, _T("%.1f"), actualY);
+			_stprintf_s(s, _T("%.2f"), actualY);
 			outtextxy(-_margin + 5, -y, s);
 		}
 	}
 
-	void drawLine(const std::vector<double>& arrx, const std::vector<double>& arry, TCHAR s[])
+	//void drawLine(const std::vector<double>& arrx, const std::vector<double>& arry, TCHAR s[])
+	void drawLine(const std::vector<double>& arrx, const std::vector<double>& arry, std::wstring str)
 	{
 		// 绘制y=f(x)线
 		double prex = 0, prey = 0;
 		int size = arrx.size();
-		for (int i = 1; i < size; ++i) {
+		for (int i = 0; i < size; ++i) {
 			double x = (arrx[i] - _minX) * _scaleX, y = (arry[i] - _minY) * _scaleY;
 			solidcircle(x, -y, 2);
 			if (0 == prex && 0 == prey) {
@@ -133,10 +134,10 @@ public:
 		// 关于曲线描述信息
 		double xyLength = _length - _margin;
 		if (_colorID % 2 == 0) {
-			outtextxy(40, -xyLength + _colorID * 10, s);
+			outtextxy(40, -xyLength + _colorID * 10, str.c_str());
 		}
 		else {
-			outtextxy(140, -xyLength + (_colorID - 1) * 10, s);
+			outtextxy(150, -xyLength + (_colorID - 1) * 10, str.c_str());
 		}
 
 		// 改变下一条线的颜色
