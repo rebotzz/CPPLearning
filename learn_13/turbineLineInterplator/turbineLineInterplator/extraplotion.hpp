@@ -1,6 +1,6 @@
-#pragma execution_character_set("utf-8")
+﻿//#pragma execution_character_set("utf-8")	// wstring不方便使用,算了
 #pragma once
-#include <xlnt/xlnt.hpp>	// 这个会与别的头文件冲突,放在最开始
+#include <xlnt/xlnt.hpp>					// 这个会与别的头文件冲突,放在最开始
 
 #include <iostream>
 #include <vector>
@@ -22,6 +22,7 @@ using std::cerr;
 using std::endl;
 using std::vector;
 using std::string;
+using std::wstring;
 using std::move;
 
 // 常数定义
@@ -30,10 +31,11 @@ static const double PI = acos(-1.0);			// 圆周率Π
 static const double g_adiabaticIndex = 1.667;	// 绝热指数 暂定1.667
 
 // 日志
-#define LOG(msg) log(msg, __FILE__, __LINE__)
-void log(string msg, string file, int line)
+#define LOG(msg) Log(msg, __FILE__, __LINE__)
+void Log(string msg, string file, int line)
 {
 	printf("LOG: [%s][file: %s][line: %d]\n", msg.c_str(), file.c_str(), line);
+
 }
 
 
@@ -300,7 +302,7 @@ public:
 		_coord.drawCoordinate();
 		for (auto& charline : _tclines) {
 			std::wstring s = L"速度:";
-			s += std::to_wstring(charline._speed);
+			s += std::to_wstring(int(charline._speed));
 			if (press) _coord.drawLine(charline._flows, charline._pressure_ratios, s);
 			if (effi) _coord.drawLine(charline._flows, charline._efficiencies, s);
 		}
@@ -321,7 +323,7 @@ public:
 		// 绘制相似理论外推特性线
 		for (auto& charline : _tclines_new) {
 			std::wstring s = L"外推速度:";
-			s += std::to_wstring(charline._speed);
+			s += std::to_wstring(int(charline._speed));
 			if (press) _coord.drawLine(charline._flows, charline._pressure_ratios, s);
 			if (effi) _coord.drawLine(charline._flows, charline._efficiencies, s);
 		}

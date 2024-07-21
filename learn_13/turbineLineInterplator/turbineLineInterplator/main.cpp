@@ -109,11 +109,10 @@ int main()
 {
 	try
 	{
-		//string filename = "text";
-		//std::ofstream output(filename, std::ios::out | std::ios::trunc);
-		
 		//test1();
 		test2();
+
+		cout << "ÄãºÃ" << endl;
 	}
 	catch (const std::exception& e)
 	{

@@ -114,8 +114,8 @@ public:
 		}
 	}
 
-	//void drawLine(const std::vector<double>& arrx, const std::vector<double>& arry, TCHAR s[])
 	void drawLine(const std::vector<double>& arrx, const std::vector<double>& arry, std::wstring str)
+	//void drawLine(const std::vector<double>& arrx, const std::vector<double>& arry, TCHAR s[])
 	{
 		// ªÊ÷∆y=f(x)œﬂ
 		double prex = 0, prey = 0;
