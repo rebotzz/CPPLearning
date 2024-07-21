@@ -109,10 +109,10 @@ int main()
 {
 	try
 	{
-		//test1();
-		test2();
-
-		cout << "你好" << endl;
+		setlocale(LC_ALL, "chs");//设置wcout输出中文
+		std::wcout.imbue(std::locale("Chinese-simplified_China.936"));
+		MultiTurbineCharLine_PreRotations mtlr(8000);
+		mtlr.solution();
 	}
 	catch (const std::exception& e)
 	{

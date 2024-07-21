@@ -1,7 +1,7 @@
-﻿//#pragma execution_character_set("utf-8")	// wstring不方便使用,算了
+﻿//#pragma execution_character_set("utf-8")	// 麻烦,算了
 #pragma once
 #include <xlnt/xlnt.hpp>					// 这个会与别的头文件冲突,放在最开始
-
+#include <locale>
 #include <iostream>
 #include <vector>
 #include <string>
@@ -15,10 +15,10 @@
 
 #undef max
 #undef min
-
 using std::cin;
 using std::cout;
 using std::cerr;
+using std::wcout;
 using std::endl;
 using std::vector;
 using std::string;
@@ -35,7 +35,6 @@ static const double g_adiabaticIndex = 1.667;	// 绝热指数 暂定1.667
 void Log(string msg, string file, int line)
 {
 	printf("LOG: [%s][file: %s][line: %d]\n", msg.c_str(), file.c_str(), line);
-
 }
 
 
@@ -52,12 +51,6 @@ public:
 	double _surge_pressure_ratio = 0.0;			// 喘震压比
 };
 
-//// 压气机喘震流量计算	bug: 不正确, 弃用
-//inline double getSurgeFlow(double speed_operating, double speed_design)
-//{
-//	return 1.225 * pow(((1 - (0.1576 * PI - 0.1418) * (1 - speed_operating / speed_design)) / (1 - 1.4805 * PI + 0.5854 * PI * PI)), 2);
-//}
-
 // 不同转速speed的特性线
 class MultiTurbineCharLine
 {
@@ -68,6 +61,7 @@ private:
 		// todo待优化: 每个特性线自变量都是flows, 都一样,数据冗余
 	vector<TurbineCharLine> _tclines;							// 已知数据,已有的特性线
 	double _speed_design = 0.0;									// 设计转速
+	string _preRotation = "预旋";
 
 	std::shared_ptr<Interpolator> _surge_speedRatio_flow_ptr;	// 插值得到:(运行速度/设计速度)-喘震流量
 	std::shared_ptr<Interpolator> _surge_flow_pressRatio_ptr;	// 插值得到:喘震流量-喘震压比
@@ -84,13 +78,12 @@ public:
 
 public:
 	MultiTurbineCharLine(double speed_design = 8000, int length = 800) : _speed_design(speed_design)
-	{
-
-	}
+	{}
 
 	void setSpeedDesign(double speed_design) { _speed_design = speed_design; }
 	vector<TurbineCharLine>& getTClines() { return _tclines; }
 	vector<TurbineCharLine>& getTClinesNew() { return _tclines_new; }
+	string& preRotation() { return _preRotation; }
 
 	// 求解堵塞(喘震)边界线
 	void getSurgeLine()
@@ -119,7 +112,6 @@ public:
 				}
 				catch (const std::exception& e)
 				{
-
 					LOG("求根出错, 速度: " + std::to_string(charline._speed));
 					cout << e.what() << endl;
 					return 0.0;
@@ -240,7 +232,7 @@ public:
 	}
 
 	// 其余曲线绘制: x-y关系曲线
-	void drawGraphLine(const vector<double>& arrx, const vector<double>& arry, TCHAR comment[], bool pause = false, int length = 800)
+	void drawGraphLine(const vector<double>& arrx, const vector<double>& arry, wstring comment, bool pause = false, int length = 800)
 	{
 		// 绘制曲线
 		Coordinate _coord(length);
@@ -271,7 +263,7 @@ public:
 	}
 
 	// 流量-压比 or 流量-效率
-	void drawGraph(int option = FLOW | PRESS, bool pause = false, int length = 800)
+	void drawGraph(int option = FLOW | PRESS, std::wstring filename = L"", bool pause = false, int length = 800)
 	{
 		// 绘制曲线
 		Coordinate _coord(length);
@@ -283,16 +275,17 @@ public:
 		_coord.setxScope(_tclines[0]._flows[0], _tclines[0]._flows.back());
 
 		bool press = false, effi = false;
-		std::wstring imagename;
+		std::wstring imagename = L"./outdata/image/";
+		imagename += filename;
 		if ((option & FLOW) && (option & PRESS)) {
 			_coord.setyScope(1, 3);	// 压比范围大概 1 ~ 3
 			press = true;
-			imagename = L"流量-压比.jpg";
+			imagename += L"流量-压比.jpg";
 		}
 		else if ((option & FLOW) && (option & EFFICIENT)) {
 			_coord.setyScope(0, 1);	// 效率范围大概 0 ~ 1
 			effi = true;
-			imagename = L"流量-效率.jpg";
+			imagename += L"流量-效率.jpg";
 		}
 		else {
 			LOG("选项错误");
@@ -310,14 +303,13 @@ public:
 		// 绘制喘震边界线
 		vector<double> surgeX, surgeY;
 		for (auto& charline : _tclines) {
-			if (charline._surge_flow != 0) {	// 跳过求喘震点失败的点
+			if (charline._surge_flow != 0) {	// 跳过没找到的喘震点
 				surgeX.push_back(charline._surge_flow);
 				if (press) surgeY.push_back(charline._surge_pressure_ratio);
 				if (effi) surgeY.push_back(charline._surge_efficiencies);
 			}
 		}
-		//std::wstring s = L"喘震边界线" ;
-		//_coord.drawLine(surgeX, surgeY, s);
+		_coord.drawLine(surgeX, surgeY, L"喘震边界线");
 
 		if (pause) system("pause");
 		// 绘制相似理论外推特性线
@@ -330,6 +322,7 @@ public:
 
 		if (pause) system("pause");
 		saveimage(imagename.c_str());
+		LOG("保存图片: " + wstring2string(imagename));
 		_coord.closeGraph();
 	}
 
@@ -340,8 +333,12 @@ public:
 			return;
 		}
 		string beginLine, tmp;
-		while (std::getline(input, beginLine))	// 规定只要还有新的一行,那么就有完整的数据
+		while (std::getline(input, beginLine))	// 规定只要还有新的一行,那么就有完整的数据: 小心多余回车
 		{
+			if (beginLine[0] == '\t') {	// 结尾标志,为了兼容excel粘贴到记事本
+				break;
+			}
+
 			// 插入新的一组数据
 			_tclines.push_back(TurbineCharLine());
 			auto& flows = _tclines.back()._flows;
@@ -395,6 +392,7 @@ public:
 			return;
 		}
 
+		output << _preRotation << endl;
 		output << "原始数据计算[喘震点]: " << endl;
 		output << "转速:\t";
 		for (auto& e : _tclines) output << e._speed << "\t"; output << endl;
@@ -405,9 +403,9 @@ public:
 		output << "喘震效率: ";
 		for (auto& e : _tclines) output << e._surge_efficiencies << "\t"; output << endl;
 		output << "tip:舍弃喘震流量为0的点" << endl;
-		output << "\n\n";
+		output << "\n";
 
-		output << "\n\n外推结果[喘震点]:\n";
+		output << "\n外推结果[喘震点]:\n";
 		output << "转速: ";
 		for (auto& charline : _tclines_new) output << charline._speed << "\t"; output << endl;
 		output << "喘震流量: ";
@@ -417,7 +415,7 @@ public:
 		output << "喘震效率: ";
 		for (auto& charline : _tclines_new) output << charline._surge_efficiencies << "\t"; output << endl;
 
-		output << "\n\n外推结果[特性线]:\n";
+		output << "\n外推结果[特性线]:\n";
 		for (auto& charline : _tclines_new) {
 			output << "转速: " << charline._speed << endl;
 			output << "流量: ";
@@ -427,19 +425,19 @@ public:
 			output << "效率: ";
 			for (auto& e : charline._efficiencies) output << e << "\t"; output << endl;
 		}
+		output << "\n\n";
 	}
 
-	void saveExcelFile(xlnt::workbook& wb, int beginrow = 1, string filename = "outcome.xlsx")
+	int saveExcelFile(xlnt::workbook& wb, int beginrow = 1, bool save = false, string filename = "outcome.xlsx")
 	{
 		xlnt::worksheet ws = wb.active_sheet();
-
 		int row = beginrow;
 		for (auto& charline : _tclines_new) {
 			int n = charline._flows.size();
 			string str = "speed:" + std::to_string(int(charline._speed));
 			ws.cell(1, row).value(str);
 			// 中文需要设置utf8编码
-			ws.cell(1, row + 1).value("流量");				// ("流量");
+			ws.cell(1, row + 1).value("flow");				// ("流量");
 			ws.cell(1, row + 2).value("efficiency");		// ("效率");
 			ws.cell(1, row + 3).value("presure_ratio");		// ("压比");
 
@@ -451,7 +449,8 @@ public:
 			row += 4;
 		}
 
-		wb.save(filename);
+		if (save) wb.save(filename);
+		return row;		// 下一次存储数据起始行
 	}
 
 public:
@@ -490,43 +489,70 @@ public:
 		for (auto& tclines : _mtcls) tclines.setSpeedDesign(speed_design);
 	}
 
-	//void solution()
-	//{
-	//	auto&
-
-	//		mtl.readData("data.txt");
-	//	mtl.getSurgeLine();
-
-	//	cout << endl << endl;
-	//	cout << "转速: ";
-	//	for (auto& e : mtl.getTClines()) cout << e._speed << " "; cout << endl;
-	//	cout << "喘震流量: ";
-	//	for (auto& e : mtl.getTClines()) cout << e._surge_flow << " "; cout << endl;
-	//	cout << "喘震压比: ";
-	//	for (auto& e : mtl.getTClines()) cout << e._surge_pressure_ratio << " "; cout << endl;
-	//	cout << "喘震效率: ";
-	//	for (auto& e : mtl.getTClines()) cout << e._surge_efficiencies << " "; cout << endl;
-
-	//	// 带入原有特性线验证,最好 7:3, 一开始用7层样本外推, 最后3层样本验证
-	//	mtl.extraplotion(2500);
-	//	printf("速度: %lf, 喘震流量: %lf, 喘震压比: %lf, 喘震效率: %lf\n",
-	//		mtl.getTClinesNew().back()._speed, mtl.getTClinesNew().back()._surge_flow,
-	//		mtl.getTClinesNew().back()._surge_pressure_ratio, mtl.getTClinesNew().back()._surge_efficiencies);
-
-	//	mtl.extraplotion(2300);
-	//	printf("速度: %lf, 喘震流量: %lf, 喘震压比: %lf, 喘震效率: %lf\n",
-	//		mtl.getTClinesNew().back()._speed, mtl.getTClinesNew().back()._surge_flow,
-	//		mtl.getTClinesNew().back()._surge_pressure_ratio, mtl.getTClinesNew().back()._surge_efficiencies);
-
-	//	mtl.drawGraph();
-	//	mtl.drawGraph_Tlow_Efficiency();
-	//	mtl.saveFile();
-	//	mtl.saveExcelFile();
-	//}
 
 
-	//void solution()
-	//{
+	void solution()
+	{
+		readData(false);
 
-	//}
+		cout << _mtcls.size() << endl;
+		std::ofstream output("./outdata/outcome.txt", std::ios::trunc);
+		xlnt::workbook wb;
+		int beginrow = 1;
+		for (auto& mtl : _mtcls) {
+			mtl.getSurgeLine();
+
+			cout << endl << endl;
+			cout << "转速: ";
+			for (auto& e : mtl.getTClines()) cout << e._speed << " "; cout << endl;
+			cout << "喘震流量: ";
+			for (auto& e : mtl.getTClines()) cout << e._surge_flow << " "; cout << endl;
+			cout << "喘震压比: ";
+			for (auto& e : mtl.getTClines()) cout << e._surge_pressure_ratio << " "; cout << endl;
+			cout << "喘震效率: ";
+			for (auto& e : mtl.getTClines()) cout << e._surge_efficiencies << " "; cout << endl;
+
+			// 带入原有特性线验证,最好 7:3, 一开始用7层样本外推, 最后3层样本验证
+			mtl.extraplotion(2500);
+			//printf("速度: %lf, 喘震流量: %lf, 喘震压比: %lf, 喘震效率: %lf\n",
+			//	mtl.getTClinesNew().back()._speed, mtl.getTClinesNew().back()._surge_flow,
+			//	mtl.getTClinesNew().back()._surge_pressure_ratio, mtl.getTClinesNew().back()._surge_efficiencies);
+			mtl.extraplotion(2300);
+
+			wstring img = string2wstring(mtl.preRotation());
+			mtl.drawGraph(3, img);
+			mtl.drawGraph(5, img);
+			//system("pause");
+
+			xlnt::worksheet ws = wb.active_sheet();
+			ws.cell(1, beginrow++).value(mtl.preRotation());
+			beginrow = mtl.saveExcelFile(wb, beginrow) + 1;
+			mtl.saveFile(output);
+		}
+		output.close();
+		wb.save("./outdata/outcome2.xlsx");
+	}
+
+private:
+	void readData(bool check = false)
+	{
+		std::ifstream input("data.txt");
+		string tmp;
+		while (std::getline(input, tmp)) {
+			// todo待解决读取utf8编码的文本乱码: 
+			// 临时方案1-> 预旋转: 数据, 不保存字符串
+			// 临时方案2-> txt文本文件默认utf8编码，可以将该文件另存为ansi编码
+			// 临时方案3-> 摆烂,使用英文
+			cout << "--------------------------预旋转: " << tmp << endl;
+			//system("pause");
+
+			_mtcls.push_back(MultiTurbineCharLine());
+			auto& tclines = _mtcls.back();
+			auto pos = tmp.find("\t");
+			tclines.preRotation() = tmp.substr(0, pos);
+			tclines.readData(input, check);
+		}
+		input.close();
+	}
+
 };
