@@ -66,64 +66,87 @@
 //	mtl.saveFile();
 //}
 
-void test2()
+namespace TCLExtra
 {
-	MultiTurbineCharLine mtl(8000);
-	std::ifstream input("./indata/data.txt");
-	mtl.readDataFromFile(input);
+
+	void test2()
+	{
+		MultiTurbineCharLine mtl(8000);
+		std::ifstream input("./indata/data.txt");
+		mtl.readDataFromFile(input);
+		input.close();
+		mtl.getSurgeLine();
+
+		cout << endl << endl;
+		cout << "转速: ";
+		for (auto& e : mtl.getTClines()) cout << e._speed << " "; cout << endl;
+		cout << "喘震流量: ";
+		for (auto& e : mtl.getTClines()) cout << e._surge_flow << " "; cout << endl;
+		cout << "喘震压比: ";
+		for (auto& e : mtl.getTClines()) cout << e._surge_pressure_ratio << " "; cout << endl;
+		cout << "喘震效率: ";
+		for (auto& e : mtl.getTClines()) cout << e._surge_efficiencies << " "; cout << endl;
+
+		// 带入原有特性线验证,最好 7:3, 一开始用7层样本外推, 最后3层样本验证
+		mtl.extrapolation(2500);
+		printf("速度: %lf, 喘震流量: %lf, 喘震压比: %lf, 喘震效率: %lf\n",
+			mtl.getTClinesNew().back()._speed, mtl.getTClinesNew().back()._surge_flow,
+			mtl.getTClinesNew().back()._surge_pressure_ratio, mtl.getTClinesNew().back()._surge_efficiencies);
+
+		mtl.extrapolation(2300);
+		printf("速度: %lf, 喘震流量: %lf, 喘震压比: %lf, 喘震效率: %lf\n",
+			mtl.getTClinesNew().back()._speed, mtl.getTClinesNew().back()._surge_flow,
+			mtl.getTClinesNew().back()._surge_pressure_ratio, mtl.getTClinesNew().back()._surge_efficiencies);
+
+		mtl.drawGraph(MultiTurbineCharLine::FLOW | MultiTurbineCharLine::PRESS);
+		mtl.drawGraph(MultiTurbineCharLine::FLOW | MultiTurbineCharLine::EFFICIENT);
+
+		string filename = "text";
+		std::ofstream output(filename, std::ios::out | std::ios::trunc);
+		mtl.saveFile(output);
+		xlnt::workbook wb;
+		mtl.saveExcelFile(wb, 1, true);
+	}
+}
+
+void test_turb()
+{
+	//TCLExtra::MultiTurbineCharLine_PreRotations mtlp(8000);
+	//mtlp.readDataFromFile("./indata/turb.txt", true, true);
+	//mtlp.solution(std::vector<double>(), "./outdata/outcome2");
+
+	TCLExtra::MultiTurbineCharLine mtl(8000);
+	std::ifstream input("./indata/test.txt");
+	mtl.readDataFromFile(input, true, true);
 	input.close();
-	mtl.getSurgeLine();
+	//mtl.getSurgeLine();
 
-	cout << endl << endl;
-	cout << "转速: ";
-	for (auto& e : mtl.getTClines()) cout << e._speed << " "; cout << endl;
-	cout << "喘震流量: ";
-	for (auto& e : mtl.getTClines()) cout << e._surge_flow << " "; cout << endl;
-	cout << "喘震压比: ";
-	for (auto& e : mtl.getTClines()) cout << e._surge_pressure_ratio << " "; cout << endl;
-	cout << "喘震效率: ";
-	for (auto& e : mtl.getTClines()) cout << e._surge_efficiencies << " "; cout << endl;
+	mtl.drawGraph(TCLExtra::MultiTurbineCharLine::FLOW | TCLExtra::MultiTurbineCharLine::PRESS);
+	mtl.drawGraph(TCLExtra::MultiTurbineCharLine::FLOW | TCLExtra::MultiTurbineCharLine::EFFICIENT);
 
-	// 带入原有特性线验证,最好 7:3, 一开始用7层样本外推, 最后3层样本验证
-	mtl.extrapolation(2500);
-	printf("速度: %lf, 喘震流量: %lf, 喘震压比: %lf, 喘震效率: %lf\n",
-		mtl.getTClinesNew().back()._speed, mtl.getTClinesNew().back()._surge_flow,
-		mtl.getTClinesNew().back()._surge_pressure_ratio, mtl.getTClinesNew().back()._surge_efficiencies);
 
-	mtl.extrapolation(2300);
-	printf("速度: %lf, 喘震流量: %lf, 喘震压比: %lf, 喘震效率: %lf\n",
-		mtl.getTClinesNew().back()._speed, mtl.getTClinesNew().back()._surge_flow,
-		mtl.getTClinesNew().back()._surge_pressure_ratio, mtl.getTClinesNew().back()._surge_efficiencies);
-
-	mtl.drawGraph(MultiTurbineCharLine::FLOW | MultiTurbineCharLine::PRESS);
-	mtl.drawGraph(MultiTurbineCharLine::FLOW | MultiTurbineCharLine::EFFICIENT);
-
-	string filename = "text";
-	std::ofstream output(filename, std::ios::out | std::ios::trunc);
-	mtl.saveFile(output);
-	xlnt::workbook wb;
-	mtl.saveExcelFile(wb, 1, true);
 }
 
 
+int main()
+{
+	try
+	{
+		//setlocale(LC_ALL, "chs");//设置wcout输出中文
+		//TCLExtra::MultiTurbineCharLine_PreRotations mtlr(8000);
+		//mtlr.readDataFromFile("./indata/data.txt", false);
+		//mtlr.solution();
 
-//int main()
-//{
-//	try
-//	{
-//		setlocale(LC_ALL, "chs");//设置wcout输出中文
-//		std::wcout.imbue(std::locale("Chinese-simplified_China.936"));	// 没用
-//		MultiTurbineCharLine_PreRotations mtlr(8000);
-//		mtlr.solution();
-//	}
-//	catch (const std::exception& e)
-//	{
-//		cout << e.what() << endl;
-//	}
-//	catch (...)
-//	{
-//		cout << "未知异常" << endl;
-//	}
-//
-//	return 0;
-//}
+		test_turb();
+	}
+	catch (const std::exception& e)
+	{
+		cout << e.what() << endl;
+	}
+	catch (...)
+	{
+		cout << "未知异常" << endl;
+	}
+
+	return 0;
+}
