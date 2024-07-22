@@ -1,3 +1,9 @@
+learn_13/turbineLineInterplator/turbineLineInterplator/indata
+learn_13/turbineLineInterplator/turbineLineInterplator/outdata
+*.jpg
+*.txt
+*.xlsx
+
 # Prerequisites
 *.d
 

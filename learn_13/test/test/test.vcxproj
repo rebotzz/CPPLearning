@@ -139,6 +139,7 @@
     <ClCompile Include="test_bit.cpp" />
     <ClCompile Include="test_boost.cpp" />
     <ClCompile Include="test_dfs.cpp" />
+    <ClCompile Include="test_easyX.cpp" />
     <ClCompile Include="test_interplote.cpp" />
     <ClCompile Include="test_xlnt.cpp" />
   </ItemGroup>

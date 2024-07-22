@@ -11,7 +11,8 @@
 #define LOG(level, msg) Log(#level, msg, __FILE__, __LINE__)
 static void Log(std::string level, std::string msg, std::string file, int line)
 {
-	printf("[Log][%s][%s][file: %s][line: %d]\n", level.c_str(), msg.c_str(), file.c_str(), line);
+	if (level == "NOTICE")  printf("[LOG][%s][%s]\n", level.c_str(), msg.c_str());
+	else printf("[LOG][%s][%s][file: %s][line: %d]\n", level.c_str(), msg.c_str(), file.c_str(), line);
 }
 enum LOGLEVEL {
 	DEBUG, NOTICE, WARING, ERR, FATAL
@@ -101,7 +102,7 @@ public:
 	void drawCoordinate(int scaleNum = 10)	// 刻度个数
 	{
 		// 绘制坐标轴		easyX的y轴与数学上的y轴正好相反
-		double xyLength = _length - _margin;
+		int xyLength = _length - _margin;
 		line(0, 0, xyLength, 0);
 		line(0, 0, 0, -xyLength);
 		outtextxy(0, -xyLength, _T("Y"));
@@ -144,7 +145,7 @@ public:
 		}
 
 		// 关于曲线描述信息
-		double xyLength = _length - _margin;
+		int xyLength = _length - _margin;
 		if (_colorID % 2 == 0) {
 			outtextxy(40, -xyLength + _colorID * 10, str.c_str());
 		}

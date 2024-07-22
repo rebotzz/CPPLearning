@@ -49,6 +49,109 @@ void plan2() {
 
 
 
+// 找字符串的字串 "shy" 个数 dfs超时
+#include <iostream>
+#include "string"
+using namespace std;
+
+class Solution {
+public:
+    string path;
+    int deep = 0, n = 0;
+    int ret = 0;
+    string target;
+    int dfs(string& str) {
+        target = "shy";
+        n = target.size();
+        _dfs(str, 0);
+        return ret;
+    }
+
+    void _dfs(string& str, int pos) {
+        if (deep >= n) {
+            ret++;
+            return;
+        }
+
+        for (int i = pos; i < str.size(); ++i) {
+            if (str[i] == target[deep]) {
+                deep++;
+                _dfs(str, i + 1);
+                deep--;
+            }
+        }
+    }
+};
+
+#include <array>
+#include <unordered_map>
+int main() {
+    int n;
+    string str;
+    cin >> n;
+    str.resize(n);
+    cin >> str;
+
+    // 先缩减不要的
+    string tmp;
+    for (auto ch : str) {
+        if (ch == 's' || ch == 'h' || ch == 'y') tmp.push_back(ch);
+    }
+
+    int ret = 0;
+    ret = Solution().dfs(tmp);
+    cout << ret;
+
+
+    // // 模拟
+    // int hash[3] = {0};
+    // unordered_map<char, int> index; // 前一个字符的下标
+    // // int index[128] = {-1};
+    // index['s'] = 0;
+    // index['h'] = 0;
+    // index['y'] = 1;
+    // unordered_map<char, int> indexcur; // 前一个字符的下标
+    // indexcur['h'] = 1;
+    // indexcur['y'] = 2;
+    // for (char ch : str) {
+    //     // 判断前一个字符是否出现
+    //     if(index.count(ch)){
+    //     // if (index[ch] != -1) {  // 是需要的字符
+    //         // 首字符特殊处理
+    //         if (ch == 's') {
+    //             hash[0]++;
+    //         } else {
+    //             // 先看前一个有没有
+    //             int pre = index[ch];
+    //             if (hash[pre] > 0) {
+    //                 hash[pre]--;
+    //                 hash[indexcur[ch]]++;
+    //             }
+    //         }
+    //     }
+    // }
+
+    // // 有序的组合   漏了:零散的字
+    // int m = hash[2];
+    // ret = m * m * m;
+    // cout << ret;
+
+    return 0;
+}
+// 64 位输出请用 printf("%lld")
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
