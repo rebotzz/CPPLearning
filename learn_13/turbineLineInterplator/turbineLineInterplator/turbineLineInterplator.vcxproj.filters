@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="extraplotion.hpp">
+    <ClInclude Include="extrapolation.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="graph.hpp">
+    <ClInclude Include="mytools.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -27,6 +27,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="test.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="imGUI.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

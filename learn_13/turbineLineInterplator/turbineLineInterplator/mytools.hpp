@@ -3,6 +3,16 @@
 #include <string>
 #include <cassert>
 #include <easyx.h>
+#ifdef _WIN32
+#include <Windows.h>
+#endif
+
+// 日志
+#define LOG(msg) Log(msg, __FILE__, __LINE__)
+static void Log(std::string msg, std::string file, int line)
+{
+	printf("Log: [%s][file: %s][line: %d]\n", msg.c_str(), file.c_str(), line);
+}
 
 // RGB颜色
 enum Color
@@ -153,11 +163,8 @@ public:
 
 
 // 字符串转化  引用博客:http://t.csdnimg.cn/DrVje
-#ifdef _WIN32
-#include <Windows.h>
-#endif
 //将string转换成wstring  
-std::wstring string2wstring(std::string str)
+static std::wstring string2wstring(std::string str)
 {
 	std::wstring result;
 	//获取缓冲区大小，并申请空间，缓冲区大小按字符计算  
@@ -173,7 +180,7 @@ std::wstring string2wstring(std::string str)
 }
 
 //将wstring转换成string  
-std::string wstring2string(std::wstring wstr)
+static std::string wstring2string(std::wstring wstr)
 {
 	std::string result;
 	//获取缓冲区大小，并申请空间，缓冲区大小事按字节计算的  
@@ -188,7 +195,7 @@ std::string wstring2string(std::wstring wstr)
 	return result;
 }
 
-std::wstring wchart_arrayTowstring(wchar_t a[])
+static std::wstring wchart_arrayTowstring(wchar_t a[])
 {
 	std::wstring wstr = L"";
 	int j = 0;

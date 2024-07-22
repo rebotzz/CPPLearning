@@ -1,17 +1,16 @@
 ﻿//#pragma execution_character_set("utf-8")	// 麻烦,算了
 #pragma once
-#include <xlnt/xlnt.hpp>					// 这个会与别的头文件冲突,放在最开始
-#include <locale>
 #include <iostream>
 #include <vector>
 #include <string>
 #include <fstream>
 #include <sstream>
-#include <functional>
 #include <exception>
+#include <locale>
+#include <xlnt/xlnt.hpp>					// 这个会与别的头文件冲突,放在最开始
 #include <boost/math/interpolators/barycentric_rational.hpp>
 #include <boost/math/tools/roots.hpp>
-#include "graph.hpp"
+#include "mytools.hpp"
 
 #undef max
 #undef min
@@ -29,14 +28,6 @@ using std::move;
 #define M_PI 3.14159265358979323846
 static const double PI = acos(-1.0);			// 圆周率Π
 static const double g_adiabaticIndex = 1.667;	// 绝热指数 暂定1.667
-
-// 日志
-#define LOG(msg) Log(msg, __FILE__, __LINE__)
-void Log(string msg, string file, int line)
-{
-	printf("LOG: [%s][file: %s][line: %d]\n", msg.c_str(), file.c_str(), line);
-}
-
 
 // 转速为speed的特性线
 class TurbineCharLine
@@ -158,7 +149,7 @@ public:
 
 	// 外推转速speed_new对应的特性线
 	// 理论: [航空发动机高精度建模及起动性能仿真研究-高楚铭]:P45
-	TurbineCharLine& extraplotion(double speed_new, bool setbase = false, double usersest_speed_ref = 0.0)
+	TurbineCharLine& extrapolation(double speed_new, bool setbase = false, double usersest_speed_ref = 0.0)
 	{
 		// 选那个转速特性线作为基准?
 		// plan: 1.设计转速特性线(舍弃)  2.以速度最邻近的特性线
@@ -232,7 +223,7 @@ public:
 	}
 
 	// 其余曲线绘制: x-y关系曲线
-	void drawGraphLine(const vector<double>& arrx, const vector<double>& arry, wstring comment, bool pause = false, int length = 800)
+	static void drawGraphLine(const vector<double>& arrx, const vector<double>& arry, wstring comment, bool pause = false, int length = 800)
 	{
 		// 绘制曲线
 		Coordinate _coord(length);
@@ -326,7 +317,9 @@ public:
 		_coord.closeGraph();
 	}
 
-	void readData(std::ifstream& input, bool check = false)
+
+
+	void readDataFromFile(std::ifstream& input, bool check = false)
 	{
 		if (!input.is_open()) {
 			LOG("文件打开失败");
@@ -475,6 +468,45 @@ public:
 		return log(efficiency_new / efficiency_ref) / log(speed_ratio);
 	}
 
+	// todo 使用不同sheet区分不同预旋; 然后定义不同分割符号	使用cells.front.to_string.find关键字来区分数据
+	// 这个方案弃用, 三方库数据读取不方便
+	// 目前只支持一组预旋读取: 一组4行数据 2900speed flow efficiency pressRatio 多组间不带空行
+	// 为了兼容为了excel高版本,可以将数据拷贝到xlnt生成的表格下, 且不要图片,只要存粹数据; 为了避免乱码,使用英文
+	void readDataFromExcel(xlnt::workbook& wb)
+	{
+		xlnt::worksheet ws = wb.active_sheet();
+		for (const xlnt::cell_vector& cells : ws) {
+			int row = cells.front().row();
+			if (row % 5 == 0) {
+				_tclines.push_back(TurbineCharLine());
+			}
+			if (row % 5 == 1) {
+				std::stringstream ss(cells.front().to_string());
+				ss >> _tclines.back()._speed;
+			}
+			else if (row % 5 == 2) {
+				int i = 0;
+				for (auto& cell : cells) {
+					if (i++ == 0) continue;
+					_tclines.back()._flows.push_back(atoi(cell.to_string().c_str()));
+				}
+			}
+			else if (row % 5 == 3) {
+				int i = 0;
+				for (auto& cell : cells) {
+					if (i++ == 0) continue;
+					_tclines.back()._efficiencies.push_back(atoi(cell.to_string().c_str()));
+				}
+			}
+			else if (row % 5 == 4) {
+				int i = 0;
+				for (auto& cell : cells) {
+					if (i++ == 0) continue;
+					_tclines.back()._pressure_ratios.push_back(atoi(cell.to_string().c_str()));
+				}
+			}
+		}
+	}
 };
 
 
@@ -489,11 +521,10 @@ public:
 		for (auto& tclines : _mtcls) tclines.setSpeedDesign(speed_design);
 	}
 
-
-
-	void solution()
+	// 读取数据文件 待外推速度
+	void solution(string file = "./indata/data.txt", vector<double> speeds = vector<double>())
 	{
-		readData(false);
+		readDataFromFile(file, false);
 
 		cout << _mtcls.size() << endl;
 		std::ofstream output("./outdata/outcome.txt", std::ios::trunc);
@@ -513,11 +544,9 @@ public:
 			for (auto& e : mtl.getTClines()) cout << e._surge_efficiencies << " "; cout << endl;
 
 			// 带入原有特性线验证,最好 7:3, 一开始用7层样本外推, 最后3层样本验证
-			mtl.extraplotion(2500);
-			//printf("速度: %lf, 喘震流量: %lf, 喘震压比: %lf, 喘震效率: %lf\n",
-			//	mtl.getTClinesNew().back()._speed, mtl.getTClinesNew().back()._surge_flow,
-			//	mtl.getTClinesNew().back()._surge_pressure_ratio, mtl.getTClinesNew().back()._surge_efficiencies);
-			mtl.extraplotion(2300);
+			for (auto speed : speeds) {
+				mtl.extrapolation(speed);
+			}
 
 			wstring img = string2wstring(mtl.preRotation());
 			mtl.drawGraph(3, img);
@@ -530,13 +559,13 @@ public:
 			mtl.saveFile(output);
 		}
 		output.close();
-		wb.save("./outdata/outcome2.xlsx");
+		wb.save("./outdata/outcome.xlsx");
 	}
 
 private:
-	void readData(bool check = false)
+	void readDataFromFile(string file, bool check = false)
 	{
-		std::ifstream input("data.txt");
+		std::ifstream input(file.c_str());
 		string tmp;
 		while (std::getline(input, tmp)) {
 			// todo待解决读取utf8编码的文本乱码: 
@@ -550,7 +579,7 @@ private:
 			auto& tclines = _mtcls.back();
 			auto pos = tmp.find("\t");
 			tclines.preRotation() = tmp.substr(0, pos);
-			tclines.readData(input, check);
+			tclines.readDataFromFile(input, check);
 		}
 		input.close();
 	}

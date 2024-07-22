@@ -1,9 +1,9 @@
-#include "extraplotion.hpp"
+#include "extrapolation.hpp"
 
 //void test1()
 //{
 //	MultiTurbineCharLine mtl(8000);
-//	mtl.readData("data.txt");
+//	mtl.readData("./indata/data.txt");
 //	mtl.getSurgeLine();
 //
 //	cout << endl << endl;
@@ -45,7 +45,7 @@
 //	arrx.resize(0), arry.resize(0);
 //	arrx.push_back(4800 / mtl._speed_design);
 //	arry.push_back(mtl._surge_speedRatio_flow_ptr->operator()(arrx.back()));
-//	mtl.extraplotion(4800);
+//	mtl.extrapolation(4800);
 //
 //	cout << endl << endl;
 //	cout << "速度: ";
@@ -69,8 +69,8 @@
 void test2()
 {
 	MultiTurbineCharLine mtl(8000);
-	std::ifstream input("data.txt");
-	mtl.readData(input);
+	std::ifstream input("./indata/data.txt");
+	mtl.readDataFromFile(input);
 	input.close();
 	mtl.getSurgeLine();
 
@@ -85,12 +85,12 @@ void test2()
 	for (auto& e : mtl.getTClines()) cout << e._surge_efficiencies << " "; cout << endl;
 
 	// 带入原有特性线验证,最好 7:3, 一开始用7层样本外推, 最后3层样本验证
-	mtl.extraplotion(2500);
+	mtl.extrapolation(2500);
 	printf("速度: %lf, 喘震流量: %lf, 喘震压比: %lf, 喘震效率: %lf\n",
 		mtl.getTClinesNew().back()._speed, mtl.getTClinesNew().back()._surge_flow,
 		mtl.getTClinesNew().back()._surge_pressure_ratio, mtl.getTClinesNew().back()._surge_efficiencies);
 
-	mtl.extraplotion(2300);
+	mtl.extrapolation(2300);
 	printf("速度: %lf, 喘震流量: %lf, 喘震压比: %lf, 喘震效率: %lf\n",
 		mtl.getTClinesNew().back()._speed, mtl.getTClinesNew().back()._surge_flow,
 		mtl.getTClinesNew().back()._surge_pressure_ratio, mtl.getTClinesNew().back()._surge_efficiencies);
@@ -102,26 +102,28 @@ void test2()
 	std::ofstream output(filename, std::ios::out | std::ios::trunc);
 	mtl.saveFile(output);
 	xlnt::workbook wb;
-	mtl.saveExcelFile(wb);
+	mtl.saveExcelFile(wb, 1, true);
 }
 
-int main()
-{
-	try
-	{
-		setlocale(LC_ALL, "chs");//设置wcout输出中文
-		std::wcout.imbue(std::locale("Chinese-simplified_China.936"));
-		MultiTurbineCharLine_PreRotations mtlr(8000);
-		mtlr.solution();
-	}
-	catch (const std::exception& e)
-	{
-		cout << e.what() << endl;
-	}
-	catch (...)
-	{
-		cout << "未知异常" << endl;
-	}
 
-	return 0;
-}
+
+//int main()
+//{
+//	try
+//	{
+//		setlocale(LC_ALL, "chs");//设置wcout输出中文
+//		std::wcout.imbue(std::locale("Chinese-simplified_China.936"));	// 没用
+//		MultiTurbineCharLine_PreRotations mtlr(8000);
+//		mtlr.solution();
+//	}
+//	catch (const std::exception& e)
+//	{
+//		cout << e.what() << endl;
+//	}
+//	catch (...)
+//	{
+//		cout << "未知异常" << endl;
+//	}
+//
+//	return 0;
+//}
