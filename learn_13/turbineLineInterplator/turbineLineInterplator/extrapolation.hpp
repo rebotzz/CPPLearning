@@ -78,8 +78,13 @@ namespace TCLExtra
 		vector<TurbineCharLine>& getTClinesNew() { return _tclines_new; }
 		string& preRotation() { return _preRotation; }
 
-		// 求解堵塞(喘震)边界线
-		void getSurgeLine()
+
+		// todo: 求解堵塞(喘震)边界线 涡轮部分; 搁浅...,没有理论指导
+		void getSurgeLineT()
+		{}
+
+		// 求解堵塞(喘震)边界线	压气机部分
+		void getSurgeLineP()
 		{
 			// 求解不同转速的特性线喘震点
 			vector<double> surge_flows, surge_press_ratios, surge_efficiencies, surge_speedRatio;
@@ -99,19 +104,16 @@ namespace TCLExtra
 					// 这里需要小心给定区间没有根,或者精度问题
 					auto tol = [](double left, double right) { return abs(left - right) < 1e-4; }; // 精度
 					std::pair<double, double> root;
-					try
-					{
+					try{
 						root = boost::math::tools::bisect(df, min, max, tol);
 					}
-					catch (const std::exception& e)
-					{
-						LOG("求根出错, 速度: " + std::to_string(charline._speed));
+					catch (const std::exception& e){
+						LOG(WARING, "求根出错, 速度: " + std::to_string(charline._speed));
 						cout << e.what() << endl;
 						return 0.0;
 					}
-					catch (...)
-					{
-						LOG("求根出错");
+					catch (...){
+						LOG(WARING, "求根出错");
 						throw;
 					}
 
@@ -151,7 +153,7 @@ namespace TCLExtra
 
 		// 外推转速speed_new对应的特性线
 		// 理论: [航空发动机高精度建模及起动性能仿真研究-高楚铭]:P45
-		TurbineCharLine& extrapolation(double speed_new, bool setbase = false, double usersest_speed_ref = 0.0)
+		TurbineCharLine& extrapolation(double speed_new, double usersest_speed_ref = 0.0)
 		{
 			// 选那个转速特性线作为基准?
 			// plan: 1.设计转速特性线(舍弃)  2.以速度最邻近的特性线
@@ -165,7 +167,7 @@ namespace TCLExtra
 			}
 
 			// 用户自定义基准线
-			if (setbase) {
+			if (usersest_speed_ref != 0.0) {
 				double gap = abs(_tclines[0]._speed - _tclines.back()._speed + 1);
 				for (int i = 0; i < _tclines.size(); ++i) {
 					if (abs(usersest_speed_ref - _tclines[i]._speed) < gap && _tclines[i]._surge_flow != 0) {
@@ -225,39 +227,45 @@ namespace TCLExtra
 		}
 
 		// 其余曲线绘制: x-y关系曲线
-		static void drawGraphLine(const vector<double>& arrx, const vector<double>& arry, wstring comment, bool save = false, int length = 800)
+		static void drawGraph(const vector<vector<double>>& arrxs, const vector<vector<double>>& arrys, const vector<wstring>& comment, wstring file, int length = 800)
 		{
 			// 绘制曲线
 			Coordinate _coord(length);
 			_coord.initGraph();
 			int margin = length * 0.05;
 			_coord.setOrigin(margin, length - margin);
-			double minx = arrx[0], miny = arry[0];
+			double minx = arrxs[0][0], miny = arrys[0][0];
 			double maxx = minx, maxy = miny;
-			for (const auto& e : arrx) {
-				minx = std::min(e, minx);
-				maxx = std::max(e, maxx);
+			for (const auto& arr : arrxs) {
+				for (const auto& e : arr) {
+					minx = std::min(e, minx);
+					maxx = std::max(e, maxx);
+				}
 			}
-			for (const auto& e : arry) {
-				miny = std::min(e, miny);
-				maxy = std::max(e, maxy);
+			for (const auto& arr : arrys) {
+				for (const auto& e : arr) {
+					miny = std::min(e, miny);
+					maxy = std::max(e, maxy);
+				}
 			}
 
 			_coord.setxScope(minx, maxx);
 			_coord.setyScope(miny, maxy);
 			_coord.drawCoordinate();
-			_coord.drawLine(arrx, arry, comment);
-
-			if (save) {
-				std::wstring buff(comment);
-				buff += L".jpg";
-				saveimage(buff.c_str());
-				_coord.closeGraph();
+			int n = arrxs.size();
+			for (int i = 0; i < n; ++i) {
+				_coord.drawLine(arrxs[i], arrys[i], comment[i]);
 			}
+
+			if (file.find(L".jpg") == wstring::npos) {
+				file += L".jpg";
+			}
+			saveimage(file.c_str());
+			_coord.closeGraph();
 		}
 
 		// 流量-压比 or 流量-效率
-		void drawGraph(DrawGraphOption coordx = FLOW, DrawGraphOption coordy = PRESS, std::wstring filename = L"", bool pause = false, int length = 800)
+		void drawGraph(int option = FLOW | PRESS, std::wstring filename = L"", bool pause = false, int length = 800)
 		{
 			// 绘制曲线
 			Coordinate _coord(length);
@@ -266,25 +274,19 @@ namespace TCLExtra
 			_coord.initGraph();
 			int margin = length * 0.05;
 			_coord.setOrigin(margin, length - margin);
-			_coord.setxScope(_tclines[0]._flows[0], _tclines[0]._flows.back());
+			double minx = _tclines[0]._flows[0], maxx = _tclines[0]._flows[0];
+			for (auto& charline : _tclines) {
+				minx = std::min(minx, charline._flows[0]);
+				maxx = std::max(maxx, charline._flows.back());
+			}
+			_coord.setxScope(minx, maxx);
 
 			bool press = false, effi = false;
 			std::wstring imagename = L"./outdata/image/";
 			imagename += filename;
 
-			switch (coordx) {
-			case FLOW: 
-				break;
-			case PRESS:
-				break;
-			case EFFICIENT:
-				break;
-			default:
-				break;
-			}
-
 			if ((option & FLOW) && (option & PRESS)) {
-				_coord.setyScope(1, 3);	// 压比范围大概 1 ~ 3
+				_coord.setyScope(1, 3);	// 压比范围大概 1 ~ 3	
 				press = true;
 				imagename += L"流量-压比.jpg";
 			}
@@ -294,7 +296,7 @@ namespace TCLExtra
 				imagename += L"流量-效率.jpg";
 			}
 			else {
-				LOG("选项错误");
+				LOG(WARING, "选项错误");
 				throw std::invalid_argument("选项错误, 示范:todo...");
 			}
 
@@ -328,16 +330,90 @@ namespace TCLExtra
 
 			if (pause) system("pause");
 			saveimage(imagename.c_str());
-			LOG("保存图片: " + wstring2string(imagename));
+			LOG(NOTICE, "保存图片: " + wstring2string(imagename));
 			_coord.closeGraph();
 		}
 
+		// 检查误差
+		void checkExtraError()
+		{
 
+			getSurgeLineP();
+
+			// 抽查一半, 用相邻上一个转速外推
+			vector<int> checkarr;
+			for (int i = 0; i < _tclines.size() - 1; i += 2) {
+				double speed_new = _tclines[i]._speed;
+				double speed_ref = _tclines[i + 1]._speed;
+				extrapolation(speed_new, speed_ref);
+				checkarr.push_back(i);
+			}
+
+			// 检验误差
+			struct ERR {
+				vector<double> _errp;
+				vector<double> _erre;
+				vector<double> _arrx;
+				double _id;
+			};
+			vector<ERR> errs;
+			int extraid = 0;
+			for (auto i : checkarr) {
+				errs.push_back(ERR());
+				auto& err = errs.back();				// 误差
+				auto& extra = _tclines_new[extraid++];	// 外推的
+				auto& origin = _tclines[i];				// 原来的
+				err._id = origin._speed;
+				// 因为外推的流量与原始不同,所以需要插值
+				Interpolator interp(extra._flows.begin(), extra._flows.end(), extra._pressure_ratios.begin());
+				Interpolator intere(extra._flows.begin(), extra._flows.end(), extra._efficiencies.begin());
+				err._arrx = extra._flows;
+				size_t n = err._arrx.size();
+				err._errp.resize(n);
+				err._erre.resize(n);
+				for (int j = 0; j < n; ++j) {
+					double x = origin._flows[j];
+					double yp = origin._pressure_ratios[j], ye = origin._pressure_ratios[j];
+					err._errp[j] = abs(interp(x) - yp) / yp;
+					err._erre[j] = abs(intere(x) - ye) / ye;
+				}
+			}
+
+			// 数据持久化
+			std::ofstream output("误差校验.txt");
+			output << "外插原有数据校验误差\n";
+			if (output.is_open()) {
+				for (auto& err : errs) {
+					output << "外插速度: " << err._id << endl;
+					output << "流量:\n";
+					for (auto x : err._arrx) output << x << "\t"; output << endl;
+					output << "压比相对误差:\n";
+					for (auto y : err._errp) output << y << "\t"; output << endl;
+					output << "效率相对误差:\n";
+					for (auto y : err._erre) output << y << "\t"; output << endl;
+				}
+				cout << "\n\n";
+			}
+			output.close();
+
+			// 图片持久化
+			vector<vector<double>> arrx, arrye, arryp;
+			vector<wstring> msg;
+			for (auto& err : errs) {
+				arrx.push_back(std::move(err._arrx));
+				arrye.push_back(std::move(err._erre));
+				arryp.push_back(std::move(err._errp));
+				msg.push_back(L"转速:" + std::to_wstring(err._id));
+			}
+			drawGraph(arrx, arryp, msg, L"./outdata/流量-压比相对误差.jpg");
+			drawGraph(arrx, arrye, msg, L"./outdata/流量-效率相对误差.jpg");
+			LOG(NOTICE, "校验误差完成,数据持久化完成.");
+		}
 
 		void readDataFromFile(std::ifstream& input, bool check = false, bool isturb = false)
 		{
 			if (!input.is_open()) {
-				LOG("文件打开失败");
+				LOG(FATAL, "文件打开失败");
 				return;
 			}
 			string beginLine, tmp;
@@ -400,7 +476,7 @@ namespace TCLExtra
 		void saveFile(std::ofstream& output)
 		{
 			if (!output.is_open()) {
-				LOG("文件打开失败");
+				LOG(ERR, "文件打开失败");
 				return;
 			}
 
@@ -549,7 +625,7 @@ namespace TCLExtra
 			xlnt::workbook wb;
 			int beginrow = 1;
 			for (auto& mtl : _mtcls) {
-				mtl.getSurgeLine();
+				mtl.getSurgeLineP();
 
 				cout << endl << endl;
 				cout << "转速: ";

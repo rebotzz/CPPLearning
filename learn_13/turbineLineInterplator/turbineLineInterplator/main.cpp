@@ -4,7 +4,7 @@
 //{
 //	MultiTurbineCharLine mtl(8000);
 //	mtl.readData("./indata/data.txt");
-//	mtl.getSurgeLine();
+//	mtl.getSurgeLineP();
 //
 //	cout << endl << endl;
 //	cout << "转速: ";
@@ -75,7 +75,7 @@ namespace TCLExtra
 		std::ifstream input("./indata/data.txt");
 		mtl.readDataFromFile(input);
 		input.close();
-		mtl.getSurgeLine();
+		mtl.getSurgeLineP();
 
 		cout << endl << endl;
 		cout << "转速: ";
@@ -127,17 +127,29 @@ void test_turb()
 
 }
 
+void test_err()
+{
+	TCLExtra::MultiTurbineCharLine mtl(8000);
+	std::ifstream input("./indata/pres.txt");
+	mtl.readDataFromFile(input, true, false);
+	input.close();
+
+	mtl.checkExtraError();
+}
+
 
 int main()
 {
 	try
 	{
 		//setlocale(LC_ALL, "chs");//设置wcout输出中文
+
 		//TCLExtra::MultiTurbineCharLine_PreRotations mtlr(8000);
 		//mtlr.readDataFromFile("./indata/data.txt", false);
 		//mtlr.solution();
 
-		test_turb();
+		//test_turb();
+		test_err();
 	}
 	catch (const std::exception& e)
 	{

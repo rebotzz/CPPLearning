@@ -8,12 +8,14 @@
 #endif
 
 // »’÷æ
-#define LOG(msg) Log(msg, __FILE__, __LINE__)
-static void Log(std::string msg, std::string file, int line)
+#define LOG(level, msg) Log(#level, msg, __FILE__, __LINE__)
+static void Log(std::string level, std::string msg, std::string file, int line)
 {
-	printf("Log: [%s][file: %s][line: %d]\n", msg.c_str(), file.c_str(), line);
+	printf("[Log][%s][%s][file: %s][line: %d]\n", level.c_str(), msg.c_str(), file.c_str(), line);
 }
-
+enum LOGLEVEL {
+	DEBUG, NOTICE, WARING, ERR, FATAL
+};
 // RGB—’…´
 enum Color
 {
