@@ -1,15 +1,43 @@
 #include "extrapolation.hpp"
 
 
-void test_all()
+void test_all();
+
+// comman line interface 简单,方便被别的程序调用
+void CLI();
+
+// 图形交互界面
+void ImGUI()
 {
-	TCLExtra::MultiTurbineCharLine_PreRotations mtlr(8000);
-	mtlr.readDataFromFile("./indata/example.txt", false);
-	//mtlr.readDataFromExcel("./indata/example.xlsx");
-	vector<double> spnew = { 2500, 2600, 2700, 2800 };
-	mtlr.solution(spnew);
-	//mtlr.checkExtraError();
+
 }
+
+int main()
+{
+	try
+	{
+		// 中文支持 
+ 		std::locale::global(std::locale("zh_CN.UTF-8"));
+		std::cout.imbue(std::locale());
+		std::wcout.imbue(std::locale());
+		//CLI();
+		test_all();
+	}
+	catch (const std::exception& e)
+	{
+		cout << e.what() << endl;
+	}
+	catch (...)
+	{
+		cout << "未知异常" << endl;
+	}
+
+	return 0;
+}
+
+
+
+
 
 // comman line interface 简单,方便被别的程序调用
 void CLI()
@@ -40,34 +68,21 @@ void CLI()
 	cout << "程序结束!\nbye!";
 }
 
-// 图形交互界面
-void ImGUI()
-{
-
-}
-
-int main()
-{
-	try
-	{
-		CLI();
-	}
-	catch (const std::exception& e)
-	{
-		cout << e.what() << endl;
-	}
-	catch (...)
-	{
-		cout << "未知异常" << endl;
-	}
-
-	return 0;
-}
 
 
 
 
 // 这里是示例, 也是功能测试
+void test_all()
+{
+	TCLExtra::MultiTurbineCharLine_PreRotations mtlr(8000);
+	//mtlr.readDataFromFile("./indata/example.txt", false);
+	mtlr.readDataFromExcel("./indata/example.xlsx", true);
+	vector<double> spnew = { 2500, 2600, 2700, 2800 };
+	mtlr.solution(spnew);
+	//mtlr.checkExtraError();
+}
+
 void test_one()
 {
 	TCLExtra::MultiTurbineCharLine mtl(8000);

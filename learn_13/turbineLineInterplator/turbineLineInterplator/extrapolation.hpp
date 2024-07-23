@@ -7,6 +7,7 @@
 #include <exception>
 #include <unordered_map>
 #include <iomanip>
+#include <locale>
 #include <xlnt/xlnt.hpp>					// 这个会与别的头文件(第三方库)冲突,放在最开始
 #include <boost/math/interpolators/barycentric_rational.hpp>
 #include <boost/math/tools/roots.hpp>
@@ -558,30 +559,9 @@ namespace TCLExtra
 			return row;		// 下一次存储数据起始行
 		}
 
-	public:
-		// 流量的相似关系系数
-		double getIndexFlow(double flow_new, double flow_ref, double speed_ratio)
-		{
-			return log(flow_new / flow_ref) / log(speed_ratio);
-		}
-
-		// 压比的相似关系系数
-		double getIndexPressureRatio(double pressure_ratio_new, double pressure_ratio_ref, double speed_ratio, double adiabaticIndex)
-		{
-			double k = (adiabaticIndex - 1) / adiabaticIndex;
-			double tmp1 = pow(pressure_ratio_new, k) - 1;
-			double tmp2 = pow(pressure_ratio_ref, k) - 1;
-			return log(tmp1 / tmp2) / log(speed_ratio);
-		}
-
-		// 效率的相似关系系数
-		double getIndexEfficiency(double efficiency_new, double efficiency_ref, double speed_ratio)
-		{
-			return log(efficiency_new / efficiency_ref) / log(speed_ratio);
-		}
-
 		// 协议:一组4行数据 speed flow efficiency pressRatio 多组间不带空行; 不同预旋用不同sheet区分,sheet命名为预旋大小
-		// 为了兼容为了excel高版本,可以将数据拷贝到xlnt生成的表格下, 且不要图片,只要存粹数据; 为了避免乱码,使用英文
+		// 为了兼容为了excel高版本,可以将数据拷贝到xlnt生成的表格下, 且不要图片,只要存粹数据; 
+		// 为了避免乱码,使用英文; 新增:中文支持
 		void readDataFromExcel(string file, bool check = false)
 		{
 			xlnt::workbook wb;
@@ -607,26 +587,26 @@ namespace TCLExtra
 				TurbineCharLine* charline = nullptr;
 				if (_tclines.size() != 0) charline = &_tclines.back();
 				string tmp = cellbegin.to_string();
-				if (tmp.find("speed") != string::npos) {
+				if (tmp.find("speed") != string::npos || tmp.find(u8"转速") != string::npos) {
 					// 有一组数据,开辟空间
 					_tclines.push_back(TurbineCharLine());
 					std::stringstream ss(tmp);
 					ss >> _tclines.back()._speed;
 					continue;
 				}
-				else if (tmp.find("flow") != string::npos) {
+				else if (tmp.find("flow") != string::npos || tmp.find(u8"流量") != string::npos) {
 					int i = 0;	// 跳过首个标记字符
 					for (auto& cell : cells) {
 						if (i++) charline->_flows.push_back(std::stod(cell.to_string()));
 					}
 				}
-				else if (tmp.find("efficiency") != string::npos) {
+				else if (tmp.find("efficiency") != string::npos || tmp.find(u8"效率") != string::npos) {
 					int i = 0;
 					for (auto& cell : cells) {
 						if (i++) charline->_efficiencies.push_back(std::stod(cell.to_string()));
 					}
 				}
-				else if (tmp.find("pressRatio") != string::npos) {
+				else if (tmp.find("pressRatio") != string::npos || tmp.find(u8"压比") != string::npos) {
 					int i = 0;
 					for (auto& cell : cells) {
 						if (i++) charline->_pressRatios.push_back(std::stod(cell.to_string()));
@@ -653,6 +633,28 @@ namespace TCLExtra
 					cout << endl << "------------------------------" << endl;
 				}
 			}
+		}
+
+	private:
+		// 流量的相似关系系数
+		double getIndexFlow(double flow_new, double flow_ref, double speed_ratio)
+		{
+			return log(flow_new / flow_ref) / log(speed_ratio);
+		}
+
+		// 压比的相似关系系数
+		double getIndexPressureRatio(double pressure_ratio_new, double pressure_ratio_ref, double speed_ratio, double adiabaticIndex)
+		{
+			double k = (adiabaticIndex - 1) / adiabaticIndex;
+			double tmp1 = pow(pressure_ratio_new, k) - 1;
+			double tmp2 = pow(pressure_ratio_ref, k) - 1;
+			return log(tmp1 / tmp2) / log(speed_ratio);
+		}
+
+		// 效率的相似关系系数
+		double getIndexEfficiency(double efficiency_new, double efficiency_ref, double speed_ratio)
+		{
+			return log(efficiency_new / efficiency_ref) / log(speed_ratio);
 		}
 	};
 
@@ -716,10 +718,6 @@ namespace TCLExtra
 			std::ifstream input(file.c_str());
 			string tmp;
 			while (std::getline(input, tmp)) {
-				// todo待解决读取utf8编码的文本乱码: 
-				// 临时方案1-> 预旋转: 数据, 不保存字符串
-				// 临时方案2-> txt文本文件默认utf8编码可以将该文件改存为ansi编码
-				// 临时方案3-> 摆烂,使用英文
 				if(check) cout << "----预旋转: " << tmp << endl;
 
 				_mtcls.push_back(MultiTurbineCharLine(_speed_design));

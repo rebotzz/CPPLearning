@@ -143,6 +143,8 @@
   <ItemGroup>
     <ClInclude Include="extrapolation.hpp" />
     <ClInclude Include="mytools.hpp" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="resource1.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imGUI.cpp" />
