@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 #include <iostream>
 #include <vector>
 #include <string>
@@ -7,7 +7,8 @@
 #include <exception>
 #include <unordered_map>
 #include <iomanip>
-#include <xlnt/xlnt.hpp>					// è¿™ä¸ªä¼šä¸åˆ«çš„å¤´æ–‡ä»¶(ç¬¬ä¸‰æ–¹åº“)å†²çª,æ”¾åœ¨æœ€å¼€å§‹
+//#include <locale>							// ±àÂëÎÊÌâ,windowsÄ¬ÈÏÊ¹ÓÃANSI±àÂë,ÓëUTF8×ª»¯
+#include <xlnt/xlnt.hpp>					// Õâ¸ö»áÓë±ğµÄÍ·ÎÄ¼ş(µÚÈı·½¿â)³åÍ»,·ÅÔÚ×î¿ªÊ¼
 #include <boost/math/interpolators/barycentric_rational.hpp>
 #include <boost/math/tools/roots.hpp>
 #include "mytools.hpp"
@@ -26,41 +27,41 @@ using std::move;
 
 namespace TCLExtra
 {
-	// å¸¸æ•°å®šä¹‰
+	// ³£Êı¶¨Òå
 	#define M_PI 3.14159265358979323846
-	static const double PI = acos(-1.0);			// åœ†å‘¨ç‡Î 
-	static const double g_adiabaticIndex = 1.667;	// ç»çƒ­æŒ‡æ•° æš‚å®š1.667
-	static size_t g_precision = 10;					// è¾“å‡ºæ•°æ®ä¿ç•™ç²¾åº¦
+	static const double PI = acos(-1.0);			// Ô²ÖÜÂÊ¦°
+	static const double g_adiabaticIndex = 1.667;	// ¾øÈÈÖ¸Êı Ôİ¶¨1.667
+	static size_t g_precision = 10;					// Êä³öÊı¾İ±£Áô¾«¶È
 
-	// è½¬é€Ÿä¸ºspeedçš„ç‰¹æ€§çº¿
+	// ×ªËÙÎªspeedµÄÌØĞÔÏß
 	class TurbineCharLine
 	{
 	public:
-		vector<double> _flows;						// æµé‡	
-		vector<double> _efficiencies;				// æ•ˆç‡
-		vector<double> _pressRatios;				// å‹æ¯”
-		double _speed = 0.0;						// è½¬é€Ÿ
-		double _surge_flow = 0.0;					// å–˜éœ‡æµé‡
-		double _surge_efficiencies = 0.0;			// å–˜éœ‡æ•ˆç‡
-		double _surge_pressure_ratio = 0.0;			// å–˜éœ‡å‹æ¯”
+		vector<double> _flows;						// Á÷Á¿	
+		vector<double> _efficiencies;				// Ğ§ÂÊ
+		vector<double> _pressRatios;				// Ñ¹±È
+		double _speed = 0.0;						// ×ªËÙ
+		double _surge_flow = 0.0;					// ´­ÕğÁ÷Á¿
+		double _surge_efficiencies = 0.0;			// ´­ÕğĞ§ÂÊ
+		double _surge_pressure_ratio = 0.0;			// ´­ÕğÑ¹±È
 	};
 
-	// ä¸åŒè½¬é€Ÿspeedçš„ç‰¹æ€§çº¿
+	// ²»Í¬×ªËÙspeedµÄÌØĞÔÏß
 	class MultiTurbineCharLine
 	{
 	private:
 		typedef boost::math::interpolators::barycentric_rational<double> Interpolator;
 	private:
 		//public:
-			// todoå¾…ä¼˜åŒ–: æ¯ä¸ªç‰¹æ€§çº¿è‡ªå˜é‡éƒ½æ˜¯flows, éƒ½ä¸€æ ·,æ•°æ®å†—ä½™
-		vector<TurbineCharLine> _tclines;							// å·²çŸ¥æ•°æ®,å·²æœ‰çš„ç‰¹æ€§çº¿
-		double _speed_design = 0.0;									// è®¾è®¡è½¬é€Ÿ
-		string _preRotation = "é¢„æ—‹";
+			// todo´ıÓÅ»¯: Ã¿¸öÌØĞÔÏß×Ô±äÁ¿¶¼ÊÇflows, ¶¼Ò»Ñù,Êı¾İÈßÓà
+		vector<TurbineCharLine> _tclines;							// ÒÑÖªÊı¾İ,ÒÑÓĞµÄÌØĞÔÏß
+		double _speed_design = 0.0;									// Éè¼Æ×ªËÙ
+		string _preRotation = "Ô¤Ğı";
 
-		std::shared_ptr<Interpolator> _surge_speedRatio_flow_ptr;	// æ’å€¼å¾—åˆ°:(è¿è¡Œé€Ÿåº¦/è®¾è®¡é€Ÿåº¦)-å–˜éœ‡æµé‡
-		std::shared_ptr<Interpolator> _surge_flow_pressRatio_ptr;	// æ’å€¼å¾—åˆ°:å–˜éœ‡æµé‡-å–˜éœ‡å‹æ¯”
-		std::shared_ptr<Interpolator> _surge_flow_efficiency_ptr;	// æ’å€¼å¾—åˆ°:å–˜éœ‡æµé‡-å–˜éœ‡æ•ˆç‡
-		vector<TurbineCharLine> _tclines_new;						// æ’å€¼æ¨æ¼”:æ–°çš„ç‰¹æ€§çº¿
+		std::shared_ptr<Interpolator> _surge_speedRatio_flow_ptr;	// ²åÖµµÃµ½:(ÔËĞĞËÙ¶È/Éè¼ÆËÙ¶È)-´­ÕğÁ÷Á¿
+		std::shared_ptr<Interpolator> _surge_flow_pressRatio_ptr;	// ²åÖµµÃµ½:´­ÕğÁ÷Á¿-´­ÕğÑ¹±È
+		std::shared_ptr<Interpolator> _surge_flow_efficiency_ptr;	// ²åÖµµÃµ½:´­ÕğÁ÷Á¿-´­ÕğĞ§ÂÊ
+		vector<TurbineCharLine> _tclines_new;						// ²åÖµÍÆÑİ:ĞÂµÄÌØĞÔÏß
 
 	public:
 		enum DrawGraphOption
@@ -80,55 +81,55 @@ namespace TCLExtra
 		string& preRotation() { return _preRotation; }
 
 
-		// todo: æ±‚è§£å µå¡(å–˜éœ‡)è¾¹ç•Œçº¿ æ¶¡è½®éƒ¨åˆ†; ææµ…...,æ²¡æœ‰ç†è®ºæŒ‡å¯¼
+		// todo: Çó½â¶ÂÈû(´­Õğ)±ß½çÏß ÎĞÂÖ²¿·Ö; ¸éÇ³...,Ã»ÓĞÀíÂÛÖ¸µ¼
 		void getSurgeLineT()
 		{}
 
-		// æ±‚è§£å µå¡(å–˜éœ‡)è¾¹ç•Œçº¿	å‹æ°”æœºéƒ¨åˆ†
+		// Çó½â¶ÂÈû(´­Õğ)±ß½çÏß	Ñ¹Æø»ú²¿·Ö
 		void getSurgeLineP()
 		{
-			// æ±‚è§£ä¸åŒè½¬é€Ÿçš„ç‰¹æ€§çº¿å–˜éœ‡ç‚¹
+			// Çó½â²»Í¬×ªËÙµÄÌØĞÔÏß´­Õğµã
 			vector<double> surge_flows, surge_press_ratios, surge_efficiencies, surge_speedRatio;
 			for (auto& charline : _tclines) {
-				// ç†è®ºæ¥è‡ª:[å¾„æµå¼å¶è½®æœºæ¢°ç†è®ºåŠè®¾è®¡-æ¨ç­–]:P223
-				// å‡å®šå–˜éœ‡æµé‡ä¸º:å‹æ¯”-æµé‡çº¿æ–œç‡ä¸ºé›¶çš„ç‚¹ 
-				// å¯¹æ¯ä¸€æ¡ç‰¹æ€§çº¿æ’å€¼,æ±‚æ–œç‡ä¸º0çš„ç‚¹
+				// ÀíÂÛÀ´×Ô:[¾¶Á÷Ê½Ò¶ÂÖ»úĞµÀíÂÛ¼°Éè¼Æ-Ñî²ß]:P223
+				// ¼Ù¶¨´­ÕğÁ÷Á¿Îª:Ñ¹±È-Á÷Á¿ÏßĞ±ÂÊÎªÁãµÄµã 
+				// ¶ÔÃ¿Ò»ÌõÌØĞÔÏß²åÖµ,ÇóĞ±ÂÊÎª0µÄµã
 				auto& x_values = charline._flows;
 				auto& y_values_press = charline._pressRatios;
 				auto& y_values_eff = charline._efficiencies;
 
 				auto getdfRoots = [&charline](Interpolator& inter)->double {
-					// äºŒåˆ†æŸ¥æ‰¾æ ¹ f`(x)çš„æ ¹
+					// ¶ş·Ö²éÕÒ¸ù f`(x)µÄ¸ù
 					auto df = [&inter](double x) {return inter.prime(x); };
-					// å› ä¸ºè¿™é‡Œæµé‡(è‡ªå˜é‡)å•è°ƒé€’å¢
+					// ÒòÎªÕâÀïÁ÷Á¿(×Ô±äÁ¿)µ¥µ÷µİÔö
 					double min = charline._flows[0], max = charline._flows.back();
-					// è¿™é‡Œéœ€è¦å°å¿ƒç»™å®šåŒºé—´æ²¡æœ‰æ ¹,æˆ–è€…ç²¾åº¦é—®é¢˜
-					auto tol = [](double left, double right) { return abs(left - right) < 1e-4; }; // ç²¾åº¦
+					// ÕâÀïĞèÒªĞ¡ĞÄ¸ø¶¨Çø¼äÃ»ÓĞ¸ù,»òÕß¾«¶ÈÎÊÌâ
+					auto tol = [](double left, double right) { return abs(left - right) < 1e-4; }; // ¾«¶È
 					std::pair<double, double> root;
 					try { root = boost::math::tools::bisect(df, min, max, tol); }
 					catch (const std::exception& e) {
-						LOG(WARING, "æ±‚æ ¹å‡ºé”™, é€Ÿåº¦: " + std::to_string(charline._speed) + "\n" + e.what() + "\n");
+						LOG(WARING, "Çó¸ù³ö´í, ËÙ¶È: " + std::to_string(charline._speed) + "\n" + e.what() + "\n");
 						return 0.0;
 					}
-					catch (...) { LOG(WARING, "æ±‚æ ¹å‡ºé”™"); return 0.0;}
+					catch (...) { LOG(WARING, "Çó¸ù³ö´í"); return 0.0;}
 
-					// è¿™é‡Œdfå•è°ƒ,åªæœ‰ä¸€ä¸ªæ ¹
+					// ÕâÀïdfµ¥µ÷,Ö»ÓĞÒ»¸ö¸ù
 					return root.first;
 					};
 
-				// æ’å€¼å¾—åˆ°æµé‡-å‹æ¯”,æµé‡-æ•ˆç‡å…³ç³» f(x)
+				// ²åÖµµÃµ½Á÷Á¿-Ñ¹±È,Á÷Á¿-Ğ§ÂÊ¹ØÏµ f(x)
 				Interpolator interPress(x_values.begin(), x_values.end(), y_values_press.begin());
 				Interpolator interEff(x_values.begin(), x_values.end(), y_values_eff.begin());
 
-				// æµé‡-å‹æ¯”:æ–œç‡ä¸ºé›¶çš„ç‚¹->å–˜éœ‡ç‚¹
-				// æš‚å®š:åªç”¨æ±‚æµé‡-å‹æ¯”æå€¼ç‚¹å°±å¤Ÿäº†, å¾—åˆ°å–˜éœ‡æµé‡, ç„¶åæ’å€¼å¾—åˆ°å–˜éœ‡æ•ˆç‡; å¦‚æœæ±‚æµé‡-æ•ˆç‡æå€¼ç‚¹,å¯èƒ½æµé‡ä¸åŒ¹é…
-				charline._surge_flow = getdfRoots(interPress);	// ç»™å®šåŒºé—´æ‰¾ä¸åˆ°æ ¹,åˆ™ä¸º0
+				// Á÷Á¿-Ñ¹±È:Ğ±ÂÊÎªÁãµÄµã->´­Õğµã
+				// Ôİ¶¨:Ö»ÓÃÇóÁ÷Á¿-Ñ¹±È¼«Öµµã¾Í¹»ÁË, µÃµ½´­ÕğÁ÷Á¿, È»ºó²åÖµµÃµ½´­ÕğĞ§ÂÊ; Èç¹ûÇóÁ÷Á¿-Ğ§ÂÊ¼«Öµµã,¿ÉÄÜÁ÷Á¿²»Æ¥Åä
+				charline._surge_flow = getdfRoots(interPress);	// ¸ø¶¨Çø¼äÕÒ²»µ½¸ù,ÔòÎª0
 				if (charline._surge_flow != 0) {
 					charline._surge_pressure_ratio = interPress(charline._surge_flow);
 					charline._surge_efficiencies = interEff(charline._surge_flow);
 				}
 
-				// å‰”é™¤æ— æ•ˆç‚¹
+				// ÌŞ³ıÎŞĞ§µã
 				if (charline._surge_flow != 0) {
 					surge_flows.push_back(charline._surge_flow);
 					surge_press_ratios.push_back(charline._surge_pressure_ratio);
@@ -137,7 +138,7 @@ namespace TCLExtra
 				}
 			}
 
-			// æ’å€¼å¾—åˆ°å–˜éœ‡çº¿ä¸Š: å–˜éœ‡æµé‡-å–˜éœ‡å‹æ¯”, å–˜éœ‡æµé‡-å–˜éœ‡æ•ˆç‡, é€Ÿæ¯”(è¿è¡Œé€Ÿåº¦/è®¾è®¡é€Ÿåº¦)-å–˜éœ‡æµé‡
+			// ²åÖµµÃµ½´­ÕğÏßÉÏ: ´­ÕğÁ÷Á¿-´­ÕğÑ¹±È, ´­ÕğÁ÷Á¿-´­ÕğĞ§ÂÊ, ËÙ±È(ÔËĞĞËÙ¶È/Éè¼ÆËÙ¶È)-´­ÕğÁ÷Á¿
 			std::shared_ptr<Interpolator> surge_flow_press(new Interpolator(surge_flows.begin(), surge_flows.end(), surge_press_ratios.begin()));
 			std::shared_ptr<Interpolator> surge_flow_efficiency(new Interpolator(surge_flows.begin(), surge_flows.end(), surge_efficiencies.begin()));
 			std::shared_ptr<Interpolator> surge_speedRatio_flow(new Interpolator(surge_speedRatio.begin(), surge_speedRatio.end(), surge_flows.begin()));
@@ -146,12 +147,12 @@ namespace TCLExtra
 			_surge_speedRatio_flow_ptr = surge_speedRatio_flow;
 		}
 
-		// å¤–æ¨è½¬é€Ÿspeed_newå¯¹åº”çš„ç‰¹æ€§çº¿
-		// ç†è®º: [èˆªç©ºå‘åŠ¨æœºé«˜ç²¾åº¦å»ºæ¨¡åŠèµ·åŠ¨æ€§èƒ½ä»¿çœŸç ”ç©¶-é«˜æ¥šé“­]:P45
+		// ÍâÍÆ×ªËÙspeed_new¶ÔÓ¦µÄÌØĞÔÏß
+		// ÀíÂÛ: [º½¿Õ·¢¶¯»ú¸ß¾«¶È½¨Ä£¼°Æğ¶¯ĞÔÄÜ·ÂÕæÑĞ¾¿-¸ß³şÃú]:P45
 		TurbineCharLine& extrapolation(double speed_new, double usersest_speed_ref = 0.0)
 		{
-			// é€‰é‚£ä¸ªè½¬é€Ÿç‰¹æ€§çº¿ä½œä¸ºåŸºå‡†?
-			// plan: 1.è®¾è®¡è½¬é€Ÿç‰¹æ€§çº¿(èˆå¼ƒ)  2.ä»¥é€Ÿåº¦æœ€é‚»è¿‘çš„ç‰¹æ€§çº¿
+			// Ñ¡ÄÇ¸ö×ªËÙÌØĞÔÏß×÷Îª»ù×¼?
+			// plan: 1.Éè¼Æ×ªËÙÌØĞÔÏß(ÉáÆú)  2.ÒÔËÙ¶È×îÁÚ½üµÄÌØĞÔÏß
 			int ref = _tclines.size() / 2;
 			double gap = abs(_tclines[0]._speed - _tclines.back()._speed + 1);
 			for (int i = 0; i < _tclines.size(); ++i) {
@@ -161,7 +162,7 @@ namespace TCLExtra
 				}
 			}
 
-			// ç”¨æˆ·è‡ªå®šä¹‰åŸºå‡†çº¿
+			// ÓÃ»§×Ô¶¨Òå»ù×¼Ïß
 			if (usersest_speed_ref != 0.0) {
 				double gap = abs(_tclines[0]._speed - _tclines.back()._speed + 1);
 				for (int i = 0; i < _tclines.size(); ++i) {
@@ -172,11 +173,11 @@ namespace TCLExtra
 				}
 			}
 
-			LOG(NOTICE, "å¾…æ±‚é€Ÿåº¦: " + std::to_string(int(speed_new)) + "-->å¤–æ¨åŸºå‡†ç‰¹æ€§çº¿é€Ÿåº¦: " + std::to_string(int(_tclines[ref]._speed)));
+			LOG(NOTICE, "´ıÇóËÙ¶È: " + std::to_string(int(speed_new)) + "-->ÍâÍÆ»ù×¼ÌØĞÔÏßËÙ¶È: " + std::to_string(int(_tclines[ref]._speed)));
 
-			// åˆå§‹åŒ–
+			// ³õÊ¼»¯
 			_tclines_new.push_back(TurbineCharLine());
-			auto& tcline = _tclines_new.back();	// éœ€è¦å¤–æ¨çš„ç‰¹æ€§çº¿
+			auto& tcline = _tclines_new.back();	// ĞèÒªÍâÍÆµÄÌØĞÔÏß
 			size_t size = _tclines[ref]._flows.size();
 			tcline._flows.resize(size);
 			tcline._pressRatios.resize(size);
@@ -188,26 +189,26 @@ namespace TCLExtra
 			double surge_pressure_ratio_ref = tcline_ref._surge_pressure_ratio;
 			double surge_flow_ref = tcline_ref._surge_flow;
 			double surge_efficiency_ref = tcline_ref._surge_efficiencies;
-			double adiabaticIndex = g_adiabaticIndex;	// ç»çƒ­æŒ‡æ•°
+			double adiabaticIndex = g_adiabaticIndex;	// ¾øÈÈÖ¸Êı
 
-			// todo: éªŒè¯è¿™é‡Œæ­£ç¡®æ€§
-			// åˆ©ç”¨å–˜éœ‡ç‚¹æ’å€¼å¾—åˆ°çš„å…³ç³» -> æ±‚æ–°çš„è½¬é€Ÿå¯¹åº”çš„å–˜éœ‡ç‚¹
-			// f(x): (è¿è¡Œé€Ÿåº¦/è®¾è®¡é€Ÿåº¦)é€Ÿæ¯”-å–˜éœ‡æµé‡ å–˜éœ‡æµé‡-å–˜éœ‡å‹æ¯” å–˜éœ‡æµé‡-å–˜éœ‡æ•ˆç‡
-			// æµé‡flows, å‹æ¯”pressure_ratio, æ•ˆç‡efficiencies 
-			double surge_flow_new = _surge_speedRatio_flow_ptr->operator()(speed_new / _speed_design);	// debug: è¿™é‡Œé€Ÿæ¯”æ˜¯new/design
+			// todo: ÑéÖ¤ÕâÀïÕıÈ·ĞÔ
+			// ÀûÓÃ´­Õğµã²åÖµµÃµ½µÄ¹ØÏµ -> ÇóĞÂµÄ×ªËÙ¶ÔÓ¦µÄ´­Õğµã
+			// f(x): (ÔËĞĞËÙ¶È/Éè¼ÆËÙ¶È)ËÙ±È-´­ÕğÁ÷Á¿ ´­ÕğÁ÷Á¿-´­ÕğÑ¹±È ´­ÕğÁ÷Á¿-´­ÕğĞ§ÂÊ
+			// Á÷Á¿flows, Ñ¹±Èpressure_ratio, Ğ§ÂÊefficiencies 
+			double surge_flow_new = _surge_speedRatio_flow_ptr->operator()(speed_new / _speed_design);	// debug: ÕâÀïËÙ±ÈÊÇnew/design
 			double surge_pressure_ratio_new = _surge_flow_pressRatio_ptr->operator()(surge_flow_new);
 			double surge_efficiency_new = _surge_flow_efficiency_ptr->operator()(surge_efficiency_ref);
 			tcline._surge_flow = surge_flow_new;
 			tcline._surge_pressure_ratio = surge_pressure_ratio_new;
 			tcline._surge_efficiencies = surge_efficiency_new;
 
-			// æ±‚æ’å€¼çš„æ¯”ä¾‹ç³»æ•°
-			double speed_ratio = speed_new / speed_ref;		// è¿™é‡Œæ˜¯ä¸å‚æ•°é€Ÿåº¦(åŸºå‡†)ä¹‹æ¯”
+			// Çó²åÖµµÄ±ÈÀıÏµÊı
+			double speed_ratio = speed_new / speed_ref;		// ÕâÀïÊÇÓë²ÎÊıËÙ¶È(»ù×¼)Ö®±È
 			double indexFlow = getIndexFlow(surge_flow_new, surge_flow_ref, speed_ratio);
 			double indexPressureRatio = getIndexPressureRatio(surge_pressure_ratio_new, surge_pressure_ratio_ref, speed_ratio, adiabaticIndex);
 			double indexEfficient = getIndexEfficiency(surge_efficiency_new, surge_efficiency_ref, speed_ratio);
 
-			// ç›¸ä¼¼ç†è®ºå¤–æ¨è½¬é€Ÿspeed_newå¯¹åº”çš„ç‰¹æ€§çº¿
+			// ÏàËÆÀíÂÛÍâÍÆ×ªËÙspeed_new¶ÔÓ¦µÄÌØĞÔÏß
 			double flow_similar = pow(speed_ratio, indexFlow);
 			double pressRatio_similar = pow(speed_ratio, indexPressureRatio);
 			double efficiencie_similar = pow(speed_ratio, indexEfficient);
@@ -221,10 +222,10 @@ namespace TCLExtra
 			return tcline;
 		}
 
-		// å…¶ä½™æ›²çº¿ç»˜åˆ¶: x-yå…³ç³»æ›²çº¿
-		static void drawGraph(const vector<vector<double>>& arrxs, const vector<vector<double>>& arrys, const vector<wstring>& comment, wstring outfile, int length = 800)
+		// ÆäÓàÇúÏß»æÖÆ: x-y¹ØÏµÇúÏß
+		static void drawGraph(const vector<vector<double>>& arrxs, const vector<vector<double>>& arrys, const vector<wstring>& comment, wstring outfile, bool closeimg = true, int length = 800)
 		{
-			// ç»˜åˆ¶æ›²çº¿
+			// »æÖÆÇúÏß
 			Coordinate _coord(length);
 			_coord.initGraph();
 			int margin = length * 0.05;
@@ -255,17 +256,19 @@ namespace TCLExtra
 			if (outfile.find(L"./outdata/") == wstring::npos) outfile = L"./outdata/" + outfile;
 			if (outfile.find(L".jpg") == wstring::npos) outfile += L".jpg";
 			saveimage(outfile.c_str());
-			LOG(NOTICE, "ä¿å­˜æ–‡ä»¶: " + wstring2string(outfile));
-			_coord.closeGraph();
+			LOG(NOTICE, "±£´æÍ¼Æ¬: " + wstring2string(outfile));
+			if (closeimg) {
+				_coord.closeGraph();
+			}
 		}
 
-		// æµé‡-å‹æ¯” or æµé‡-æ•ˆç‡
-		void drawGraph(int option = FLOW | PRESS, std::wstring outfile = L"", bool pause = false, int length = 800)
+		// Á÷Á¿-Ñ¹±È or Á÷Á¿-Ğ§ÂÊ
+		void drawGraph(int option = FLOW | PRESS, std::wstring outfile = L"", bool closeimg = true, int length = 800)
 		{
-			// ç»˜åˆ¶æ›²çº¿
+			// »æÖÆÇúÏß
 			Coordinate _coord(length);
 
-			// ç»˜åˆ¶åŸæœ¬çš„ç‰¹æ€§çº¿
+			// »æÖÆÔ­±¾µÄÌØĞÔÏß
 			_coord.initGraph();
 			int margin = length * 0.05;
 			_coord.setOrigin(margin, length - margin);
@@ -282,61 +285,61 @@ namespace TCLExtra
 			std::wstring imagename = outfile;
 
 			if ((option & FLOW) && (option & PRESS)) {
-				_coord.setyScope(1, 3);	// å‹æ¯”èŒƒå›´å¤§æ¦‚ 1 ~ 3	
+				_coord.setyScope(1, 3);	// Ñ¹±È·¶Î§´ó¸Å 1 ~ 3	
 				press = true;
-				imagename += L"æµé‡-å‹æ¯”.jpg";
+				imagename += L"Á÷Á¿-Ñ¹±È.jpg";
 			}
 			else if ((option & FLOW) && (option & EFFICIENT)) {
-				_coord.setyScope(0, 1);	// æ•ˆç‡èŒƒå›´å¤§æ¦‚ 0 ~ 1
+				_coord.setyScope(0, 1);	// Ğ§ÂÊ·¶Î§´ó¸Å 0 ~ 1
 				effi = true;
-				imagename += L"æµé‡-æ•ˆç‡.jpg";
+				imagename += L"Á÷Á¿-Ğ§ÂÊ.jpg";
 			}
 			else {
-				LOG(WARING, "é€‰é¡¹é”™è¯¯");
-				throw std::invalid_argument("é€‰é¡¹é”™è¯¯, ç¤ºèŒƒ:todo...");
+				LOG(WARING, "Ñ¡Ïî´íÎó");
+				throw std::invalid_argument("Ñ¡Ïî´íÎó, Ê¾·¶:todo...");
 			}
 
 			_coord.drawCoordinate();
 			for (auto& charline : _tclines) {
-				std::wstring s = L"é€Ÿåº¦:";
+				std::wstring s = L"ËÙ¶È:";
 				s += std::to_wstring(int(charline._speed));
 				if (press) _coord.drawLine(charline._flows, charline._pressRatios, s);
 				if (effi) _coord.drawLine(charline._flows, charline._efficiencies, s);
 			}
 
-			// ç»˜åˆ¶å–˜éœ‡è¾¹ç•Œçº¿
+			// »æÖÆ´­Õğ±ß½çÏß
 			vector<double> surgeX, surgeY;
 			for (auto& charline : _tclines) {
-				if (charline._surge_flow != 0) {	// è·³è¿‡æ²¡æ‰¾åˆ°çš„å–˜éœ‡ç‚¹
+				if (charline._surge_flow != 0) {	// Ìø¹ıÃ»ÕÒµ½µÄ´­Õğµã
 					surgeX.push_back(charline._surge_flow);
 					if (press) surgeY.push_back(charline._surge_pressure_ratio);
 					if (effi) surgeY.push_back(charline._surge_efficiencies);
 				}
 			}
-			_coord.drawLine(surgeX, surgeY, L"å–˜éœ‡è¾¹ç•Œçº¿");
+			_coord.drawLine(surgeX, surgeY, L"´­Õğ±ß½çÏß");
 
-			if (pause) system("pause");
-			// ç»˜åˆ¶ç›¸ä¼¼ç†è®ºå¤–æ¨ç‰¹æ€§çº¿
+			// »æÖÆÏàËÆÀíÂÛÍâÍÆÌØĞÔÏß
 			for (auto& charline : _tclines_new) {
-				std::wstring s = L"å¤–æ¨é€Ÿåº¦:";
+				std::wstring s = L"ÍâÍÆËÙ¶È:";
 				s += std::to_wstring(int(charline._speed));
 				if (press) _coord.drawLine(charline._flows, charline._pressRatios, s);
 				if (effi) _coord.drawLine(charline._flows, charline._efficiencies, s);
 			}
 
-			if (pause) system("pause");
 			saveimage(imagename.c_str());
-			LOG(NOTICE, "ä¿å­˜å›¾ç‰‡: " + wstring2string(imagename));
-			_coord.closeGraph();
+			LOG(NOTICE, "±£´æÍ¼Æ¬: " + wstring2string(imagename));
+			if (closeimg) {
+				_coord.closeGraph();
+			}
 		}
 
-		// æ£€æŸ¥è¯¯å·®
+		// ¼ì²éÎó²î
 		void checkExtraError(string outfile = "")
 		{
-			// todo:å‰”é™¤å¾…éªŒè¯é€Ÿåº¦æ‹Ÿåˆçš„å–˜éœ‡ç‚¹
+			// todo:ÌŞ³ı´ıÑéÖ¤ËÙ¶ÈÄâºÏµÄ´­Õğµã
 			getSurgeLineP();
 
-			// æŠ½æŸ¥ä¸€åŠ, ç”¨ç›¸é‚»ä¸Šä¸€ä¸ªè½¬é€Ÿå¤–æ¨ 
+			// ³é²éÒ»°ë, ÓÃÏàÁÚÉÏÒ»¸ö×ªËÙÍâÍÆ 
 			vector<int> checkarr;
 			for (int i = 0; i < _tclines.size() - 1; i += 2) {
 				double speed_new = _tclines[i]._speed;
@@ -345,7 +348,7 @@ namespace TCLExtra
 				checkarr.push_back(i);
 			}
 
-			// æ£€éªŒè¯¯å·®
+			// ¼ìÑéÎó²î
 			struct ERR {
 				vector<double> _errp;
 				vector<double> _erre;
@@ -356,11 +359,11 @@ namespace TCLExtra
 			int extraid = 0;
 			for (auto i : checkarr) {
 				errs.push_back(ERR());
-				auto& err = errs.back();				// è¯¯å·®
-				auto& extra = _tclines_new[extraid++];	// å¤–æ¨çš„
-				auto& origin = _tclines[i];				// åŸæ¥çš„
+				auto& err = errs.back();				// Îó²î
+				auto& extra = _tclines_new[extraid++];	// ÍâÍÆµÄ
+				auto& origin = _tclines[i];				// Ô­À´µÄ
 				err._id = origin._speed;
-				// å› ä¸ºå¤–æ¨çš„æµé‡ä¸åŸå§‹ä¸åŒ,æ‰€ä»¥éœ€è¦æ’å€¼
+				// ÒòÎªÍâÍÆµÄÁ÷Á¿ÓëÔ­Ê¼²»Í¬,ËùÒÔĞèÒª²åÖµ
 				Interpolator interp(extra._flows.begin(), extra._flows.end(), extra._pressRatios.begin());
 				Interpolator intere(extra._flows.begin(), extra._flows.end(), extra._efficiencies.begin());
 				err._arrx = extra._flows;
@@ -375,60 +378,60 @@ namespace TCLExtra
 				}
 			}
 
-			// æ•°æ®æŒä¹…åŒ–
+			// Êı¾İ³Ö¾Ã»¯
 			string oldname = outfile;
 			if (outfile.find("./outdata/") == string::npos) outfile = "./outdata/" + outfile;
-			std::ofstream output(outfile + "è¯¯å·®æ ¡éªŒ.txt", std::ios::trunc | std::ios::binary);
-			output << u8"å¤–æ’åŸæœ‰æ•°æ®æ ¡éªŒè¯¯å·®\n";
+			std::ofstream output(outfile + "Îó²îĞ£Ñé.txt", std::ios::trunc | std::ios::binary);
+			output << u8"Íâ²åÔ­ÓĞÊı¾İĞ£ÑéÎó²î\n";
 			if (output.is_open()) {
 				for (auto& err : errs) {
-					output << u8"å¤–æ’é€Ÿåº¦: " << err._id << endl;
-					output << u8"æµé‡:\n";
+					output << u8"Íâ²åËÙ¶È: " << err._id << endl;
+					output << u8"Á÷Á¿:\n";
 					for (auto x : err._arrx) output << std::setprecision(g_precision) << x << "\t"; output << endl;
-					output << u8"å‹æ¯”ç›¸å¯¹è¯¯å·®:\n";
+					output << u8"Ñ¹±ÈÏà¶ÔÎó²î:\n";
 					for (auto y : err._errp) output << std::setprecision(g_precision) << y << "\t"; output << endl;
-					output << u8"æ•ˆç‡ç›¸å¯¹è¯¯å·®:\n";
+					output << u8"Ğ§ÂÊÏà¶ÔÎó²î:\n";
 					for (auto y : err._erre) output << std::setprecision(g_precision) << y << "\t"; output << endl;
 					output << "\n";
 				}
 				output.close();
-				LOG(NOTICE, "ä¿å­˜æ–‡ä»¶: " + outfile + "è¯¯å·®æ ¡éªŒ.txt");
+				LOG(NOTICE, "±£´æÎÄ¼ş: " + outfile + "Îó²îĞ£Ñé.txt");
 			}
 
-			// å›¾ç‰‡æŒä¹…åŒ–
+			// Í¼Æ¬³Ö¾Ã»¯
 			vector<vector<double>> arrxs, arryes, arryps;
 			vector<wstring> msg;
 			for (auto& err : errs) {
 				arrxs.push_back(std::move(err._arrx));
 				arryes.push_back(std::move(err._erre));
 				arryps.push_back(std::move(err._errp));
-				msg.push_back(L"è½¬é€Ÿ:" + std::to_wstring(err._id));
+				msg.push_back(L"×ªËÙ:" + std::to_wstring(err._id));
 			}
 
 			outfile = oldname;
 			if (outfile.find("./outdata/image/") == string::npos) outfile = "./outdata/image/" + outfile;
 			std::wstring file = string2wstring(outfile);
-			drawGraph(arrxs, arryps, msg, file + L"æµé‡-å‹æ¯”ç›¸å¯¹è¯¯å·®.jpg");
-			drawGraph(arrxs, arryes, msg, file + L"æµé‡-æ•ˆç‡ç›¸å¯¹è¯¯å·®.jpg");
-			LOG(NOTICE, "æ ¡éªŒè¯¯å·®å®Œæˆ,æ•°æ®æŒä¹…åŒ–å®Œæˆ.");
-			// æ¸…é™¤æ ¡éªŒæ•°æ®
+			drawGraph(arrxs, arryps, msg, file + L"Á÷Á¿-Ñ¹±ÈÏà¶ÔÎó²î.jpg");
+			drawGraph(arrxs, arryes, msg, file + L"Á÷Á¿-Ğ§ÂÊÏà¶ÔÎó²î.jpg");
+			LOG(NOTICE, "Ğ£ÑéÎó²îÍê³É,Êı¾İ³Ö¾Ã»¯Íê³É.");
+			// Çå³ıĞ£ÑéÊı¾İ
 			_tclines_new.clear();
 		}
 
 		void readDataFromFile(std::ifstream& input, bool check = false)
 		{
 			if (!input.is_open()) {
-				LOG(FATAL, "æ–‡ä»¶æ‰“å¼€å¤±è´¥");
+				LOG(FATAL, "ÎÄ¼ş´ò¿ªÊ§°Ü");
 				return;
 			}
 			string beginLine, tmp;
-			while (std::getline(input, beginLine))	// è§„å®šåªè¦è¿˜æœ‰æ–°çš„ä¸€è¡Œ,é‚£ä¹ˆå°±æœ‰å®Œæ•´çš„æ•°æ®: å°å¿ƒå¤šä½™å›è½¦
+			while (std::getline(input, beginLine))	// ¹æ¶¨Ö»Òª»¹ÓĞĞÂµÄÒ»ĞĞ,ÄÇÃ´¾ÍÓĞÍêÕûµÄÊı¾İ: Ğ¡ĞÄ¶àÓà»Ø³µ
 			{
-				if (beginLine[0] == '\t') {			// ç»“å°¾æ ‡å¿—,ä¸ºäº†å…¼å®¹excelç²˜è´´åˆ°è®°äº‹æœ¬
+				if (beginLine[0] == '\t') {			// ½áÎ²±êÖ¾,ÎªÁË¼æÈİexcelÕ³Ìùµ½¼ÇÊÂ±¾
 					break;
 				}
 
-				// æ’å…¥æ–°çš„ä¸€ç»„æ•°æ®
+				// ²åÈëĞÂµÄÒ»×éÊı¾İ
 				_tclines.push_back(TurbineCharLine());
 				auto& flows = _tclines.back()._flows;
 				auto& efficiencies = _tclines.back()._efficiencies;
@@ -437,7 +440,7 @@ namespace TCLExtra
 				std::istringstream issbegin(beginLine);
 				issbegin >> speed;
 
-				// å¼€è¾Ÿç©ºé—´
+				// ¿ª±Ù¿Õ¼ä
 				int count = 0;
 				for (char ch : beginLine) {
 					if (ch == '\t') count++;
@@ -445,8 +448,8 @@ namespace TCLExtra
 				vector<double> arr1(count), arr2(count), arr3(count);
 				std::unordered_map<std::string, std::vector<double>*> hash;
 
-				// è¯»å–æ•°æ®
-				// åè®®å®šåˆ¶: è´¨é‡æµé‡,æ•ˆç‡å’Œå‹æ¯”(è†¨èƒ€æ¯”)ä½¿ç”¨åŒºåˆ†"flow","efficiency","pressRatio"
+				// ¶ÁÈ¡Êı¾İ
+				// Ğ­Òé¶¨ÖÆ: ÖÊÁ¿Á÷Á¿,Ğ§ÂÊºÍÑ¹±È(ÅòÕÍ±È)Ê¹ÓÃÇø·Ö"flow","efficiency","pressRatio"
 				input >> tmp;
 				for (auto& e : arr1) input >> e;
 				hash[tmp] = &arr1;
@@ -456,7 +459,7 @@ namespace TCLExtra
 				input >> tmp;
 				for (auto& e : arr3) input >> e;
 				hash[tmp] = &arr3;
-				std::getline(input, beginLine);		// è¯»å–å‰©ä½™çš„ "\n"
+				std::getline(input, beginLine);		// ¶ÁÈ¡Ê£ÓàµÄ "\n"
 
 				if (hash.count("flow") && hash.count("efficiency") && hash.count("pressRatio")) {
 					flows.swap(*hash["flow"]);
@@ -464,20 +467,20 @@ namespace TCLExtra
 					pressRatios.swap(*hash["pressRatio"]);
 				}
 				else {
-					LOG(FATAL, "è´¨é‡æµé‡,æ•ˆç‡å’Œå‹æ¯”å‘½åä¸å¯¹.æ­£ç¡®åè®®å: flow,efficiency,pressRatio");
+					LOG(FATAL, "ÖÊÁ¿Á÷Á¿,Ğ§ÂÊºÍÑ¹±ÈÃüÃû²»¶Ô.ÕıÈ·Ğ­ÒéÃû: flow,efficiency,pressRatio");
 					return;
 				}
 
-				// æ£€æŸ¥è¯»å–
+				// ¼ì²é¶ÁÈ¡
 				if (check) {
-					cout << "è½¬é€Ÿ: " << speed << endl;
-					cout << "æµé‡: ";
+					cout << "×ªËÙ: " << speed << endl;
+					cout << "Á÷Á¿: ";
 					for (auto x : flows) cout << x << " ";
 					cout << endl;
-					cout << "æ•ˆç‡: ";
+					cout << "Ğ§ÂÊ: ";
 					for (auto x : efficiencies) cout << x << " ";
 					cout << endl;
-					cout << "å‹æ¯”/è†¨èƒ€æ¯”: ";
+					cout << "Ñ¹±È/ÅòÕÍ±È: ";
 					for (auto x : pressRatios) cout << x << " ";
 					cout << endl;
 					cout << endl << "------------------------------" << endl;
@@ -489,41 +492,41 @@ namespace TCLExtra
 		void saveFile(std::ofstream& output)
 		{
 			if (!output.is_open()) {
-				LOG(ERR, "æ–‡ä»¶æ‰“å¼€å¤±è´¥");
+				LOG(ERR, "ÎÄ¼ş´ò¿ªÊ§°Ü");
 				return;
 			}
 
 			output << _preRotation << endl;
-			output << u8"åŸå§‹æ•°æ®è®¡ç®—[å–˜éœ‡ç‚¹]: " << endl;
-			output << u8"è½¬é€Ÿ:\t";
+			output << u8"Ô­Ê¼Êı¾İ¼ÆËã[´­Õğµã]: " << endl;
+			output << u8"×ªËÙ:\t";
 			for (auto& e : _tclines) output << e._speed << "\t"; output << endl;
-			output << u8"å–˜éœ‡æµé‡:\t";
+			output << u8"´­ÕğÁ÷Á¿:\t";
 			for (auto& e : _tclines) output << std::setprecision(g_precision) << e._surge_flow << "\t"; output << endl;
-			output << u8"å–˜éœ‡å‹æ¯”: ";
+			output << u8"´­ÕğÑ¹±È: ";
 			for (auto& e : _tclines) output << std::setprecision(g_precision) << e._surge_pressure_ratio << "\t"; output << endl;
-			output << u8"å–˜éœ‡æ•ˆç‡: ";
+			output << u8"´­ÕğĞ§ÂÊ: ";
 			for (auto& e : _tclines) output << std::setprecision(g_precision) << e._surge_efficiencies << "\t"; output << endl;
-			output << u8"tip:èˆå¼ƒå–˜éœ‡æµé‡ä¸º0çš„ç‚¹" << endl;
+			output << u8"tip:ÉáÆú´­ÕğÁ÷Á¿Îª0µÄµã" << endl;
 			output << "\n";
 
-			output << u8"\nå¤–æ¨ç»“æœ[å–˜éœ‡ç‚¹]:\n";
-			output << u8"è½¬é€Ÿ: ";
+			output << u8"\nÍâÍÆ½á¹û[´­Õğµã]:\n";
+			output << u8"×ªËÙ: ";
 			for (auto& charline : _tclines_new) output << std::setprecision(g_precision) << charline._speed << "\t"; output << endl;
-			output << u8"å–˜éœ‡æµé‡: ";
+			output << u8"´­ÕğÁ÷Á¿: ";
 			for (auto& charline : _tclines_new) output << std::setprecision(g_precision) << charline._surge_flow << "\t"; output << endl;
-			output << u8"å–˜éœ‡å‹æ¯”: ";
+			output << u8"´­ÕğÑ¹±È: ";
 			for (auto& charline : _tclines_new) output << std::setprecision(g_precision) << charline._surge_pressure_ratio << "\t"; output << endl;
-			output << u8"å–˜éœ‡æ•ˆç‡: ";
+			output << u8"´­ÕğĞ§ÂÊ: ";
 			for (auto& charline : _tclines_new) output << std::setprecision(g_precision) << charline._surge_efficiencies << "\t"; output << endl;
 
-			output << u8"\nå¤–æ¨ç»“æœ[ç‰¹æ€§çº¿]:\n";
+			output << u8"\nÍâÍÆ½á¹û[ÌØĞÔÏß]:\n";
 			for (auto& charline : _tclines_new) {
-				output << u8"è½¬é€Ÿ: " << charline._speed << endl;
-				output << u8"æµé‡: ";
+				output << u8"×ªËÙ: " << charline._speed << endl;
+				output << u8"Á÷Á¿: ";
 				for (auto& e : charline._flows) output << std::setprecision(g_precision) << e << "\t"; output << endl;
-				output << u8"å‹æ¯”: ";
+				output << u8"Ñ¹±È: ";
 				for (auto& e : charline._pressRatios) output << std::setprecision(g_precision) << e << "\t"; output << endl;
-				output << u8"æ•ˆç‡: ";
+				output << u8"Ğ§ÂÊ: ";
 				for (auto& e : charline._efficiencies) output << std::setprecision(g_precision) << e << "\t"; output << endl;
 			}
 			output << "\n\n";
@@ -537,13 +540,13 @@ namespace TCLExtra
 				int n = charline._flows.size();
 				string str = "speed:" + std::to_string(int(charline._speed));
 				ws.cell(1, row).value(str);
-				// ä¸­æ–‡éœ€è¦è®¾ç½®utf8ç¼–ç 
-				ws.cell(1, row + 1).value(u8"æµé‡");		// "flow"
-				ws.cell(1, row + 2).value(u8"æ•ˆç‡");		// "efficiency"
-				ws.cell(1, row + 3).value(u8"å‹æ¯”");		// "pressRatio"
+				// ÖĞÎÄĞèÒªÉèÖÃutf8±àÂë
+				ws.cell(1, row + 1).value(u8"Á÷Á¿");		// "flow"
+				ws.cell(1, row + 2).value(u8"Ğ§ÂÊ");		// "efficiency"
+				ws.cell(1, row + 3).value(u8"Ñ¹±È");		// "pressRatio"
 
 				for (int col = 0; col < n; ++col) {
-					ws.cell(col + 2, row + 1).value(charline._flows[col]);	// [åˆ—, è¡Œ]
+					ws.cell(col + 2, row + 1).value(charline._flows[col]);	// [ÁĞ, ĞĞ]
 					ws.cell(col + 2, row + 2).value(charline._efficiencies[col]);
 					ws.cell(col + 2, row + 3).value(charline._pressRatios[col]);
 				}
@@ -553,40 +556,19 @@ namespace TCLExtra
 			if (save) {
 				if (outfile.find("./outdata/") == string::npos) outfile = "./outdata/" + outfile;
 				wb.save(outfile);
-				LOG(NOTICE, "ä¿å­˜æ–‡ä»¶: " + outfile);
+				LOG(NOTICE, "±£´æÎÄ¼ş: " + outfile);
 			}
-			return row;		// ä¸‹ä¸€æ¬¡å­˜å‚¨æ•°æ®èµ·å§‹è¡Œ
+			return row;		// ÏÂÒ»´Î´æ´¢Êı¾İÆğÊ¼ĞĞ
 		}
 
-	public:
-		// æµé‡çš„ç›¸ä¼¼å…³ç³»ç³»æ•°
-		double getIndexFlow(double flow_new, double flow_ref, double speed_ratio)
-		{
-			return log(flow_new / flow_ref) / log(speed_ratio);
-		}
-
-		// å‹æ¯”çš„ç›¸ä¼¼å…³ç³»ç³»æ•°
-		double getIndexPressureRatio(double pressure_ratio_new, double pressure_ratio_ref, double speed_ratio, double adiabaticIndex)
-		{
-			double k = (adiabaticIndex - 1) / adiabaticIndex;
-			double tmp1 = pow(pressure_ratio_new, k) - 1;
-			double tmp2 = pow(pressure_ratio_ref, k) - 1;
-			return log(tmp1 / tmp2) / log(speed_ratio);
-		}
-
-		// æ•ˆç‡çš„ç›¸ä¼¼å…³ç³»ç³»æ•°
-		double getIndexEfficiency(double efficiency_new, double efficiency_ref, double speed_ratio)
-		{
-			return log(efficiency_new / efficiency_ref) / log(speed_ratio);
-		}
-
-		// åè®®:ä¸€ç»„4è¡Œæ•°æ® speed flow efficiency pressRatio å¤šç»„é—´ä¸å¸¦ç©ºè¡Œ; ä¸åŒé¢„æ—‹ç”¨ä¸åŒsheetåŒºåˆ†,sheetå‘½åä¸ºé¢„æ—‹å¤§å°
-		// ä¸ºäº†å…¼å®¹ä¸ºäº†excelé«˜ç‰ˆæœ¬,å¯ä»¥å°†æ•°æ®æ‹·è´åˆ°xlntç”Ÿæˆçš„è¡¨æ ¼ä¸‹, ä¸”ä¸è¦å›¾ç‰‡,åªè¦å­˜ç²¹æ•°æ®; ä¸ºäº†é¿å…ä¹±ç ,ä½¿ç”¨è‹±æ–‡
+		// Ğ­Òé:Ò»×é4ĞĞÊı¾İ speed flow efficiency pressRatio ¶à×é¼ä²»´ø¿ÕĞĞ; ²»Í¬Ô¤ĞıÓÃ²»Í¬sheetÇø·Ö,sheetÃüÃûÎªÔ¤Ğı´óĞ¡
+		// ÎªÁË¼æÈİÎªÁËexcel¸ß°æ±¾,¿ÉÒÔ½«Êı¾İ¿½±´µ½xlntÉú³ÉµÄ±í¸ñÏÂ, ÇÒ²»ÒªÍ¼Æ¬,Ö»Òª´æ´âÊı¾İ; 
+		// ÎªÁË±ÜÃâÂÒÂë,Ê¹ÓÃÓ¢ÎÄ; ĞÂÔö:ÖĞÎÄÖ§³Ö
 		void readDataFromExcel(string file, bool check = false)
 		{
 			xlnt::workbook wb;
 			try { wb.load(file); }
-			catch (const std::exception&) { LOG(FATAL, "éµå®ˆåè®®:ä½¿ç”¨çº¯å‡€çš„excelè¡¨æ ¼,å‚è€ƒexample.xlsx"); throw; }
+			catch (const std::exception&) { LOG(FATAL, "×ñÊØĞ­Òé:Ê¹ÓÃ´¿¾»µÄexcel±í¸ñ,²Î¿¼example.xlsx"); throw; }
 			catch (...) { throw; }
 			xlnt::worksheet ws = wb.active_sheet();
 			readDataFromExcel(ws, check);
@@ -602,57 +584,79 @@ namespace TCLExtra
 			for (const xlnt::cell_vector& cells : ws) {
 				auto itcell = cells.begin();
 				auto& cellbegin = *itcell;
-				if (cellbegin.has_value() == false) break;	// ç©º,ç»“æŸ
+				if (cellbegin.has_value() == false) break;	// ¿Õ,½áÊø
 
 				TurbineCharLine* charline = nullptr;
 				if (_tclines.size() != 0) charline = &_tclines.back();
 				string tmp = cellbegin.to_string();
-				if (tmp.find("speed") != string::npos) {
-					// æœ‰ä¸€ç»„æ•°æ®,å¼€è¾Ÿç©ºé—´
+				if (tmp.find("speed") != string::npos || tmp.find(u8"×ªËÙ") != string::npos) {
+					// ÓĞÒ»×éÊı¾İ,¿ª±Ù¿Õ¼ä
 					_tclines.push_back(TurbineCharLine());
 					std::stringstream ss(tmp);
 					ss >> _tclines.back()._speed;
 					continue;
 				}
-				else if (tmp.find("flow") != string::npos) {
-					int i = 0;	// è·³è¿‡é¦–ä¸ªæ ‡è®°å­—ç¬¦
+				else if (tmp.find("flow") != string::npos || tmp.find(u8"Á÷Á¿") != string::npos) {
+					int i = 0;	// Ìø¹ıÊ×¸ö±ê¼Ç×Ö·û
 					for (auto& cell : cells) {
 						if (i++) charline->_flows.push_back(std::stod(cell.to_string()));
 					}
 				}
-				else if (tmp.find("efficiency") != string::npos) {
+				else if (tmp.find("efficiency") != string::npos || tmp.find(u8"Ğ§ÂÊ") != string::npos) {
 					int i = 0;
 					for (auto& cell : cells) {
 						if (i++) charline->_efficiencies.push_back(std::stod(cell.to_string()));
 					}
 				}
-				else if (tmp.find("pressRatio") != string::npos) {
+				else if (tmp.find("pressRatio") != string::npos || tmp.find(u8"Ñ¹±È") != string::npos) {
 					int i = 0;
 					for (auto& cell : cells) {
 						if (i++) charline->_pressRatios.push_back(std::stod(cell.to_string()));
 					}
 				}
 				else {
-					LOG(FATAL, "æ ¼å¼é”™è¯¯, éµå®ˆåè®®,å‚è€ƒexample.xlsx");
+					LOG(FATAL, "¸ñÊ½´íÎó, ×ñÊØĞ­Òé,²Î¿¼example.xlsx");
 					return;
 				}
 			}
 
 			if (check) {
 				for (auto& tcline : _tclines) {
-					cout << "è½¬é€Ÿ: " << tcline._speed << endl;
-					cout << "æµé‡: ";
+					cout << "×ªËÙ: " << tcline._speed << endl;
+					cout << "Á÷Á¿: ";
 					for (auto x : tcline._flows) cout << x << " ";
 					cout << endl;
-					cout << "æ•ˆç‡: ";
+					cout << "Ğ§ÂÊ: ";
 					for (auto x : tcline._efficiencies) cout << x << " ";
 					cout << endl;
-					cout << "å‹æ¯”/è†¨èƒ€æ¯”: ";
+					cout << "Ñ¹±È/ÅòÕÍ±È: ";
 					for (auto x : tcline._pressRatios) cout << x << " "; /*printf("%.7lf ", x);*/
 					cout << endl;
 					cout << endl << "------------------------------" << endl;
 				}
 			}
+		}
+
+	private:
+		// Á÷Á¿µÄÏàËÆ¹ØÏµÏµÊı
+		double getIndexFlow(double flow_new, double flow_ref, double speed_ratio)
+		{
+			return log(flow_new / flow_ref) / log(speed_ratio);
+		}
+
+		// Ñ¹±ÈµÄÏàËÆ¹ØÏµÏµÊı
+		double getIndexPressureRatio(double pressure_ratio_new, double pressure_ratio_ref, double speed_ratio, double adiabaticIndex)
+		{
+			double k = (adiabaticIndex - 1) / adiabaticIndex;
+			double tmp1 = pow(pressure_ratio_new, k) - 1;
+			double tmp2 = pow(pressure_ratio_ref, k) - 1;
+			return log(tmp1 / tmp2) / log(speed_ratio);
+		}
+
+		// Ğ§ÂÊµÄÏàËÆ¹ØÏµÏµÊı
+		double getIndexEfficiency(double efficiency_new, double efficiency_ref, double speed_ratio)
+		{
+			return log(efficiency_new / efficiency_ref) / log(speed_ratio);
 		}
 	};
 
@@ -667,10 +671,16 @@ namespace TCLExtra
 		{}
 		vector<MultiTurbineCharLine>& getMultiTurbineCharLines() { return _mtcls; }
 
-		// å¾…å¤–æ¨é€Ÿåº¦
-		void solution(vector<double> speeds = vector<double>(), string outfile = "./outdata/outcome", bool check = false)
+		// ´ıÍâÍÆËÙ¶È	²ÎÊı: ´úÇóÌØĞÔÏß×ªËÙ Êä³öÎÄ¼şÃû ÊÇ·ñ¼ì²éÊı¾İ¶ÁÈ¡ ÊÇ·ñ¹Ø±Õ»æÍ¼´°¿Ú(ÓÃÓÚ¼æÈİImGui)
+		void solution(vector<int> speeds = vector<int>(), string outfile = "./outdata/outcome", bool check = false, bool closeimg = true)
 		{
-			if (check) cout << "ä¸åŒé¢„é€‰ç»„æ•°:" << _mtcls.size() << endl;
+			vector<double> copy(speeds.size());
+			for (int i = 0; i < copy.size(); ++i) copy[i] = speeds[i];
+			solution(copy, outfile, check, closeimg);
+		}
+		void solution(vector<double> speeds, string outfile = "./outdata/outcome", bool check = false, bool closeimg = true)
+		{
+			if (check) cout << "²»Í¬Ô¤Ñ¡×éÊı:" << _mtcls.size() << endl;
 			if (outfile.find("./outdata/") == string::npos) outfile = "./outdata/" + outfile;
 			std::ofstream output(outfile + ".txt", std::ios::trunc | std::ios::binary);
 			xlnt::workbook wb;
@@ -680,24 +690,24 @@ namespace TCLExtra
 
 				if (check) {
 					cout << endl << endl;
-					cout << "è½¬é€Ÿ: ";
+					cout << "×ªËÙ: ";
 					for (auto& e : mtl.getTClines()) cout << e._speed << " "; cout << endl;
-					cout << "å–˜éœ‡æµé‡: ";
+					cout << "´­ÕğÁ÷Á¿: ";
 					for (auto& e : mtl.getTClines()) cout << e._surge_flow << " "; cout << endl;
-					cout << "å–˜éœ‡å‹æ¯”: ";
+					cout << "´­ÕğÑ¹±È: ";
 					for (auto& e : mtl.getTClines()) cout << e._surge_pressure_ratio << " "; cout << endl;
-					cout << "å–˜éœ‡æ•ˆç‡: ";
+					cout << "´­ÕğĞ§ÂÊ: ";
 					for (auto& e : mtl.getTClines()) cout << e._surge_efficiencies << " "; cout << endl;
 				}
 
-				// å¤–æ¨æ–°è½¬é€Ÿçš„ç‰¹æ€§çº¿
+				// ÍâÍÆĞÂ×ªËÙµÄÌØĞÔÏß
 				for (auto speed : speeds) {
-					mtl.extrapolation(speed);
+					if(speed != 0.0) mtl.extrapolation(speed);
 				}
 
-				wstring img = string2wstring(mtl.preRotation());
-				mtl.drawGraph(3, img);	// æµé‡-å‹æ¯”
-				mtl.drawGraph(5, img);	// æµé‡-æ•ˆç‡
+				wstring img = utf8_to_wstring(mtl.preRotation());
+				mtl.drawGraph(3, img, closeimg);	// Á÷Á¿-Ñ¹±È	
+				mtl.drawGraph(5, img, closeimg);	// Á÷Á¿-Ğ§ÂÊ
 				//system("pause");
 
 				xlnt::worksheet ws = wb.active_sheet();
@@ -708,7 +718,7 @@ namespace TCLExtra
 			}
 			output.close();
 			wb.save(outfile + ".xlsx");
-			LOG(NOTICE, "ä¿å­˜æ–‡ä»¶: " + outfile);
+			LOG(NOTICE, "±£´æÎÄ¼ş: " + outfile);
 		}
 
 		void readDataFromFile(string file, bool check = false)
@@ -716,11 +726,7 @@ namespace TCLExtra
 			std::ifstream input(file.c_str());
 			string tmp;
 			while (std::getline(input, tmp)) {
-				// todoå¾…è§£å†³è¯»å–utf8ç¼–ç çš„æ–‡æœ¬ä¹±ç : 
-				// ä¸´æ—¶æ–¹æ¡ˆ1-> é¢„æ—‹è½¬: æ•°æ®, ä¸ä¿å­˜å­—ç¬¦ä¸²
-				// ä¸´æ—¶æ–¹æ¡ˆ2-> txtæ–‡æœ¬æ–‡ä»¶é»˜è®¤utf8ç¼–ç å¯ä»¥å°†è¯¥æ–‡ä»¶æ”¹å­˜ä¸ºansiç¼–ç 
-				// ä¸´æ—¶æ–¹æ¡ˆ3-> æ‘†çƒ‚,ä½¿ç”¨è‹±æ–‡
-				if(check) cout << "----é¢„æ—‹è½¬: " << tmp << endl;
+				if (check) cout << "----Ô¤Ğı×ª: " << utf8_to_ansi(tmp) << endl;
 
 				_mtcls.push_back(MultiTurbineCharLine(_speed_design));
 				auto& tclines = _mtcls.back();
@@ -735,14 +741,15 @@ namespace TCLExtra
 		{
 			xlnt::workbook wb;
 			try { wb.load(file); }
-			catch (const std::exception&) { LOG(FATAL, "éµå®ˆåè®®:ä½¿ç”¨çº¯å‡€çš„excelè¡¨æ ¼,å‚è€ƒexample.xlsx"); throw; }
+			catch (const std::exception&) { LOG(FATAL, "×ñÊØĞ­Òé:Ê¹ÓÃ´¿¾»µÄexcel±í¸ñ,²Î¿¼example.xlsx"); throw; }
 			catch (...) {throw;}
+
 			for (const xlnt::worksheet& ws : wb)
 			{
 				_mtcls.push_back(MultiTurbineCharLine(_speed_design));
 				auto& tclines = _mtcls.back();
 				tclines.preRotation() = ws.title();
-				if (check) cout << "----é¢„æ—‹è½¬: " << ws.title() << endl;
+				if (check) cout << "----Ô¤Ğı×ª: " << utf8_to_ansi(ws.title()) << endl;
 				tclines.readDataFromExcel(ws, check);
 			}
 		}

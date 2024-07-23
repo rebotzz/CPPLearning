@@ -111,7 +111,7 @@
       <LanguageStandard>stdcpp14</LanguageStandard>
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -130,7 +130,7 @@
       <LanguageStandard>stdcpp14</LanguageStandard>
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -142,12 +142,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="extrapolation.hpp" />
+    <ClInclude Include="imGUI.hpp" />
     <ClInclude Include="mytools.hpp" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="resource1.h" />
+    <ClInclude Include="resource2.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="imGUI.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="test.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="turbineLineInterpolator.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="indata\myico.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -9,3 +9,4 @@
 - easyX使用的是宽字符, 即编码是变长字符串,对应wstring, TCHAR[]类型, wstring系列接口和string系列接口对应cout/wcout输出不一样
 - 本地化,locale, 其utf8编码和别的编码转化
 - imgui的主要逻辑,和游戏设计的主要逻辑相似
+- 终于开发完成了, 完整的流程

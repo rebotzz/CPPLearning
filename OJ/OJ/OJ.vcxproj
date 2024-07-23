@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="oj1.cpp" />
     <ClCompile Include="oj2.cpp" />
+    <ClCompile Include="oj3.cpp" />
     <ClCompile Include="oj_dp.cpp" />
     <ClCompile Include="oj_math.cpp" />
   </ItemGroup>

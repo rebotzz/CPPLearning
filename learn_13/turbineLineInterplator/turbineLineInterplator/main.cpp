@@ -1,56 +1,50 @@
 #include "extrapolation.hpp"
+#include "imGUI.hpp"
 
 
-void test_all()
+void test_all();
+
+// comman line interface 简单,方便被别的程序调用
+void CLI();
+
+int main()
 {
-	TCLExtra::MultiTurbineCharLine_PreRotations mtlr(8000);
-	mtlr.readDataFromFile("./indata/example.txt", false);
-	//mtlr.readDataFromExcel("./indata/example.xlsx");
-	vector<double> spnew = { 2500, 2600, 2700, 2800 };
-	mtlr.solution(spnew);
-	//mtlr.checkExtraError();
+	imGUI();
+	//CLI();
+	//test_all();
+
+	return 0;
 }
+
 
 // comman line interface 简单,方便被别的程序调用
 void CLI()
 {
-	int choice_file = 0, choice_check = 0, choice_err = 0, speed_design = 0, num = 0;
-	cout << "燃气轮机特性线外插程序" << endl;
-	cout << "tips: 选项输入方式,输入对应数字并回车.注意: 其余数字无效" << endl;
-	cout << "选择数据读取方式[indata目录下/input文件]:\n" << "1. excel(.xlsx)文件\t" << "2. 记事本(.txt)文件" << endl;
-	cin >> choice_file;
-	cout << "选择是否检查数据读取:\n" << "1. 检查\t" << "0. 不检查" << endl;
-	cin >> choice_check;
-	cout << "选择是否校验误差:\n" << "1. 校验\t" << "0. 不校验" << endl;
-	cin >> choice_err;
-	cout << "输入设计转速: " << endl;
-	cin >> speed_design;
-	cout << "最后,输入要外插的速度:\n" << "[格式: 速度组数 空格 速度1 速度2 ...]" << endl;
-	cout << "例如, 外插4组速度: 4 2500 2600 2700 2800\n" << "请输入:" << endl;
-	cin >> num;
-	vector<double> speeds(num);
-	for (auto& e : speeds) cin >> e;
-	cout << "输入结束,开始计算.输出结果[outdata目录下]" << endl;
+	try {
+		int choice_file = 0, choice_check = 0, choice_err = 0, speed_design = 0, num = 0;
+		cout << "燃气轮机特性线外插程序" << endl;
+		cout << "tips: 选项输入方式,输入对应数字并回车.注意: 其余数字无效" << endl;
+		cout << "选择数据读取方式[indata目录下/input文件]:\n" << "1. excel(.xlsx)文件\t" << "2. 记事本(.txt)文件" << endl;
+		cin >> choice_file;
+		cout << "选择是否检查数据读取:\n" << "1. 检查\t" << "0. 不检查" << endl;
+		cin >> choice_check;
+		cout << "选择是否校验误差:\n" << "1. 校验\t" << "0. 不校验" << endl;
+		cin >> choice_err;
+		cout << "输入设计转速: " << endl;
+		cin >> speed_design;
+		cout << "最后,输入要外插的速度:\n" << "[格式: 速度组数 空格 速度1 速度2 ...]" << endl;
+		cout << "例如, 外插4组速度: 4 2500 2600 2700 2800\n" << "请输入:" << endl;
+		cin >> num;
+		vector<double> speeds(num);
+		for (auto& e : speeds) cin >> e;
+		cout << "输入结束,开始计算.输出结果[outdata目录下]" << endl;
 
-	TCLExtra::MultiTurbineCharLine_PreRotations mtlr(speed_design);
-	if (choice_file == 1) mtlr.readDataFromExcel("./indata/input.xlsx", choice_check == 1);
-	else if (choice_file == 2) mtlr.readDataFromFile("./indata/input.txt", choice_check == 1);
-	if (choice_check == 1) mtlr.checkExtraError();
-	mtlr.solution(speeds);
-	cout << "程序结束!\nbye!";
-}
-
-// 图形交互界面
-void ImGUI()
-{
-
-}
-
-int main()
-{
-	try
-	{
-		CLI();
+		TCLExtra::MultiTurbineCharLine_PreRotations mtlr(speed_design);
+		if (choice_file == 1) mtlr.readDataFromExcel("./indata/input.xlsx", choice_check == 1);
+		else if (choice_file == 2) mtlr.readDataFromFile("./indata/input.txt", choice_check == 1);
+		if (choice_err == 1) mtlr.checkExtraError();
+		mtlr.solution(speeds);
+		cout << "程序结束!\nbye!";
 	}
 	catch (const std::exception& e)
 	{
@@ -60,14 +54,33 @@ int main()
 	{
 		cout << "未知异常" << endl;
 	}
-
-	return 0;
 }
 
 
 
 
+
 // 这里是示例, 也是功能测试
+void test_all()
+{
+	try
+	{
+		TCLExtra::MultiTurbineCharLine_PreRotations mtlr(8000);
+		//mtlr.readDataFromFile("./indata/example.txt", false);
+		mtlr.readDataFromExcel("./indata/example.xlsx", true);
+		vector<double> spnew = { 2500, 2600, 2700, 2800 };
+		mtlr.solution(spnew);
+		//mtlr.checkExtraError();
+	}
+	catch (const std::exception& e)
+	{
+		cout << e.what() << endl;
+	}
+	catch(...){
+		cout << "未知异常" << endl;
+	}
+}
+
 void test_one()
 {
 	TCLExtra::MultiTurbineCharLine mtl(8000);
@@ -142,6 +155,6 @@ void test_readexcel()
 
 	TCLExtra::MultiTurbineCharLine_PreRotations mtlr(8000);
 	mtlr.readDataFromExcel("./indata/test.xlsx", true);
-	mtlr.solution();
+	mtlr.solution(vector<double>());
 }
 
