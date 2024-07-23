@@ -7,7 +7,7 @@
 #include <exception>
 #include <unordered_map>
 #include <iomanip>
-#include <locale>
+//#include <locale>							// 编码问题,windows默认使用ANSI编码,与UTF8转化
 #include <xlnt/xlnt.hpp>					// 这个会与别的头文件(第三方库)冲突,放在最开始
 #include <boost/math/interpolators/barycentric_rational.hpp>
 #include <boost/math/tools/roots.hpp>
@@ -256,7 +256,7 @@ namespace TCLExtra
 			if (outfile.find(L"./outdata/") == wstring::npos) outfile = L"./outdata/" + outfile;
 			if (outfile.find(L".jpg") == wstring::npos) outfile += L".jpg";
 			saveimage(outfile.c_str());
-			LOG(NOTICE, "保存文件: " + wstring2string(outfile));
+			LOG(NOTICE, "保存图片: " + wstring2string(outfile));
 			_coord.closeGraph();
 		}
 
@@ -697,7 +697,7 @@ namespace TCLExtra
 					mtl.extrapolation(speed);
 				}
 
-				wstring img = string2wstring(mtl.preRotation());
+				wstring img = utf8_to_wstring(mtl.preRotation());
 				mtl.drawGraph(3, img);	// 流量-压比
 				mtl.drawGraph(5, img);	// 流量-效率
 				//system("pause");
@@ -718,7 +718,7 @@ namespace TCLExtra
 			std::ifstream input(file.c_str());
 			string tmp;
 			while (std::getline(input, tmp)) {
-				if(check) cout << "----预旋转: " << tmp << endl;
+				if (check) cout << "----预旋转: " << utf8_to_ansi(tmp) << endl;
 
 				_mtcls.push_back(MultiTurbineCharLine(_speed_design));
 				auto& tclines = _mtcls.back();
@@ -735,12 +735,13 @@ namespace TCLExtra
 			try { wb.load(file); }
 			catch (const std::exception&) { LOG(FATAL, "遵守协议:使用纯净的excel表格,参考example.xlsx"); throw; }
 			catch (...) {throw;}
+
 			for (const xlnt::worksheet& ws : wb)
 			{
 				_mtcls.push_back(MultiTurbineCharLine(_speed_design));
 				auto& tclines = _mtcls.back();
 				tclines.preRotation() = ws.title();
-				if (check) cout << "----预旋转: " << ws.title() << endl;
+				if (check) cout << "----预旋转: " << utf8_to_ansi(ws.title()) << endl;
 				tclines.readDataFromExcel(ws, check);
 			}
 		}

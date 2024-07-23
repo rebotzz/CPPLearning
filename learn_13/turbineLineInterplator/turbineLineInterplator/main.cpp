@@ -16,10 +16,10 @@ int main()
 {
 	try
 	{
-		// 中文支持 
- 		std::locale::global(std::locale("zh_CN.UTF-8"));
-		std::cout.imbue(std::locale());
-		std::wcout.imbue(std::locale());
+		// 中文支持: 打印日志
+ 		//std::locale::global(std::locale("zh_CN.UTF-8"));
+		//std::cout.imbue(std::locale());
+		//std::wcout.imbue(std::locale());
 		//CLI();
 		test_all();
 	}

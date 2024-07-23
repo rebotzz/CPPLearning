@@ -164,10 +164,9 @@ public:
 };
 
 
-
 // 字符串转化  引用博客:http://t.csdnimg.cn/DrVje
 //将string转换成wstring  
-static std::wstring string2wstring(std::string str)
+inline static std::wstring string2wstring(std::string str)
 {
 	std::wstring result;
 	//获取缓冲区大小，并申请空间，缓冲区大小按字符计算  
@@ -183,7 +182,7 @@ static std::wstring string2wstring(std::string str)
 }
 
 //将wstring转换成string  
-static std::string wstring2string(std::wstring wstr)
+inline static std::string wstring2string(std::wstring wstr)
 {
 	std::string result;
 	//获取缓冲区大小，并申请空间，缓冲区大小事按字节计算的  
@@ -198,7 +197,7 @@ static std::string wstring2string(std::wstring wstr)
 	return result;
 }
 
-static std::wstring wchart_arrayTowstring(wchar_t a[])
+inline static std::wstring wchart_arrayTowstring(wchar_t a[])
 {
 	std::wstring wstr = L"";
 	int j = 0;
@@ -208,5 +207,27 @@ static std::wstring wchart_arrayTowstring(wchar_t a[])
 		j++;
 	}
 	return wstr;
+}
+
+inline static std::string utf8_to_ansi(const std::string& utf8_str)
+{
+	// Step 1: Convert UTF-8 to wstring
+	int wide_char_count = MultiByteToWideChar(CP_UTF8, 0, utf8_str.c_str(), -1, nullptr, 0);
+	std::wstring wide_str(wide_char_count, 0);
+	MultiByteToWideChar(CP_UTF8, 0, utf8_str.c_str(), -1, &wide_str[0], wide_char_count);
+
+	// Step 2: Convert wstring to ANSI
+	int ansi_char_count = WideCharToMultiByte(CP_ACP, 0, wide_str.c_str(), -1, nullptr, 0, nullptr, nullptr);
+	std::string ansi_str(ansi_char_count, 0);
+	WideCharToMultiByte(CP_ACP, 0, wide_str.c_str(), -1, &ansi_str[0], ansi_char_count, nullptr, nullptr);
+
+	return ansi_str;
+}
+
+#include <boost/locale.hpp>
+// windows默认使用ANSI编码,与UTF8转化
+inline static std::wstring utf8_to_wstring(const std::string& utf8)
+{
+	return boost::locale::conv::utf_to_utf<wchar_t>(utf8);
 }
 
