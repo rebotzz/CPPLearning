@@ -1,13 +1,14 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <memory>
 #include <cassert>
 #include <easyx.h>
 #ifdef _WIN32
 #include <Windows.h>
 #endif
 
-// ÈÕÖ¾
+// æ—¥å¿—
 #define LOG(level, msg) Log(#level, msg, __FILE__, __LINE__)
 static void Log(std::string level, std::string msg, std::string file, int line)
 {
@@ -17,7 +18,7 @@ static void Log(std::string level, std::string msg, std::string file, int line)
 enum LOGLEVEL {
 	DEBUG, NOTICE, WARING, ERR, FATAL
 };
-// RGBÑÕÉ«
+// RGBé¢œè‰²
 enum Color
 {
 	IndianRed1 = 0xFF6A6A,
@@ -44,21 +45,23 @@ enum Color
 	SlateBlue = 0x6A5ACD
 };
 
-// »æÖÆ×ø±êÏµ
-struct Coordinate
+// ç»˜åˆ¶åæ ‡ç³»
+// tip:  eaxyXé»˜è®¤çª—å£ç»˜å›¾ä¸imguiå†²çª, å†²çªè°ƒç”¨:å…³é—­ç»˜å›¾çª—å£
+struct Coordinate	
 {
 public:
-	double _length = 0;					// »æÍ¼±ß¿ò³¤¶È
-	int _margin = 0;					// Ò³±ß¾à
-	int _originX = 0, _originY = 0;		// Ô­µã
-	double _minX = 0, _maxX = 0;		// x¡Ê[minX, maxX]
+	double _length = 0;					// ç»˜å›¾è¾¹æ¡†é•¿åº¦
+	int _margin = 0;					// é¡µè¾¹è·
+	int _originX = 0, _originY = 0;		// åŸç‚¹
+	double _minX = 0, _maxX = 0;		// xâˆˆ[minX, maxX]
 	double _minY = 0, _maxY = 0;
-	double _scaleX = 0, _scaleY = 0;	//»æÍ¼Ëõ·Å±ÈÀı
-
+	double _scaleX = 0, _scaleY = 0;	//ç»˜å›¾ç¼©æ”¾æ¯”ä¾‹
+	std::shared_ptr<IMAGE> _img;		//img å¯¹è±¡,å½“ä¸ä½¿ç”¨çª—å£ç»˜å›¾æ—¶ç”¨
+			
 	std::vector<Color> _colors;
 	int _colorID = 0;
 public:
-	// ³õÊ¼»¯
+	// åˆå§‹åŒ–
 	Coordinate(double length) : _length(length), _margin(length * 0.05)
 	{
 		_colors = { IndianRed1 ,DeepSkyBlue,Blue,Yellow,Blue_Water,Magenta_magenta,Silver,Grey,
@@ -69,7 +72,7 @@ public:
 		if (0 == x && 0 == y) {
 			_originX = _margin, _originY = _length - _margin;
 		}
-		else {	// easyX yÖáÓëÊıÑ§³£¹æ×ø±êÖáÏà·´
+		else {	// easyX yè½´ä¸æ•°å­¦å¸¸è§„åæ ‡è½´ç›¸å
 			_originX = x, _originY = y;
 		}
 		setorigin(_originX, _originY);
@@ -83,7 +86,7 @@ public:
 	}
 	void setScale(double scaleX = 0.0, double scaleY = 0.0)
 	{
-		if (0 == scaleX || 0 == scaleY) {		// Èç¹ûÄ¬ÈÏ
+		if (0 == scaleX || 0 == scaleY) {		// å¦‚æœé»˜è®¤
 			_scaleX = (_length - _margin) / (_maxX - _minX);
 			_scaleY = (_length - _margin) / (_maxY - _minY);
 		}
@@ -92,23 +95,30 @@ public:
 		}
 	}
 
-	// »æÍ¼
+	// ç»˜å›¾
 	void initGraph()
 	{
-		initgraph(_length, _length);	// ÏÈinit
+		initgraph(_length, _length);	// å…ˆinit, åset
 		setorigin(_originX, _originY);
 	}
 
-	void drawCoordinate(int scaleNum = 10)	// ¿Ì¶È¸öÊı
+	void setImage()
 	{
-		// »æÖÆ×ø±êÖá		easyXµÄyÖáÓëÊıÑ§ÉÏµÄyÖáÕıºÃÏà·´
+		// åˆ›å»º _length*_length çš„ img å¯¹è±¡
+		_img = std::make_shared<IMAGE>(IMAGE(_length, _length));
+		SetWorkingImage(&(*_img));
+	}
+
+	void drawCoordinate(int scaleNum = 10)	// åˆ»åº¦ä¸ªæ•°
+	{
+		// ç»˜åˆ¶åæ ‡è½´		easyXçš„yè½´ä¸æ•°å­¦ä¸Šçš„yè½´æ­£å¥½ç›¸å
 		int xyLength = _length - _margin;
 		line(0, 0, xyLength, 0);
 		line(0, 0, 0, -xyLength);
 		outtextxy(0, -xyLength, _T("Y"));
 		outtextxy(xyLength - _margin, 5, _T("X"));
 
-		// »æÖÆ×ø±êÖá¿Ì¶È
+		// ç»˜åˆ¶åæ ‡è½´åˆ»åº¦
 		if (_scaleX == 0 && _scaleY == 0) setScale();
 		if (_originX == 0 && _originY == 0) setOrigin();
 		for (int i = 1; i < scaleNum; ++i) {
@@ -130,7 +140,7 @@ public:
 	//void drawLine(const std::vector<double>& arrx, const std::vector<double>& arry, TCHAR s[])
 	void drawLine(const std::vector<double>& arrx, const std::vector<double>& arry, std::wstring str)
 	{
-		// »æÖÆy=f(x)Ïß
+		// ç»˜åˆ¶y=f(x)çº¿
 		double prex = 0, prey = 0;
 		int size = arrx.size();
 		for (int i = 0; i < size; ++i) {
@@ -144,7 +154,7 @@ public:
 			prex = x, prey = y;
 		}
 
-		// ¹ØÓÚÇúÏßÃèÊöĞÅÏ¢
+		// å…³äºæ›²çº¿æè¿°ä¿¡æ¯
 		int xyLength = _length - _margin;
 		if (_colorID % 2 == 0) {
 			outtextxy(40, -xyLength + _colorID * 10, str.c_str());
@@ -153,7 +163,7 @@ public:
 			outtextxy(150, -xyLength + (_colorID - 1) * 10, str.c_str());
 		}
 
-		// ¸Ä±äÏÂÒ»ÌõÏßµÄÑÕÉ«
+		// æ”¹å˜ä¸‹ä¸€æ¡çº¿çš„é¢œè‰²
 		if (_colorID < _colors.size()) {
 			setColor(_colors[_colorID++]);
 		}
@@ -163,50 +173,11 @@ public:
 	void closeGraph() { closegraph(); }
 };
 
-
-// ×Ö·û´®×ª»¯  ÒıÓÃ²©¿Í:http://t.csdnimg.cn/DrVje
-//½«string×ª»»³Éwstring  
-inline static std::wstring string2wstring(std::string str)
+#include <boost/locale.hpp>
+// windowsé»˜è®¤ä½¿ç”¨ANSIç¼–ç ,ä¸UTF8è½¬åŒ–
+inline static std::wstring utf8_to_wstring(const std::string& utf8)
 {
-	std::wstring result;
-	//»ñÈ¡»º³åÇø´óĞ¡£¬²¢ÉêÇë¿Õ¼ä£¬»º³åÇø´óĞ¡°´×Ö·û¼ÆËã  
-	int len = MultiByteToWideChar(CP_ACP, 0, str.c_str(), str.size(), NULL, 0);
-	TCHAR* buffer = new TCHAR[len + 1];
-	//¶à×Ö½Ú±àÂë×ª»»³É¿í×Ö½Ú±àÂë  
-	MultiByteToWideChar(CP_ACP, 0, str.c_str(), str.size(), buffer, len);
-	buffer[len] = '\0';             //Ìí¼Ó×Ö·û´®½áÎ²  
-	//É¾³ı»º³åÇø²¢·µ»ØÖµ  
-	result.append(buffer);
-	delete[] buffer;
-	return result;
-}
-
-//½«wstring×ª»»³Éstring  
-inline static std::string wstring2string(std::wstring wstr)
-{
-	std::string result;
-	//»ñÈ¡»º³åÇø´óĞ¡£¬²¢ÉêÇë¿Õ¼ä£¬»º³åÇø´óĞ¡ÊÂ°´×Ö½Ú¼ÆËãµÄ  
-	int len = WideCharToMultiByte(CP_ACP, 0, wstr.c_str(), wstr.size(), NULL, 0, NULL, NULL);
-	char* buffer = new char[len + 1];
-	//¿í×Ö½Ú±àÂë×ª»»³É¶à×Ö½Ú±àÂë  
-	WideCharToMultiByte(CP_ACP, 0, wstr.c_str(), wstr.size(), buffer, len, NULL, NULL);
-	buffer[len] = '\0';
-	//É¾³ı»º³åÇø²¢·µ»ØÖµ  
-	result.append(buffer);
-	delete[] buffer;
-	return result;
-}
-
-inline static std::wstring wchart_arrayTowstring(wchar_t a[])
-{
-	std::wstring wstr = L"";
-	int j = 0;
-	while (a[j] != L'\0')
-	{
-		wstr += a[j];
-		j++;
-	}
-	return wstr;
+	return boost::locale::conv::utf_to_utf<wchar_t>(utf8);
 }
 
 inline static std::string utf8_to_ansi(const std::string& utf8_str)
@@ -224,10 +195,45 @@ inline static std::string utf8_to_ansi(const std::string& utf8_str)
 	return ansi_str;
 }
 
-#include <boost/locale.hpp>
-// windowsÄ¬ÈÏÊ¹ÓÃANSI±àÂë,ÓëUTF8×ª»¯
-inline static std::wstring utf8_to_wstring(const std::string& utf8)
+inline static void console_utf8()
 {
-	return boost::locale::conv::utf_to_utf<wchar_t>(utf8);
+	// æ›´æ”¹æ§åˆ¶å°ç¼–ç 
+	std::locale::global(std::locale("zh_CN.UTF-8"));
+	std::cout.imbue(std::locale());
+	std::wcout.imbue(std::locale());
 }
 
+
+
+// å­—ç¬¦ä¸²è½¬åŒ–  å¼•ç”¨åšå®¢:http://t.csdnimg.cn/DrVje
+//å°†stringè½¬æ¢æˆwstring  
+inline static std::wstring string2wstring(std::string str)
+{
+	std::wstring result;
+	//è·å–ç¼“å†²åŒºå¤§å°ï¼Œå¹¶ç”³è¯·ç©ºé—´ï¼Œç¼“å†²åŒºå¤§å°æŒ‰å­—ç¬¦è®¡ç®—  
+	int len = MultiByteToWideChar(CP_ACP, 0, str.c_str(), str.size(), NULL, 0);
+	TCHAR* buffer = new TCHAR[len + 1];
+	//å¤šå­—èŠ‚ç¼–ç è½¬æ¢æˆå®½å­—èŠ‚ç¼–ç   
+	MultiByteToWideChar(CP_ACP, 0, str.c_str(), str.size(), buffer, len);
+	buffer[len] = '\0';             //æ·»åŠ å­—ç¬¦ä¸²ç»“å°¾  
+	//åˆ é™¤ç¼“å†²åŒºå¹¶è¿”å›å€¼  
+	result.append(buffer);
+	delete[] buffer;
+	return result;
+}
+
+//å°†wstringè½¬æ¢æˆstring  
+inline static std::string wstring2string(std::wstring wstr)
+{
+	std::string result;
+	//è·å–ç¼“å†²åŒºå¤§å°ï¼Œå¹¶ç”³è¯·ç©ºé—´ï¼Œç¼“å†²åŒºå¤§å°äº‹æŒ‰å­—èŠ‚è®¡ç®—çš„  
+	int len = WideCharToMultiByte(CP_ACP, 0, wstr.c_str(), wstr.size(), NULL, 0, NULL, NULL);
+	char* buffer = new char[len + 1];
+	//å®½å­—èŠ‚ç¼–ç è½¬æ¢æˆå¤šå­—èŠ‚ç¼–ç   
+	WideCharToMultiByte(CP_ACP, 0, wstr.c_str(), wstr.size(), buffer, len, NULL, NULL);
+	buffer[len] = '\0';
+	//åˆ é™¤ç¼“å†²åŒºå¹¶è¿”å›å€¼  
+	result.append(buffer);
+	delete[] buffer;
+	return result;
+}
