@@ -42,5 +42,8 @@
     <ClCompile Include="test_easyX.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="test_lambda.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

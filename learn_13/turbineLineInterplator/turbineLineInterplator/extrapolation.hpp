@@ -366,12 +366,12 @@ namespace TCLExtra
 				// 因为外推的流量与原始不同,所以需要插值
 				Interpolator interp(extra._flows.begin(), extra._flows.end(), extra._pressRatios.begin());
 				Interpolator intere(extra._flows.begin(), extra._flows.end(), extra._efficiencies.begin());
-				err._arrx = extra._flows;
+				err._arrx = origin._flows;
 				size_t n = err._arrx.size();
 				err._errp.resize(n);
 				err._erre.resize(n);
 				for (int j = 0; j < n; ++j) {
-					double x = origin._flows[j];
+					double x = err._arrx[j];
 					double yp = origin._pressRatios[j], ye = origin._pressRatios[j];
 					err._errp[j] = abs(interp(x) - yp) / yp;
 					err._erre[j] = abs(intere(x) - ye) / ye;
