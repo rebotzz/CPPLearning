@@ -135,6 +135,113 @@ public:
 };
 
 
+
+#include <iostream>
+#include "vector"
+#include "unordered_map"
+#include "queue"
+using namespace std;
+
+int main() {
+    int n;
+    vector<int> v(n);
+    for (auto& e : v) cin >> e;
+    unordered_map<int, int> hash;
+    for (auto e : v) hash[e]++;
+    int ret = 0;
+
+    // while(hash.size() > 1){
+    //     for(auto [k, v] :hash){
+    //         int mid = k * v;
+    //         int left = 0, right = 0;
+    //         if(hash.count(k - 1)) left = hash[k - 1] * (k - 1);
+    //         if(hash.count(k + 1)) right = hash[k + 1] * (k + 1);
+    //         if(left + right < mid){
+    //             ret += k;
+    //             if(hash.count(k - 1)) hash.erase(k - 1);
+    //             if(hash.count(k + 1)) hash.erase(k + 1);
+    //         }
+    //         else{
+
+    //         }
+    //     }
+    // }
+
+    // auto kv = *hash.begin();
+    // ret += kv.first * kv.second;
+
+    // priority_queue<pair<int,int>> pq()
+    unordered_map<int, int> hash2;
+    priority_queue<int> pq;
+    for (auto [k, v] : hash) {
+        hash2[k * v] = k;
+        pq.push(k * v);
+    }
+    while (pq.size() > 1) {
+        int tmp = pq.top();
+        int k = hash2[tmp];
+        ret += k;
+        if (hash.count(k - 1)) {
+            hash2.erase(hash[k - 1] * (k - 1));
+            hash.erase(k - 1);
+        }
+        if (hash.count(k + 1)) {
+            hash2.erase(hash[k + 1] * (k + 1));
+            hash.erase(k + 1);
+        }
+        if (--hash[k] <= 0) {
+            hash.erase(k);
+            hash2.erase(tmp);
+        }
+        else {
+            hash[k]--;
+            hash2[tmp] -= k;
+        }
+    }
+
+
+    cout << ret;
+    return 0;
+}
+// 64 Î»Êä³öÇëÓÃ printf("%lld")
+
+
+
+bool isPrime(int number)
+{
+    // ignore negative sign
+    number = abs(number);
+
+    // 0 and 1 are no prime numbers
+    if (number == 0 || number == 1) {
+        return false;
+    }
+
+    // find divisor that divides without a remainder
+    int divisor;
+    for (divisor = number / 2; number % divisor != 0; --divisor) {
+        ;
+    }
+
+    // if no divisor greater than 1 is found, it is a prime number
+    return divisor == 1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #endif
 
 

@@ -38,33 +38,33 @@ using namespace std;
 #include <locale>
 
 using namespace std;
-int main()
-{
-	//int length = 800;
-	//initgraph(length, length);
-
-	//int tmp = length / 2;
-	//int x = tmp;
-	//int y = tmp;
-
-	//outtextxy(x, y, L"你好");
-	wstring s(L"你哈");
-	//outtextxy(x, y, s.c_str());
-
-
-	// 设置控制台的本地化信息，这里以简体中文为例
-	std::wcout.imbue(std::locale("Chinese-simplified_China.936"));
-
-	string aa = "发送大附件";
-	cout << aa << endl;
-
-	cout << "Jj放假时间" << endl;
-	wcout << L"Jj放假时间" << endl;
-	
-	//wstring bb = aa;
-
-
-	system("pause");
-
-	return 0;
-}
+//int main()
+//{
+//	//int length = 800;
+//	//initgraph(length, length);
+//
+//	//int tmp = length / 2;
+//	//int x = tmp;
+//	//int y = tmp;
+//
+//	//outtextxy(x, y, L"你好");
+//	wstring s(L"你哈");
+//	//outtextxy(x, y, s.c_str());
+//
+//
+//	// 设置控制台的本地化信息，这里以简体中文为例
+//	std::wcout.imbue(std::locale("Chinese-simplified_China.936"));
+//
+//	string aa = "发送大附件";
+//	cout << aa << endl;
+//
+//	cout << "Jj放假时间" << endl;
+//	wcout << L"Jj放假时间" << endl;
+//	
+//	//wstring bb = aa;
+//
+//
+//	system("pause");
+//
+//	return 0;
+//}
