@@ -1,0 +1,41 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resources/images/icon/add.png</file>
+        <file>resources/images/icon/default_cover.png</file>
+        <file>resources/images/icon/down_page.png</file>
+        <file>resources/images/icon/like.png</file>
+        <file>resources/images/icon/like_1.png</file>
+        <file>resources/images/icon/like_2.png</file>
+        <file>resources/images/icon/like_3.png</file>
+        <file>resources/images/icon/list_play.png</file>
+        <file>resources/images/icon/local.png</file>
+        <file>resources/images/icon/Logo.png</file>
+        <file>resources/images/icon/max.png</file>
+        <file>resources/images/icon/min.png</file>
+        <file>resources/images/icon/music.png</file>
+        <file>resources/images/icon/next.png</file>
+        <file>resources/images/icon/next_page.png</file>
+        <file>resources/images/icon/non-music.png</file>
+        <file>resources/images/icon/order_play.png</file>
+        <file>resources/images/icon/play.png</file>
+        <file>resources/images/icon/play_2.png</file>
+        <file>resources/images/icon/play_on.png</file>
+        <file>resources/images/icon/play3.png</file>
+        <file>resources/images/icon/prev.png</file>
+        <file>resources/images/icon/prev_page.png</file>
+        <file>resources/images/icon/radio.png</file>
+        <file>resources/images/icon/rec.png</file>
+        <file>resources/images/icon/recent.png</file>
+        <file>resources/images/icon/shuffle.png</file>
+        <file>resources/images/icon/shuffle_2.png</file>
+        <file>resources/images/icon/silent.png</file>
+        <file>resources/images/icon/single_play.png</file>
+        <file>resources/images/icon/skin.png</file>
+        <file>resources/images/icon/quit.png</file>
+        <file>resources/images/icon/words.png</file>
+        <file>resources/images/icon/down.png</file>
+        <file>resources/images/icon/up.png</file>
+        <file>resources/images/icon/up_page.png</file>
+        <file>resources/images/icon/volumn.png</file>
+    </qresource>
+</RCC>

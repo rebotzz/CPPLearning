@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>542</width>
+    <height>433</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QTimeEdit" name="timeEdit"/>
+   </item>
+   <item>
+    <widget class="QDateEdit" name="dateEdit"/>
+   </item>
+   <item>
+    <widget class="QDateTimeEdit" name="dateTimeEdit"/>
+   </item>
+   <item>
+    <widget class="QKeySequenceEdit" name="keySequenceEdit"/>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
