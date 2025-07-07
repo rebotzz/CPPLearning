@@ -78,10 +78,10 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
 void MainWindow::initWindow()
 {
     // 无边框
-    setWindowFlag(Qt::WindowType::FramelessWindowHint);
+//    setWindowFlag(Qt::WindowType::FramelessWindowHint);
 
     // 窗口阴影效果
-    setAttribute(Qt::WA_TranslucentBackground);
+//    setAttribute(Qt::WA_TranslucentBackground);
     auto shadow_effect = new QGraphicsDropShadowEffect(this);
     shadow_effect->setOffset(0);
     shadow_effect->setColor(QColor(0,0,0));
@@ -89,20 +89,20 @@ void MainWindow::initWindow()
     setGraphicsEffect(shadow_effect);
 
     // UI
-    ui->recommend->setContent(":/resources/images/icon/rec.png", "推荐", 0);
-    ui->radio->setContent(":/resources/images/icon/radio.png", "电台", 1);
-    ui->explore->setContent(":/resources/images/icon/music.png", "探索", 2);
-    ui->myLove->setContent(":/resources/images/icon/like.png", "我喜欢", 3);
-    ui->recent->setContent(":/resources/images/icon/recent.png", "最近播放", 4);
-    ui->local->setContent(":/resources/images/icon/local.png", "本地下载", 5);
+    ui->recommend->initContent(":/resources/images/icon/rec.png", "推荐", 0);
+    ui->radio->initContent(":/resources/images/icon/radio.png", "电台", 1);
+    ui->explore->initContent(":/resources/images/icon/music.png", "探索", 2);
+    ui->myLove->initContent(":/resources/images/icon/like.png", "我喜欢", 3);
+    ui->recent->initContent(":/resources/images/icon/recent.png", "最近播放", 4);
+    ui->local->initContent(":/resources/images/icon/local.png", "本地下载", 5);
 }
 
 void MainWindow::initConnect()
 {
-    auto btForms = findChildren<BtForm*>();
-    for(BtForm* form : btForms)
+    auto btForms = findChildren<AnimButton*>();
+    for(AnimButton* form : btForms)
     {
-        connect(form, &BtForm::click, this, &MainWindow::onBtFormClick);
+        connect(form, &AnimButton::click, this, &MainWindow::onBtFormClick);
     }
 }
 
@@ -114,7 +114,7 @@ void MainWindow::on_buttonQuit_clicked()
 void MainWindow::onBtFormClick(int pageId)
 {
     // 将没有选中页面的风格恢复
-    auto btForms = findChildren<BtForm*>();
+    auto btForms = findChildren<AnimButton*>();
     for(auto btform : btForms)
     {
         if(btform->getPageId() != pageId)

@@ -1,28 +1,28 @@
-#ifndef BTFORM_H
-#define BTFORM_H
+#ifndef AnimButton_H
+#define AnimButton_H
 
 #include <QWidget>
 
 namespace Ui {
-class BtForm;
+class AnimButton;
 }
 class QPropertyAnimation;
 class QLabel;
 
-class BtForm : public QWidget
+class AnimButton : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit BtForm(QWidget *parent = nullptr);
-    ~BtForm();
+    explicit AnimButton(QWidget *parent = nullptr);
+    ~AnimButton();
 
 
     void resetStyleSheet();
     void showAnimation();
     void hideAnimation();
 
-    void setContent(QString icon, QString text, int pageId);
+    void initContent(QString icon, QString text, int pageId);
     int getPageId() const { return m_pageId; }
 
 signals:
@@ -35,7 +35,7 @@ private:
    void initAnimation(QLabel* line, int duration_ms, QRect start, QRect mid, QRect end);
 
 private:
-    Ui::BtForm *ui;
+    Ui::AnimButton *ui;
     int m_pageId = 0;
     QPropertyAnimation* animLine1;
     QPropertyAnimation* animLine2;
@@ -43,4 +43,4 @@ private:
     QPropertyAnimation* animLine4;
 };
 
-#endif // BTFORM_H
+#endif // AnimButton_H
