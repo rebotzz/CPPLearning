@@ -434,21 +434,21 @@ QPushButton:hover
               </widget>
              </item>
              <item>
-              <widget class="BtForm" name="recommend" native="true">
+              <widget class="AnimButton" name="recommend" native="true">
                <property name="styleSheet">
                 <string notr="true"/>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="BtForm" name="radio" native="true">
+              <widget class="AnimButton" name="radio" native="true">
                <property name="styleSheet">
                 <string notr="true"/>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="BtForm" name="explore" native="true">
+              <widget class="AnimButton" name="explore" native="true">
                <property name="styleSheet">
                 <string notr="true"/>
                </property>
@@ -498,21 +498,21 @@ QPushButton:hover
               </widget>
              </item>
              <item>
-              <widget class="BtForm" name="myLove" native="true">
+              <widget class="AnimButton" name="myLove" native="true">
                <property name="styleSheet">
                 <string notr="true"/>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="BtForm" name="local" native="true">
+              <widget class="AnimButton" name="local" native="true">
                <property name="styleSheet">
                 <string notr="true"/>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="BtForm" name="recent" native="true"/>
+              <widget class="AnimButton" name="recent" native="true"/>
              </item>
             </layout>
            </widget>
@@ -634,7 +634,7 @@ QPushButton:hover
                    </widget>
                   </item>
                   <item>
-                   <widget class="MusicListBox" name="recommendBox" native="true"/>
+                   <widget class="MusicBoxList" name="recommendBox" native="true"/>
                   </item>
                   <item>
                    <widget class="QLabel" name="MusicSupplyLabel">
@@ -647,7 +647,7 @@ QPushButton:hover
                     <property name="maximumSize">
                      <size>
                       <width>16777215</width>
-                      <height>35</height>
+                      <height>40</height>
                      </size>
                     </property>
                     <property name="font">
@@ -661,7 +661,7 @@ QPushButton:hover
                    </widget>
                   </item>
                   <item>
-                   <widget class="MusicListBox" name="otherBox" native="true"/>
+                   <widget class="MusicBoxList" name="otherBox" native="true"/>
                   </item>
                  </layout>
                 </widget>
@@ -1030,15 +1030,15 @@ QPushButton:hover
  </widget>
  <customwidgets>
   <customwidget>
-   <class>BtForm</class>
+   <class>AnimButton</class>
    <extends>QWidget</extends>
-   <header>btform.h</header>
+   <header>animbutton.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>MusicListBox</class>
+   <class>MusicBoxList</class>
    <extends>QWidget</extends>
-   <header>musiclistbox.h</header>
+   <header>musicboxlist.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

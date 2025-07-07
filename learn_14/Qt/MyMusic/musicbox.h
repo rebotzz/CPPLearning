@@ -15,6 +15,12 @@ public:
     explicit MusicBox(QWidget *parent = nullptr);
     ~MusicBox();
 
+    void setText(const QString& text);
+    void setImage(const QString& path);
+
+private:
+    bool eventFilter(QObject* watched, QEvent* event) override;
+
 private:
     Ui::MusicBox *ui;
 };

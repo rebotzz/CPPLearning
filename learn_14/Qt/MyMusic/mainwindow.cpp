@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "myfiledialog.h"
 #include <QDebug>
 #include <QMouseEvent>
 #include <QGraphicsDropShadowEffect>
@@ -27,31 +26,6 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-
-void MainWindow::on_pushButton_clicked()
-{
-    auto dialog = new MyFileDialog(this);
-    dialog->setAttribute(Qt::WidgetAttribute::WA_DeleteOnClose);    // 记得释放资源
-//    dialog->exec();
-
-    auto path = dialog->getOpenFileName();  // 包括了exec()
-    qDebug() << path;
-
-    auto input = std::ifstream(path.toStdString());
-    if(input.fail()) return;
-
-    std::string line, text;
-    while(std::getline(input, line))
-    {
-        text += line;
-        text += "\n";
-    }
-    qDebug() << QString::fromStdString(text);
-
-
-    input.close();
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)

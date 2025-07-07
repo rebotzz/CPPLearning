@@ -1,6 +1,7 @@
 # Qt忽略
 
 build-*/
+*.png
 
 *~
 *.autosave

@@ -20,15 +20,13 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     musicbox.cpp \
-    musicboxlist.cpp \
-    myfiledialog.cpp
+    musicboxlist.cpp
 
 HEADERS += \
     animbutton.h \
     mainwindow.h \
     musicbox.h \
-    musicboxlist.h \
-    myfiledialog.h
+    musicboxlist.h
 
 FORMS += \
     animbutton.ui \

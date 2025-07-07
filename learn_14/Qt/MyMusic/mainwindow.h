@@ -23,7 +23,6 @@ protected:
 
 // 现在似乎不用假slots都行
 private slots:
-    void on_pushButton_clicked();
     void on_buttonQuit_clicked();
     void onBtFormClick(int pageId);
 

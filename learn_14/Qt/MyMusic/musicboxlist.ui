@@ -10,6 +10,12 @@
     <height>440</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>420</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
@@ -123,10 +129,14 @@ QPushButton:hover
        <number>0</number>
       </property>
       <item>
-       <widget class="QWidget" name="upList" native="true"/>
+       <widget class="QWidget" name="upList" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_4"/>
+       </widget>
       </item>
       <item>
-       <widget class="QWidget" name="downList" native="true"/>
+       <widget class="QWidget" name="downList" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_3"/>
+       </widget>
       </item>
      </layout>
     </widget>
