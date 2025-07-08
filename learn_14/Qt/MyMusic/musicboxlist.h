@@ -17,6 +17,8 @@ public:
 
 private:
     Ui::MusicBoxList *ui;
+    static int music_idx;
 };
+
 
 #endif // MusicBoxList_H

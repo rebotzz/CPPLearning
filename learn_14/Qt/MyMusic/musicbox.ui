@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>150</width>
-    <height>200</height>
+    <width>200</width>
+    <height>230</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,49 +19,58 @@
 	border: none;
 }</string>
   </property>
-  <widget class="QWidget" name="recMusicBox" native="true">
+  <widget class="QWidget" name="margin" native="true">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>150</width>
-     <height>150</height>
+     <width>25</width>
+     <height>25</height>
     </rect>
    </property>
-   <widget class="QLabel" name="cover">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>130</width>
-      <height>130</height>
-     </rect>
-    </property>
-    <property name="cursor">
-     <cursorShape>PointingHandCursor</cursorShape>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color:rgb(151, 247, 255);</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
   </widget>
   <widget class="QLabel" name="text">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>160</y>
-     <width>81</width>
-     <height>18</height>
+     <x>0</x>
+     <y>180</y>
+     <width>200</width>
+     <height>45</height>
     </rect>
    </property>
    <property name="text">
     <string>推荐-001</string>
    </property>
+   <property name="scaledContents">
+    <bool>false</bool>
+   </property>
    <property name="alignment">
-    <set>Qt::AlignCenter</set>
+    <set>Qt::AlignHCenter|Qt::AlignTop</set>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
+   </property>
+   <property name="margin">
+    <number>0</number>
+   </property>
+  </widget>
+  <widget class="QLabel" name="cover">
+   <property name="geometry">
+    <rect>
+     <x>25</x>
+     <y>25</y>
+     <width>150</width>
+     <height>150</height>
+    </rect>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(151, 247, 255);</string>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>
