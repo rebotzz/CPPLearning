@@ -1,12 +1,17 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "resmgr.h"
+
 #include <QDebug>
 #include <QMouseEvent>
 #include <QGraphicsDropShadowEffect>
 
 #include <fstream>
 #include <string>
+#include <unordered_set>
+#include <random>
+#include <algorithm>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -20,12 +25,30 @@ MainWindow::MainWindow(QWidget *parent)
     // 初始化信号与槽连接
     initConnect();
 
-
+    // 初始化音乐控件
+    initMusicBoxList();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::initMusicBoxList()
+{
+    auto& musicPool = ResMgr::getInstance().getMusicPool();
+    int rec_music_count = musicPool.size() / 2;
+
+    std::vector<QJsonObject> rec_music_list(musicPool.begin(), musicPool.begin() + rec_music_count);
+    std::vector<QJsonObject> sup_music_list(musicPool.begin() + rec_music_count, musicPool.end());
+    std::random_shuffle(rec_music_list.begin(), rec_music_list.end());
+    std::random_shuffle(sup_music_list.begin(), sup_music_list.end());
+//    std::sample(musicPool.begin(), musicPool.begin() + rec_music_count, rec_music_list.begin(), 8,
+//                std::default_random_engine({std::random_device()));
+
+//    ui->recommendBox->setOnlyUpLine(true);
+    ui->recommendBox->loadMusic(rec_music_list);
+    ui->supplyBox->loadMusic(sup_music_list);
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)

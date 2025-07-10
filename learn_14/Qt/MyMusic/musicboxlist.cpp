@@ -12,59 +12,45 @@
 #include <QFile>
 #include <QDebug>
 
-int MusicBoxList::music_idx = 0;
-
 MusicBoxList::MusicBoxList(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MusicBoxList)
 {
     ui->setupUi(this);
+}
 
-    auto box = new MusicBox;
-    box->setText("夜航星");
-    box->setImage("../MyMusic/resources/024.png");
-    ui->upList->layout()->addWidget(box);
+MusicBoxList::~MusicBoxList()
+{
+    delete ui;
+}
 
-    // 读取配置文件，加载音乐
-    QString entry_path = "../MyMusic/resources/tmp/";
-    QString json_file = entry_path + "list.json";
-
-    QFile file(json_file);
-    if (!file.open(QFile::ReadOnly | QFile::Text)) {
-    qDebug() << "can't open error!";
-    return;
-    }
-    QTextStream stream(&file);
-    stream.setCodec("UTF-8");
-    QString str = stream.readAll();
-    file.close();
-
-    QJsonParseError jsonError;
-    QJsonDocument doc = QJsonDocument::fromJson(str.toUtf8(), &jsonError);
-    if (jsonError.error != QJsonParseError::NoError && !doc.isNull()) {
-    qDebug() << "Json格式错误！" << jsonError.error;
-    return;
-    }
-
-    int count = 8, idx = 0;
-    QJsonArray rootArr = doc.array();
-    for(; music_idx < rootArr.size(); ++music_idx)
+void MusicBoxList::loadMusic(const std::vector<QJsonObject>& musicList)
+{
+    for(auto& obj : musicList)
     {
-        QJsonValue val = rootArr[music_idx];
-        QString mus_path = entry_path + val["music_path"].toString();
-        QString cover_path = entry_path + val["cover"].toString();
-        qDebug() << val;
-        qDebug() << "mus: " << mus_path << "  cover: " << cover_path;
+        m_musicList.push_back(obj);
+    }
+    refresh();
+}
 
-        if(idx >= 8) break;
+void MusicBoxList::refresh()
+{
+    clearMusicBox();
+    int idx = 0;
+    while(idx < lineMusicCount * (onlyUpLine ? 1 : 2))
+    {
+        QJsonObject& musicDesc = m_musicList[(currentIdx + idx) % m_musicList.size()];
+        QString mus_path = musicDesc["music_path"].toString();
+        QString cover_path = musicDesc["cover"].toString();
+
         auto box = new MusicBox;
-        auto music_name = val["music_path"].toString().toStdString();
+        auto music_name = musicDesc["music_path"].toString().toStdString();
         music_name = music_name.substr(music_name.find_last_of("\\") + 1);
         music_name = music_name.substr(0, music_name.find_last_of('.'));
         box->setText(QString::fromStdString(music_name));
         box->setImage(cover_path);
 
-        if(idx < 4)
+        if(onlyUpLine || idx < lineMusicCount)
         {
             ui->upList->layout()->addWidget(box);
         }
@@ -74,56 +60,43 @@ MusicBoxList::MusicBoxList(QWidget *parent) :
         }
         idx++;
     }
-    file.close();
-
-//    ////////////////////////////
-//    QJsonObject rootObj = doc.object();
-//    QJsonValue nameValue = rootObj.value("name");
-//    qDebug() << "name =" << nameValue.toString();
-//    QJsonValue ageValue = rootObj.value("age");
-//    qDebug() << "age =" << ageValue.toInt();
-//    QJsonValue vipValue = rootObj.value("vip");
-//    qDebug() << "vip =" << vipValue.toBool();
-//    QJsonValue addressValue = rootObj.value("address");
-//    if (addressValue.type() == QJsonValue::Null) {
-//    qDebug() << "address = null";
-//    }
-
-//    QJsonValue interestValue = rootObj.value("interest");
-//    if (interestValue.type() == QJsonValue::Object) {
-//    QJsonObject interestObj = interestValue.toObject();
-//    QJsonValue basketballValue = interestObj.value("basketball");
-//    qDebug() << "basketball =" << basketballValue.toString();
-//    QJsonValue badmintonValue = interestObj.value("badminton");
-//    qDebug() << "badminton =" << badmintonValue.toString();
-//    }
-
-//    QJsonValue colorValue = rootObj.value("color");
-//    if (colorValue.type() == QJsonValue::Array) {
-//    QJsonArray colorArray = colorValue.toArray();
-//    for (int i = 0; i < colorArray.size(); i++) {
-//    QJsonValue color = colorArray.at(i);
-//    qDebug() << "color =" << color.toString();
-//    }
-//    }
-
-//    QJsonValue likeValue = rootObj.value("like");
-//    if (likeValue.type() == QJsonValue::Array) {
-//    QJsonArray likeArray = likeValue.toArray();
-//    for (int i = 0; i < likeArray.count(); i++) {
-//    QJsonValue likeValueChild = likeArray.at(i);
-//    if (likeValueChild.type() == QJsonValue::Object) {
-//    QJsonObject likeObj = likeValueChild.toObject();
-//    QJsonValue gameLikeValue = likeObj.value("game");
-//    qDebug() << "game =" << gameLikeValue.toString();
-//    QJsonValue priceLikeValue = likeObj.value("price");
-//    qDebug() << "price =" << priceLikeValue.toDouble();
-//    }
-//    }
-//    }
 }
 
-MusicBoxList::~MusicBoxList()
+void MusicBoxList::clearMusicBox()
 {
-    delete ui;
+    clearLayout(ui->upList->layout());
+    clearLayout(ui->downList->layout());
+}
+
+void MusicBoxList::clearLayout(QLayout *layout)
+{
+    if (!layout) return;
+
+    // 先移除所有widgets;    debug: takeAt替代itemAt
+    QLayoutItem* item;
+    while ((item = layout->takeAt(0)) != nullptr) {
+        if (QWidget* widget = item->widget()) {
+            widget->hide();
+            widget->deleteLater();  // 安全删除
+        }
+        delete item;  // 必须删除布局项
+    }
+
+    // 强制刷新布局
+    layout->invalidate();
+    layout->update();
+    layout->activate();
+}
+
+void MusicBoxList::on_leftButton_clicked()
+{
+    currentIdx -= 1;
+    if(currentIdx < 0) currentIdx = m_musicList.size() - 1;
+    refresh();
+}
+
+void MusicBoxList::on_rightButton_clicked()
+{
+    currentIdx = (currentIdx + 1) % m_musicList.size();
+    refresh();
 }

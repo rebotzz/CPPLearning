@@ -11,11 +11,14 @@ MusicBox::MusicBox(QWidget *parent) :
 
     // 为音乐封面安装事件拦截器：目标：cover，方法：this->eventFilter(); 这里的this似乎作用是方便调用this->eventFilter()
     ui->cover->installEventFilter(this);
+
+    qDebug() << ">>>>>>>>>>>>>MusicBox::MusicBox()" << this;
 }
 
 MusicBox::~MusicBox()
 {
     delete ui;
+    qDebug() << "~~~~~~~~~~~~MusicBox::~MusicBox()" << this;
 }
 
 void MusicBox::setText(const QString &text)

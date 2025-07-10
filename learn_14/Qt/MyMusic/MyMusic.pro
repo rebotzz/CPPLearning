@@ -2,7 +2,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++11
+CONFIG += c++17
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -20,13 +20,15 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     musicbox.cpp \
-    musicboxlist.cpp
+    musicboxlist.cpp \
+    resmgr.cpp
 
 HEADERS += \
     animbutton.h \
     mainwindow.h \
     musicbox.h \
-    musicboxlist.h
+    musicboxlist.h \
+    resmgr.h
 
 FORMS += \
     animbutton.ui \

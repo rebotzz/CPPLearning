@@ -661,7 +661,7 @@ QPushButton:hover
                    </widget>
                   </item>
                   <item>
-                   <widget class="MusicBoxList" name="otherBox" native="true"/>
+                   <widget class="MusicBoxList" name="supplyBox" native="true"/>
                   </item>
                  </layout>
                 </widget>
