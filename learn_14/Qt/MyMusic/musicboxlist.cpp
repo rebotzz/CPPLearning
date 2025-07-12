@@ -62,6 +62,17 @@ void MusicBoxList::refresh()
     }
 }
 
+void MusicBoxList::setOnlyUpLine(bool flag)
+{
+     onlyUpLine = flag;
+     if(onlyUpLine)
+     {
+         ui->downList->hide();
+//         clearLayout(ui->downList->layout());
+//         clearLayout(ui->musicList->layout());
+     }
+}
+
 void MusicBoxList::clearMusicBox()
 {
     clearLayout(ui->upList->layout());

@@ -20,7 +20,7 @@ public:
 
     void loadMusic(const std::vector<QJsonObject>& musicList);
     void refresh();
-    void setOnlyUpLine(bool flag) { onlyUpLine = flag; }
+    void setOnlyUpLine(bool flag);
     void clearMusicBox();
     void clearLayout(QLayout* layout);
 

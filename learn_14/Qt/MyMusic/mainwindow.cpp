@@ -46,7 +46,7 @@ void MainWindow::initMusicBoxList()
 //    std::sample(musicPool.begin(), musicPool.begin() + rec_music_count, rec_music_list.begin(), 8,
 //                std::default_random_engine({std::random_device()));
 
-//    ui->recommendBox->setOnlyUpLine(true);
+    ui->recommendBox->setOnlyUpLine(true);
     ui->recommendBox->loadMusic(rec_music_list);
     ui->supplyBox->loadMusic(sup_music_list);
 }

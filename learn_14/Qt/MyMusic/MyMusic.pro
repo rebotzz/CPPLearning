@@ -15,6 +15,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+# 导入三方库,注意：SDL2要先导入SDL2main然后再SDL2，不然会报错
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/thirdparty/SDL2/lib/x64/ -lSDL2main -lSDL2  \
+                                                -L$$PWD/thirdparty/SDL2_mixer/lib/x64/  -lSDL2_mixer
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/thirdparty/SDL2/lib/x64/ -lSDL2d -lSDL2maind \
+                                                   -L$$PWD/thirdparty/SDL2_mixer/lib/x64/ -lSDL2_mixerd
+else:unix: LIBS += -L$$PWD/thirdparty/SDL2/lib/x64/ -lSDL2 -lSDL2main \
+                    -L$$PWD/thirdparty/SDL2_mixer/lib/x64/ -lSDL2_mixer
+
+INCLUDEPATH += $$PWD/thirdparty/SDL2/lib/x64 \
+                $$PWD/thirdparty/SDL2/include \
+                $$PWD/thirdparty/SDL2_mixer/include
+DEPENDPATH += $$PWD/thirdparty/SDL2/lib/x64 \
+                $$PWD/thirdparty/SDL2_mixer/lib/x64
+
+
+
 SOURCES += \
     animbutton.cpp \
     main.cpp \
@@ -43,3 +59,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     res.qrc
+
+
