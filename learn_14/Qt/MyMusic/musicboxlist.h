@@ -31,7 +31,7 @@ private slots:
 private:
     Ui::MusicBoxList *ui;
     bool onlyUpLine = false;
-    int lineMusicCount = 4;
+    int lineMusicCount = 5;
     int currentIdx = 0;
     std::vector<QJsonObject> m_musicList;
 };

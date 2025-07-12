@@ -17,6 +17,10 @@ MusicBoxList::MusicBoxList(QWidget *parent) :
     ui(new Ui::MusicBoxList)
 {
     ui->setupUi(this);
+
+    // debug
+//    ui->upList->hide();
+//    ui->downList->hide();
 }
 
 MusicBoxList::~MusicBoxList()
@@ -67,9 +71,7 @@ void MusicBoxList::setOnlyUpLine(bool flag)
      onlyUpLine = flag;
      if(onlyUpLine)
      {
-         ui->downList->hide();
-//         clearLayout(ui->downList->layout());
-//         clearLayout(ui->musicList->layout());
+         ui->downList->hide();  // debug:MusicBoxList的最小尺寸不写500，改为0，不然隐藏后下方会是空白
      }
 }
 

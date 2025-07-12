@@ -30,6 +30,7 @@ signals:
 
 protected:
    void mousePressEvent(QMouseEvent* event) override;
+   void mouseMoveEvent(QMouseEvent *) override {}  // 重写，避免导致窗口拖动
 
 private:
    void initAnimation(QLabel* line, int duration_ms, QRect start, QRect mid, QRect end);

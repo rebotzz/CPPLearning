@@ -11,14 +11,11 @@ MusicBox::MusicBox(QWidget *parent) :
 
     // 为音乐封面安装事件拦截器：目标：cover，方法：this->eventFilter(); 这里的this似乎作用是方便调用this->eventFilter()
     ui->cover->installEventFilter(this);
-
-    qDebug() << ">>>>>>>>>>>>>MusicBox::MusicBox()" << this;
 }
 
 MusicBox::~MusicBox()
 {
     delete ui;
-    qDebug() << "~~~~~~~~~~~~MusicBox::~MusicBox()" << this;
 }
 
 void MusicBox::setText(const QString &text)
@@ -67,8 +64,9 @@ bool MusicBox::eventFilter(QObject *watched, QEvent *event)
         if(event->type() == QEvent::Enter)
         {
             auto anim = new QPropertyAnimation(ui->cover, "geometry", this);
+            int cur_y = ui->cover->pos().y();
             anim->setDuration(100);
-            anim->setStartValue(QRect(offset, offset, w, h));
+            anim->setStartValue(QRect(offset, cur_y, w, h));
             anim->setEndValue(QRect(offset, 0, w, h));
             anim->start(QAbstractAnimation::DeleteWhenStopped);
 //            connect(anim, &QPropertyAnimation::finished, this, [=] { qDebug() << "delete anim 1"; });
@@ -79,8 +77,9 @@ bool MusicBox::eventFilter(QObject *watched, QEvent *event)
         else if(event->type() == QEvent::Leave)
         {
             auto anim = new QPropertyAnimation(ui->cover, "geometry", this);
+            int cur_y = ui->cover->pos().y();
             anim->setDuration(150);
-            anim->setStartValue(QRect(offset, 0, w, h));
+            anim->setStartValue(QRect(offset, cur_y, w, h));
             anim->setEndValue(QRect(offset, offset, w, h));
             anim->start(QAbstractAnimation::DeleteWhenStopped);
 //            connect(anim, &QPropertyAnimation::finished, this, [=] { qDebug() << "delete anim 2"; });

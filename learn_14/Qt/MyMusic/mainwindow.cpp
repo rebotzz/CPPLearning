@@ -41,6 +41,7 @@ void MainWindow::initMusicBoxList()
 
     std::vector<QJsonObject> rec_music_list(musicPool.begin(), musicPool.begin() + rec_music_count);
     std::vector<QJsonObject> sup_music_list(musicPool.begin() + rec_music_count, musicPool.end());
+    srand(time(nullptr));
     std::random_shuffle(rec_music_list.begin(), rec_music_list.end());
     std::random_shuffle(sup_music_list.begin(), sup_music_list.end());
 //    std::sample(musicPool.begin(), musicPool.begin() + rec_music_count, rec_music_list.begin(), 8,
@@ -96,6 +97,7 @@ void MainWindow::initWindow()
 
 void MainWindow::initConnect()
 {
+    // 按下左侧按键时，能切换到对应页面
     auto btForms = findChildren<AnimButton*>();
     for(AnimButton* form : btForms)
     {
