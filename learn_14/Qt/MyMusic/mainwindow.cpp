@@ -50,6 +50,17 @@ void MainWindow::initMusicBoxList()
     ui->recommendBox->setOnlyUpLine(true);
     ui->recommendBox->loadMusic(rec_music_list);
     ui->supplyBox->loadMusic(sup_music_list);
+
+    std::vector<std::pair<MusicBoxList*, MusicBoxList*>> tmp_box_arr = {{ui->radioBox_1, ui->radioBox_2},
+                                                                    {ui->exploreBox_1, ui->exploreBox_2}};
+    for(auto& kv : tmp_box_arr)
+    {
+        std::random_shuffle(rec_music_list.begin(), rec_music_list.end());
+        std::random_shuffle(sup_music_list.begin(), sup_music_list.end());
+        kv.first->setOnlyUpLine(true);
+        kv.first->loadMusic(rec_music_list);
+        kv.second->loadMusic(sup_music_list);
+    }
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
@@ -76,10 +87,10 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
 void MainWindow::initWindow()
 {
     // 无边框
-//    setWindowFlag(Qt::WindowType::FramelessWindowHint);
+    setWindowFlag(Qt::WindowType::FramelessWindowHint);
 
     // 窗口阴影效果
-//    setAttribute(Qt::WA_TranslucentBackground);
+    setAttribute(Qt::WA_TranslucentBackground);
     auto shadow_effect = new QGraphicsDropShadowEffect(this);
     shadow_effect->setOffset(0);
     shadow_effect->setColor(QColor(0,0,0));
