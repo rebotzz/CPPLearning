@@ -28,6 +28,12 @@ private slots:
     void on_buttonQuit_clicked();
     void onBtFormClick(int pageId);
 
+    void on_buttonMin_clicked();
+
+    void on_buttonMax_clicked();
+
+    void on_buttonSkin_clicked();
+
 private:
     void initWindow();
     void initConnect();
@@ -35,5 +41,6 @@ private:
 private:
     Ui::MainWindow *ui;
     QPoint dragPosition;   // 鼠标拖动窗口是相对于窗口坐标
+    bool is_maxshow = false;
 };
 #endif // MAINWINDOW_H

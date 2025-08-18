@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QMouseEvent>
 #include <QGraphicsDropShadowEffect>
+#include <QMessageBox>
 
 #include <fstream>
 #include <string>
@@ -13,6 +14,7 @@
 #include <random>
 #include <algorithm>
 
+#include "musiclistpage.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -98,12 +100,16 @@ void MainWindow::initWindow()
     setGraphicsEffect(shadow_effect);
 
     // UI
+    // 初始化点击回调
     ui->recommend->initContent(":/resources/images/icon/rec.png", "推荐", 0);
     ui->radio->initContent(":/resources/images/icon/radio.png", "电台", 1);
     ui->explore->initContent(":/resources/images/icon/music.png", "探索", 2);
     ui->myLove->initContent(":/resources/images/icon/like.png", "我喜欢", 3);
     ui->recent->initContent(":/resources/images/icon/recent.png", "最近播放", 4);
     ui->local->initContent(":/resources/images/icon/local.png", "本地下载", 5);
+
+    // 初始化音乐歌单table页面
+    ui->locolPage->loadMusicList()
 }
 
 void MainWindow::initConnect()
@@ -140,3 +146,31 @@ void MainWindow::onBtFormClick(int pageId)
 
 }
 
+
+void MainWindow::on_buttonMin_clicked()
+{
+    showMinimized();
+}
+
+void MainWindow::on_buttonMax_clicked()
+{
+    if(!is_maxshow)
+    {
+        is_maxshow = true;
+        showMaximized();
+    }
+    else
+    {
+        is_maxshow = false;
+        showNormal();
+    }
+
+}
+
+void MainWindow::on_buttonSkin_clicked()
+{
+    auto msg_box = new QMessageBox(this);
+    msg_box->setIcon(QMessageBox::Information);
+    msg_box->setText("抱歉，暂未支持更换主体");
+    msg_box->exec();
+}

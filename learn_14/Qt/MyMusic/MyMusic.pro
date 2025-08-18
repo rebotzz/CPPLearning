@@ -37,6 +37,7 @@ SOURCES += \
     mainwindow.cpp \
     musicbox.cpp \
     musicboxlist.cpp \
+    musicinfoitem.cpp \
     musiclistpage.cpp \
     resmgr.cpp
 
@@ -45,6 +46,7 @@ HEADERS += \
     mainwindow.h \
     musicbox.h \
     musicboxlist.h \
+    musicinfoitem.h \
     musiclistpage.h \
     resmgr.h
 
@@ -53,6 +55,7 @@ FORMS += \
     mainwindow.ui \
     musicbox.ui \
     musicboxlist.ui \
+    musicinfoitem.ui \
     musiclistpage.ui
 
 # Default rules for deployment.
