@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>603</width>
-    <height>80</height>
+    <height>85</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -38,12 +38,10 @@
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">#favor_icon
+      <string notr="true">#favor_icon_btn
 {
-	background-color: rgb(0, 255, 255);
-	background-repeat: no-repeat;
-	background-position: center center;
-	border: 0px;
+	border: none;
+	background: none;
 }</string>
      </property>
      <property name="text">
@@ -53,6 +51,17 @@
    </item>
    <item>
     <widget class="QLabel" name="music_name">
+     <property name="minimumSize">
+      <size>
+       <width>80</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>歌名</string>
      </property>
@@ -60,6 +69,17 @@
    </item>
    <item>
     <widget class="QLabel" name="singer">
+     <property name="minimumSize">
+      <size>
+       <width>60</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>歌手名称</string>
      </property>
@@ -67,6 +87,11 @@
    </item>
    <item>
     <widget class="QLabel" name="album_label">
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>专辑名称</string>
      </property>

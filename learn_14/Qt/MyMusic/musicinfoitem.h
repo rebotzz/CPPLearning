@@ -22,6 +22,7 @@ public:
 
     void setFavor(bool flag) { is_favor = flag; }
     bool getFavor() const { return is_favor; }
+    void setFavorIcon();
 
 private:
     Ui::MusicInfoItem *ui;

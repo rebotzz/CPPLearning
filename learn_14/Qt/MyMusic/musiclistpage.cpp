@@ -1,18 +1,27 @@
 #include "musiclistpage.h"
 #include "ui_musiclistpage.h"
+#include "musicinfoitem.h"
 
 #include <fstream>
 #include <string>
-#include <sstream>
+
 
 #include <QJsonArray>
 #include <QJsonObject>
+
+
 
 MusicListPage::MusicListPage(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MusicListPage)
 {
     ui->setupUi(this);
+
+    // 测试
+    auto song = new MusicInfoItem(this, "path", "test song", "me", "unkown");
+    auto item = new QListWidgetItem(ui->musicList);
+    ui->musicList->setItemWidget(item, song);
+//    ui->musicList->addItem(song);
 }
 
 MusicListPage::~MusicListPage()

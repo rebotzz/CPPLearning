@@ -89,7 +89,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
 void MainWindow::initWindow()
 {
     // 无边框
-    setWindowFlag(Qt::WindowType::FramelessWindowHint);
+//    setWindowFlag(Qt::WindowType::FramelessWindowHint);
 
     // 窗口阴影效果
     setAttribute(Qt::WA_TranslucentBackground);
@@ -109,7 +109,7 @@ void MainWindow::initWindow()
     ui->local->initContent(":/resources/images/icon/local.png", "本地下载", 5);
 
     // 初始化音乐歌单table页面
-    ui->locolPage->loadMusicList()
+//    ui->locolPage->loadMusicList()
 }
 
 void MainWindow::initConnect()
