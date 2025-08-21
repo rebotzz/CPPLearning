@@ -3,6 +3,7 @@ QT       += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 QT += multimedia multimediawidgets
 
+
 CONFIG += c++17
 
 # The following define makes your compiler emit warnings if you use
@@ -34,6 +35,7 @@ DEPENDPATH += $$PWD/thirdparty/SDL2/lib/x64 \
 
 SOURCES += \
     animbutton.cpp \
+    jsoncpp.cpp \
     main.cpp \
     mainwindow.cpp \
     musicbox.cpp \
@@ -45,7 +47,8 @@ SOURCES += \
 HEADERS += \
     animbutton.h \
     json-forwards.h \
-    json.h \
+    json/json-forwards.h \
+    json/json.h \
     mainwindow.h \
     musicbox.h \
     musicboxlist.h \

@@ -18,7 +18,7 @@ public:
     explicit MusicBoxList(QWidget *parent = nullptr);
     ~MusicBoxList();
 
-    void loadMusic(const std::vector<QJsonObject>& musicList);
+    void loadMusic(const std::vector<std::unordered_map<std::string, std::string>>& musicList);
     void refresh();
     void setOnlyUpLine(bool flag);
     void clearMusicBox();
@@ -33,7 +33,7 @@ private:
     bool onlyUpLine = false;
     int lineMusicCount = 5;
     int currentIdx = 0;
-    std::vector<QJsonObject> m_musicList;
+    std::vector<std::unordered_map<std::string, std::string>> m_musicList;
 };
 
 

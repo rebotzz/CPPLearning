@@ -28,7 +28,7 @@ MusicBoxList::~MusicBoxList()
     delete ui;
 }
 
-void MusicBoxList::loadMusic(const std::vector<QJsonObject>& musicList)
+void MusicBoxList::loadMusic(const std::vector<std::unordered_map<std::string, std::string>>& musicList)
 {
     for(auto& obj : musicList)
     {
@@ -43,16 +43,11 @@ void MusicBoxList::refresh()
     int idx = 0;
     while(idx < lineMusicCount * (onlyUpLine ? 1 : 2))
     {
-        QJsonObject& musicDesc = m_musicList[(currentIdx + idx) % m_musicList.size()];
-        QString mus_path = musicDesc["music_path"].toString();
-        QString cover_path = musicDesc["cover"].toString();
-
+        auto& music_info = m_musicList[(currentIdx + idx) % m_musicList.size()];
         auto box = new MusicBox;
-        auto music_name = musicDesc["music_path"].toString().toStdString();
-        music_name = music_name.substr(music_name.find_last_of("\\") + 1);
-        music_name = music_name.substr(0, music_name.find_last_of('.'));
-        box->setText(QString::fromStdString(music_name));
-        box->setImage(cover_path);
+        box->setText(QString::fromStdString(music_info["title"]));
+        box->setImage(QString::fromStdString(music_info["cover"]));
+        qDebug() << QString::fromStdString(music_info["title"]) << "\n";
 
         if(onlyUpLine || idx < lineMusicCount)
         {

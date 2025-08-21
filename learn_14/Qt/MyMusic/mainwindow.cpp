@@ -38,11 +38,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::initMusicBoxList()
 {
-    auto& musicPool = ResMgr::getInstance().getMusicPool();
-    int rec_music_count = musicPool.size() / 2;
+    auto& music_pool = ResMgr::getInstance().getMusicPool();
+    int rec_music_count = music_pool.size() / 2;
 
-    std::vector<QJsonObject> rec_music_list(musicPool.begin(), musicPool.begin() + rec_music_count);
-    std::vector<QJsonObject> sup_music_list(musicPool.begin() + rec_music_count, musicPool.end());
+    ResMgr::MuiscInfoDictList rec_music_list(music_pool.begin(), music_pool.begin() + rec_music_count);
+    ResMgr::MuiscInfoDictList sup_music_list(music_pool.begin() + rec_music_count, music_pool.end());
     srand(time(nullptr));
     std::random_shuffle(rec_music_list.begin(), rec_music_list.end());
     std::random_shuffle(sup_music_list.begin(), sup_music_list.end());

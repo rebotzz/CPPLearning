@@ -7,13 +7,19 @@
 #include <QDebug>
 #include <QMediaPlayer>
 #include <QMediaMetaData>
+#include <QString>
 
+#include "json/json.h"
 #include <fstream>
-#include "json.h"
+#include <iostream>
 
-const QJsonObject &ResMgr::findMusic(int id)
+
+ResMgr::ResMgr()
+{}
+
+const ResMgr::MuiscInfoDict &ResMgr::findMusic(uint id)
 {
-    if(musicPool.size() > id && id >= 0) return musicPool[id];
+    if(music_pool.size() > id) return music_pool[id];
     else throw std::invalid_argument("not find music by this id: " + std::to_string(id));
 }
 
@@ -23,38 +29,8 @@ ResMgr &ResMgr::getInstance()
     return resMgr;
 }
 
-void ResMgr::loadMusic(std::string path)
-{
-    // 读取配置文件，加载音乐
-    QFile file(QString::fromStdString(path));
-    if (!file.open(QFile::ReadOnly | QFile::Text))
-    {
-        qDebug() << "can't open error!";
-        return;
-    }
-    QTextStream stream(&file);
-    stream.setCodec("UTF-8");
-    QString str = stream.readAll();
-    file.close();
 
-    QJsonParseError jsonError;
-    QJsonDocument doc = QJsonDocument::fromJson(str.toUtf8(), &jsonError);
-    if (jsonError.error != QJsonParseError::NoError && !doc.isNull())
-    {
-        qDebug() << "Json格式错误！" << jsonError.error;
-        return;
-    }
-
-    QJsonArray rootArr = doc.array();
-    for(auto val : rootArr)
-    {
-        qDebug() << val;
-        musicPool.push_back(val.toObject());
-        // todo：加入歌手描述，分离歌名字和路径；建立查找索引
-    }
-}
-
-void ResMgr::loadMusic_(const std::string &path)
+void ResMgr::loadMusic(const std::string &path)
 {
     std::ifstream config_file(path);
     if(config_file.fail())
@@ -63,37 +39,73 @@ void ResMgr::loadMusic_(const std::string &path)
     config_file >> root;
     std::string music_path = root.get("music_path", "").asString();
     std::string cover_path = root.get("cover_path", "").asString();
-    const auto& music_list = root.get("music_list", Json::arrayValue);
+    const auto& music_list = root.get("music_list", "");
     for (auto& music : music_list)
     {
         std::unordered_map<std::string, std::string> music_info;
-        music_info["path"] = music_path + music.get("path", "").asString();
+        music_info["path"] = music_path + music.get("file", "").asString();
         music_info["cover"] = cover_path + music.get("cover", "").asString();
         auto meta_info = getMusicMetaInfo(music_info["path"]);
         for(auto [k, v] : meta_info)
         {
+            qDebug() << QString::fromStdString(k) << " " << QString::fromStdString(v) << "\n";
             music_info[k] = v;
+        }
+        if(music_info["title"].empty())
+        {
+            auto file_name = music.get("file", "").asString();
+            auto title = file_name.substr(0, file_name.rfind('.'));
+            music_info["title"] = title;
+        }
+        if(music_info["album"].empty())
+        {
+            music_info["album"] = "unkown";
+        }
+        if(music_info["author"].empty())
+        {
+            music_info["author"] = "unkown";
+        }
+        music_pool.push_back(music_info);
+
+        for(auto [k, v]: music_info)
+        {
+
+
+//            std::cout << k << " " << v << "\n";
+            qDebug() << QString::fromStdString(k) << " " << QString::fromStdString(v) << "\n";
         }
     }
 }
 
 
-
-ResMgr::ResMgr()
-{}
-
-std::unordered_map<std::string, std::string> ResMgr::getMusicMetaInfo(const std::string &path)
+ResMgr::MuiscInfoDict ResMgr::getMusicMetaInfo(const std::string &path)
 {
     QMediaPlayer player;
     player.setMedia(QUrl::fromLocalFile(QString::fromStdString(path)));
     std::string title = player.metaData(QMediaMetaData::Title).toString().toStdString();
     std::string author = player.metaData(QMediaMetaData::Author).toString().toStdString();
     std::string album = player.metaData(QMediaMetaData::AlbumTitle).toString().toStdString();
-    std::string duration = std::to_string(player.metaData(QMediaMetaData::Duration).toString().toUInt());
-    return {{"title", title},
-            {"author", author},
-            {"album", album},
-            {"duration", duration}};
+    auto duration = player.metaData(QMediaMetaData::Duration).toString();
+    qDebug() << "-------------------duration: " << duration << " \n";
+//    if (duration <= 0)
+//        throw "duration < 0";
+    return {{"title", trim(title)},
+            {"author", trim(author)},
+            {"album", trim(album)},
+        {"duration", trim(duration.toStdString())}};
+}
+
+ResMgr::MuiscInfoDict ResMgr::getMusicMetaInfo2(const std::string &path)
+{
+    // TODO: 更换获取歌曲时常的接口
+}
+
+std::string ResMgr::trim(const std::string &str, const std::string& sep)
+{
+    if(str.size() <= 0) return str;
+    auto begin = str.find_first_not_of(sep);
+    auto end = str.find_last_not_of(sep);
+    return str.substr(begin, end - begin + 1);
 }
 
 
