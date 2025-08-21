@@ -1,6 +1,7 @@
 QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT += multimedia multimediawidgets
 
 CONFIG += c++17
 
@@ -43,6 +44,8 @@ SOURCES += \
 
 HEADERS += \
     animbutton.h \
+    json-forwards.h \
+    json.h \
     mainwindow.h \
     musicbox.h \
     musicboxlist.h \
