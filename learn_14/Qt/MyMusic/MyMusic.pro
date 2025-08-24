@@ -42,7 +42,8 @@ SOURCES += \
     musicboxlist.cpp \
     musicinfoitem.cpp \
     musiclistpage.cpp \
-    resmgr.cpp
+    resmgr.cpp \
+    volumetool.cpp
 
 HEADERS += \
     animbutton.h \
@@ -54,7 +55,8 @@ HEADERS += \
     musicboxlist.h \
     musicinfoitem.h \
     musiclistpage.h \
-    resmgr.h
+    resmgr.h \
+    volumetool.h
 
 FORMS += \
     animbutton.ui \
@@ -62,7 +64,8 @@ FORMS += \
     musicbox.ui \
     musicboxlist.ui \
     musicinfoitem.ui \
-    musiclistpage.ui
+    musiclistpage.ui \
+    volumetool.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -797,8 +797,8 @@ QPushButton:hover
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>1343</width>
-                   <height>818</height>
+                   <width>270</width>
+                   <height>172</height>
                   </rect>
                  </property>
                  <layout class="QVBoxLayout" name="verticalLayout_13">
@@ -888,7 +888,7 @@ QPushButton:hover
             </widget>
             <widget class="MusicListPage" name="myLovePage"/>
             <widget class="MusicListPage" name="locolPage"/>
-            <widget class="QWidget" name="recentPage"/>
+            <widget class="MusicListPage" name="recentPage"/>
            </widget>
           </item>
           <item>

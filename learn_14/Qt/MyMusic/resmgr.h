@@ -17,6 +17,7 @@ public:
     void loadMusic(const std::string& path);
     const MuiscInfoDict& findMusic(uint id);
     const MuiscInfoDictList& getMusicPool() const { return music_pool; };
+    MuiscInfoDict parseMediaMetaMusic(const std::string& path);
 
 private:
     ResMgr();

@@ -2,11 +2,14 @@
 #include "ui_mainwindow.h"
 
 #include "resmgr.h"
+#include "volumetool.h"
 
 #include <QDebug>
 #include <QMouseEvent>
 #include <QGraphicsDropShadowEffect>
 #include <QMessageBox>
+#include <QFileDialog>
+#include <QDir>
 
 #include <fstream>
 #include <string>
@@ -29,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // 初始化音乐控件
     initMusicBoxList();
+    initOtherWidgets();
 }
 
 MainWindow::~MainWindow()
@@ -63,6 +67,12 @@ void MainWindow::initMusicBoxList()
         kv.first->loadMusic(rec_music_list);
         kv.second->loadMusic(sup_music_list);
     }
+}
+
+void MainWindow::initOtherWidgets()
+{
+    // 音量调节控件初始化
+    volume_tool = new VolumeTool(this);
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
@@ -101,6 +111,7 @@ void MainWindow::initWindow()
 
     // UI
     // 初始化点击回调
+    stack_name_id_map = {{"推荐", 0}, {"电台", 1}, {"探索", 2}, {"我喜欢", 3}, {"最近播放", 4}, {"本地下载", 5}};
     ui->recommend->initContent(":/resources/images/icon/rec.png", "推荐", 0);
     ui->radio->initContent(":/resources/images/icon/radio.png", "电台", 1);
     ui->explore->initContent(":/resources/images/icon/music.png", "探索", 2);
@@ -174,3 +185,68 @@ void MainWindow::on_buttonSkin_clicked()
     msg_box->setText("抱歉，暂未支持更换主体");
     msg_box->exec();
 }
+
+void MainWindow::on_volume_clicked()
+{
+    // 先要调整窗口的显示位置，否则该窗口在主窗口的左上角
+    // 1. 获取该按钮左上角的图标
+    // 2. 计算volume窗口的左上角位置
+    QPoint point = ui->volume->mapToGlobal(QPoint(ui->volume->width() / 2, 0));
+    auto volume_left_top = point - QPoint(volume_tool->width() / 2, volume_tool->height());
+    volume_tool->move(volume_left_top);
+    volume_tool->show();
+}
+
+void MainWindow::on_addLocal_clicked()
+{
+    // 1.创建文件对话框
+    // 2.设置模式
+    // 3.设置文件类型过滤
+    // 4.设置默认路径
+    // 5.模态，接受文件url
+    QFileDialog file_dialog(this);
+    file_dialog.setWindowTitle("添加本地音乐");
+
+    file_dialog.setAcceptMode(QFileDialog::AcceptOpen);
+    file_dialog.setFileMode(QFileDialog::ExistingFiles);
+
+    QStringList mime_type_list;
+    mime_type_list << "application/octet-stream";
+    file_dialog.setMimeTypeFilters(mime_type_list);
+
+    QDir dir(QDir::currentPath());
+    dir.cdUp();
+    file_dialog.setDirectory(dir.path());
+
+    if(file_dialog.exec() == QFileDialog::Accepted)
+    {
+        QList<QUrl> music_list = file_dialog.selectedUrls();
+        // 处理音乐。。。
+        qDebug() << "load music count: " << music_list.size() << "\n";
+        for(auto x : music_list)
+        {
+            qDebug() << x.url() << "\n";
+        }
+
+        ui->stackedWidget->setCurrentIndex(stack_name_id_map["本地下载"]);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

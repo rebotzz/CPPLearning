@@ -47,7 +47,7 @@ void MusicBoxList::refresh()
         auto box = new MusicBox;
         box->setText(QString::fromStdString(music_info["title"]));
         box->setImage(QString::fromStdString(music_info["cover"]));
-        qDebug() << QString::fromStdString(music_info["title"]) << "\n";
+        // qDebug() << QString::fromStdString(music_info["title"]) << "\n";
 
         if(onlyUpLine || idx < lineMusicCount)
         {
