@@ -18,6 +18,8 @@ public:
 
     void initConnect();
 
+    void onSliderMoved(int val);
+
 private:
     Ui::VolumeTool *ui;
 };

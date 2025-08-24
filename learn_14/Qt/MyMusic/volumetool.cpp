@@ -26,6 +26,10 @@ VolumeTool::VolumeTool(QWidget *parent) :
     // 默认音量设置
     ui->slider->setValue(20);
     ui->volume_label->setText("20%");
+
+
+    // 初始化信号与槽
+    initConnect();
 }
 
 VolumeTool::~VolumeTool()
@@ -57,7 +61,15 @@ void VolumeTool::paintEvent(QPaintEvent *)
 
 void VolumeTool::initConnect()
 {
-//    ui->slider->connect()
+    connect(ui->slider, &QSlider::valueChanged, this, &VolumeTool::onSliderMoved);
+}
+
+void VolumeTool::onSliderMoved(int val)
+{
+//    int val = ui->slider->value();
+    ui->volume_label->setText(QString::fromStdString(std::to_string(val) + "%"));
+    // TODO:设置音量
+
 }
 
 
